@@ -5,10 +5,10 @@
 - Fix upgrade failure point [#41][41] ([mackensen][mackensen])
 - Use correct user time in history and drafts [#42][42]
 
-[3333e6]: https://github.com/lsuits/quickmail/commit/3333e643606947254b5cb1cdf5beeb33b7ea1bb7
-[40]: https://github.com/lsuits/quickmail/issues/40
-[41]: https://github.com/lsuits/quickmail/pull/41
-[42]: https://github.com/lsuits/quickmail/issues/42
+[3333e6]: https://github.com/lsuits/clampmail/commit/3333e643606947254b5cb1cdf5beeb33b7ea1bb7
+[40]: https://github.com/lsuits/clampmail/issues/40
+[41]: https://github.com/lsuits/clampmail/pull/41
+[42]: https://github.com/lsuits/clampmail/issues/42
 
 ## v1.2.7
 
@@ -19,19 +19,19 @@
 - Uses the correct zip in attachments [200fb2][200fb2]
 
 [mackensen]: https://github.com/mackensen
-[213ed0]: https://github.com/lsuits/quickmail/commit/213ed09b58a065608d81df83005dccd4f8b6714d
-[200fb2]: https://github.com/lsuits/quickmail/commit/200fb2e07d01c052a398c799d11607eed3f5ac64
-[33]: https://github.com/lsuits/quickmail/issues/33
-[34]: https://github.com/lsuits/quickmail/issues/34
-[35]: https://github.com/lsuits/quickmail/issues/35
+[213ed0]: https://github.com/lsuits/clampmail/commit/213ed09b58a065608d81df83005dccd4f8b6714d
+[200fb2]: https://github.com/lsuits/clampmail/commit/200fb2e07d01c052a398c799d11607eed3f5ac64
+[33]: https://github.com/lsuits/clampmail/issues/33
+[34]: https://github.com/lsuits/clampmail/issues/34
+[35]: https://github.com/lsuits/clampmail/issues/35
 
 ## v1.2.6
 
 - Now uses $CFG->tempdir for the temp directory [741a64][741a64]
 - Update French translation [#32][32] ([luiggisanso][luiggisanso])
 
-[741a64]: https://github.com/lsuits/quickmail/commit/741a64546344ba1fb639df251f15a8fc2b0c34b4
-[32]: https://github.com/lsuits/quickmail/pull/32
+[741a64]: https://github.com/lsuits/clampmail/commit/741a64546344ba1fb639df251f15a8fc2b0c34b4
+[32]: https://github.com/lsuits/clampmail/pull/32
 
 ## v1.2.5
 
@@ -39,17 +39,17 @@
 - Empty Signature defaults [#30][30]
 - Increase Subject line [45a80cf][45a80cf]
 
-[31]: https://github.com/lsuits/quickmail/issues/31
-[30]: https://github.com/lsuits/quickmail/issues/30
-[45a80cf]: https://github.com/lsuits/quickmail/commit/45a80cff9ee0f565fe2bd93ea720bbd0ef5897b8
+[31]: https://github.com/lsuits/clampmail/issues/31
+[30]: https://github.com/lsuits/clampmail/issues/30
+[45a80cf]: https://github.com/lsuits/clampmail/commit/45a80cff9ee0f565fe2bd93ea720bbd0ef5897b8
 
 ## v1.2.4
 
 - Additional French translation [#28][28] ([luiggisanso][luiggisanso])
 - Style fix for Firefox browsers [#29][29]
 
-[28]: https://github.com/lsuits/quickmail/pull/28
-[29]: https://github.com/lsuits/quickmail/issues/29
+[28]: https://github.com/lsuits/clampmail/pull/28
+[29]: https://github.com/lsuits/clampmail/issues/29
 [luiggisanso]: https://github.com/luiggisanso
 
 ## v1.2.3
@@ -62,9 +62,9 @@
 - Embed image permission too strong for thick app clients [#26][26]
 - Delete signatures, optional signature content [#27][27]
 
-[25]: https://github.com/lsuits/quickmail/issues/25
-[26]: https://github.com/lsuits/quickmail/issues/26
-[27]: https://github.com/lsuits/quickmail/issues/27
+[25]: https://github.com/lsuits/clampmail/issues/25
+[26]: https://github.com/lsuits/clampmail/issues/26
+[27]: https://github.com/lsuits/clampmail/issues/27
 
 ## v1.2.1
 
@@ -78,20 +78,20 @@
 - Embed images and other content in email and signature [#21][21]
 - Option to prepend shortname or idnumber in email subject [#22][22]
 
-[22]: https://github.com/lsuits/quickmail/pull/22
-[21]: https://github.com/lsuits/quickmail/pull/21
-[16]: https://github.com/lsuits/quickmail/pull/16
-[19]: https://github.com/lsuits/quickmail/pull/19
-[17]: https://github.com/lsuits/quickmail/pull/17
+[22]: https://github.com/lsuits/clampmail/pull/22
+[21]: https://github.com/lsuits/clampmail/pull/21
+[16]: https://github.com/lsuits/clampmail/pull/16
+[19]: https://github.com/lsuits/clampmail/pull/19
+[17]: https://github.com/lsuits/clampmail/pull/17
 
 ## v1.1.2
 
 - Fixed problematic anonymous function between PHP versions [#7][7], [#8][8] ([eSrem][eSrem] and [Icheb][Icheb])
 - Abiding by Moodle config directory permission [#9][9] ([abias][abias])
 
-[7]: https://github.com/lsuits/quickmail/issues/7
-[8]: https://github.com/lsuits/quickmail/issues/8
-[9]: https://github.com/lsuits/quickmail/issues/9
+[7]: https://github.com/lsuits/clampmail/issues/7
+[8]: https://github.com/lsuits/clampmail/issues/8
+[9]: https://github.com/lsuits/clampmail/issues/9
 
 [eSrem]: https://github.com/eSrem
 [Icheb]: https://github.com/Icheb

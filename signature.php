@@ -28,31 +28,31 @@ $flash = optional_param('flash', 0, PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_INT);
 
 if ($courseid and !$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_quickmail', '', $courseid);
+    print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
-$config = quickmail::load_config($courseid);
+$config = clampmail::load_config($courseid);
 
 $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
 $has_permission = (
-    has_capability('block/quickmail:cansend', $context) or
+    has_capability('block/clampmail:cansend', $context) or
     !empty($config['allowstudents'])
 );
 
 if (!$has_permission) {
-    print_error('no_permission', 'block_quickmail');
+    print_error('no_permission', 'block_clampmail');
 }
 
-$blockname = quickmail::_s('pluginname');
-$header = quickmail::_s('signature');
+$blockname = clampmail::_s('pluginname');
+$header = clampmail::_s('signature');
 
 $title = "{$blockname}: {$header}";
 
 $PAGE->set_context($context);
 
 $PAGE->set_course($course);
-$PAGE->set_url('/blocks/quickmail/signature.php', array(
+$PAGE->set_url('/blocks/clampmail/signature.php', array(
     'courseid' => $courseid, 'id' => $sigid
 ));
 
@@ -64,7 +64,7 @@ $PAGE->set_pagetype($blockname);
 $PAGE->set_pagelayout('standard');
 
 $params = array('userid' => $USER->id);
-$dbsigs = $DB->get_records('block_quickmail_signatures', $params);
+$dbsigs = $DB->get_records('block_clampmail_signatures', $params);
 
 $sig = (!empty($sigid) and isset($sigs[$sigid])) ? $sigs[$sigid] : new stdClass;
 
@@ -88,13 +88,13 @@ $options = array(
 );
 
 $sig = file_prepare_standard_editor($sig, 'signature', $options, $context,
-    'block_quickmail', 'signature', $sig->id);
+    'block_clampmail', 'signature', $sig->id);
 
 $form = new signature_form(null, array('signature_options' => $options));
 
 if ($confirm) {
-    $DB->delete_records('block_quickmail_signatures', array('id' => $sigid));
-    redirect(new moodle_url('/blocks/quickmail/signature.php', array(
+    $DB->delete_records('block_clampmail_signatures', array('id' => $sigid));
+    redirect(new moodle_url('/blocks/clampmail/signature.php', array(
         'courseid' => $courseid,
         'flash' => 1
     )));
@@ -108,7 +108,7 @@ if ($form->is_cancelled()) {
     }
 
     if (empty($data->title)) {
-        $warnings[] = quickmail::_s('required');
+        $warnings[] = clampmail::_s('required');
     }
 
     if (empty($warnings) and empty($delete)) {
@@ -119,11 +119,11 @@ if ($form->is_cancelled()) {
         }
 
         $params = array('userid' => $USER->id, 'default_flag' => 1);
-        $default = $DB->get_record('block_quickmail_signatures', $params);
+        $default = $DB->get_record('block_clampmail_signatures', $params);
 
         if ($default and !empty($data->default_flag)) {
             $default->default_flag = 0;
-            $DB->update_record('block_quickmail_signatures', $default);
+            $DB->update_record('block_clampmail_signatures', $default);
         }
 
         if (!$default) {
@@ -132,14 +132,14 @@ if ($form->is_cancelled()) {
 
         if (empty($data->id)) {
             $data->id = null;
-            $data->id = $DB->insert_record('block_quickmail_signatures', $data);
+            $data->id = $DB->insert_record('block_clampmail_signatures', $data);
         }
 
         // Persist relative links.
         $data = file_postupdate_standard_editor($data, 'signature', $options,
-            $context, 'block_quickmail', 'signature', $data->id);
+            $context, 'block_clampmail', 'signature', $data->id);
 
-        $DB->update_record('block_quickmail_signatures', $data);
+        $DB->update_record('block_clampmail_signatures', $data);
 
         $url = new moodle_url('signature.php', array(
             'id' => $data->id, 'courseid' => $course->id, 'flash' => 1
@@ -151,7 +151,7 @@ if ($form->is_cancelled()) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
-$first = array(0 => 'New '.quickmail::_s('sig'));
+$first = array(0 => 'New '.clampmail::_s('sig'));
 $only_names = function ($sig) {
     return ($sig->default_flag) ? $sig->title . ' (Default)': $sig->title;
 };
@@ -164,13 +164,13 @@ if ($flash) {
 }
 
 if (!empty($delete)) {
-    $msg = get_string('are_you_sure', 'block_quickmail', $sig);
-    $confirm_url = new moodle_url('/blocks/quickmail/signature.php', array(
+    $msg = get_string('are_you_sure', 'block_clampmail', $sig);
+    $confirm_url = new moodle_url('/blocks/clampmail/signature.php', array(
         'id' => $sig->id,
         'courseid' => $courseid,
         'confirm' => 1
     ));
-    $cancel_url = new moodle_url('/blocks/quickmail/signature.php', array(
+    $cancel_url = new moodle_url('/blocks/clampmail/signature.php', array(
         'id' => $sig->id,
         'courseid' => $courseid
     ));

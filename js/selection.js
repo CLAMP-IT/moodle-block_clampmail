@@ -1,7 +1,7 @@
 (function(){
   // Written at Louisiana State University
   $(document).ready(function() {
-    var clear_selections, mailed, move, potentials, quickmail_changer, selectors;
+    var clear_selections, mailed, move, potentials, clampmail_changer, selectors;
     potentials = "#from_users";
     mailed = "#mail_users";
     selectors = [potentials, mailed];
@@ -12,7 +12,7 @@
       };
       return $(selectors).each(clear);
     };
-    quickmail_changer = function() {
+    clampmail_changer = function() {
       var role;
       role = $("#roles").val();
       clear_selections();
@@ -44,8 +44,8 @@
         return $(from).children(filter).remove();
       };
     };
-    $("#groups").change(quickmail_changer);
-    $("#roles").change(quickmail_changer);
+    $("#groups").change(clampmail_changer);
+    $("#roles").change(clampmail_changer);
     $("#add_button").click(move(potentials, mailed, ':selected'));
     $("#add_all").click(move(potentials, mailed, '*'));
     $("#remove_button").click(move(mailed, potentials, ':selected'));

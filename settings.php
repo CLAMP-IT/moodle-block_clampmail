@@ -19,7 +19,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    require_once($CFG->dirroot . '/blocks/quickmail/lib.php');
+    require_once($CFG->dirroot . '/blocks/clampmail/lib.php');
 
     $select = array(0 => get_string('no'), 1 => get_string('yes'));
 
@@ -32,9 +32,9 @@ if ($ADMIN->fulltree) {
 
     $only_names = function ($role) { return $role->shortname; };
 
-    $select_roles = quickmail::_s('select_roles');
+    $select_roles = clampmail::_s('select_roles');
     $settings->add(
-        new admin_setting_configmultiselect('block_quickmail_roleselection',
+        new admin_setting_configmultiselect('block_clampmail_roleselection',
             $select_roles, $select_roles,
             array_keys($defaults),
             array_map($only_names, $roles)
@@ -42,8 +42,8 @@ if ($ADMIN->fulltree) {
     );
 
     $settings->add(
-        new admin_setting_configselect('block_quickmail_receipt',
-        quickmail::_s('receipt'), quickmail::_s('receipt_help'),
+        new admin_setting_configselect('block_clampmail_receipt',
+        clampmail::_s('receipt'), clampmail::_s('receipt_help'),
         0, $select
         )
     );
@@ -55,8 +55,8 @@ if ($ADMIN->fulltree) {
     );
 
     $settings->add(
-        new admin_setting_configselect('block_quickmail_prepend_class',
-            quickmail::_s('prepend_class'), quickmail::_s('prepend_class_desc'),
+        new admin_setting_configselect('block_clampmail_prepend_class',
+            clampmail::_s('prepend_class'), clampmail::_s('prepend_class_desc'),
             0, $options
         )
     );

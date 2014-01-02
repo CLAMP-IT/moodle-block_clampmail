@@ -30,13 +30,13 @@ $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
 // Permission.
 require_login($course);
-require_capability('block/quickmail:allowalternate', $context);
+require_capability('block/clampmail:allowalternate', $context);
 
-$blockname = quickmail::_s('pluginname');
-$heading = quickmail::_s('alternate');
+$blockname = clampmail::_s('pluginname');
+$heading = clampmail::_s('alternate');
 $title = "$blockname: $heading";
 
-$url = new moodle_url('/blocks/quickmail/alternate.php', array('courseid' => $courseid));
+$url = new moodle_url('/blocks/clampmail/alternate.php', array('courseid' => $courseid));
 
 $PAGE->set_url($url);
 $PAGE->set_context($context);
@@ -48,12 +48,12 @@ $PAGE->navbar->add($heading);
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
-if (!method_exists('quickmail_alternate', $action)) {
+if (!method_exists('clampmail_alternate', $action)) {
     // Always fallback on view.
     $action = 'view';
 }
 
-$body = quickmail_alternate::$action($course, $id);
+$body = clampmail_alternate::$action($course, $id);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($heading);

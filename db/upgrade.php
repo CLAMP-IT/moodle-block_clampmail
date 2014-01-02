@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function xmldb_block_quickmail_upgrade($oldversion) {
+function xmldb_block_clampmail_upgrade($oldversion) {
     global $DB;
 
     $result = true;
@@ -22,10 +22,10 @@ function xmldb_block_quickmail_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2011021812) {
-        // Compatibility for transition to LSU quickmail.
+        // Compatibility for transition to LSU clampmail.
 
-        // Modify block_quickmail_log.
-        $table = new xmldb_table('block_quickmail_log');
+        // Modify block_clampmail_log.
+        $table = new xmldb_table('block_clampmail_log');
         $field = new xmldb_field('attachment', XMLDB_TYPE_TEXT, 'small', XMLDB_NOTNULL, null, null);
         $dbman->change_field_type($table, $field);
 
@@ -34,8 +34,8 @@ function xmldb_block_quickmail_upgrade($oldversion) {
             $dbman->rename_field($table, $field, 'time');
         }
 
-        // Add block_quickmail_signatures.
-        $table = new xmldb_table('block_quickmail_signatures');
+        // Add block_clampmail_signatures.
+        $table = new xmldb_table('block_clampmail_signatures');
         $table->add_field('id', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, 11, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
         $table->add_field('title', XMLDB_TYPE_CHAR, 125, null, null, null, null);
@@ -46,8 +46,8 @@ function xmldb_block_quickmail_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Add block_quickmail_drafts.
-        $table = new xmldb_table('block_quickmail_drafts');
+        // Add block_clampmail_drafts.
+        $table = new xmldb_table('block_clampmail_drafts');
         $table->add_field('id', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, 11, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
         $table->add_field('userid', XMLDB_TYPE_INTEGER, 11, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
@@ -62,8 +62,8 @@ function xmldb_block_quickmail_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Add block_quickmail_config.
-        $table = new xmldb_table('block_quickmail_config');
+        // Add block_clampmail_config.
+        $table = new xmldb_table('block_clampmail_config');
         $table->add_field('id', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('coursesid', XMLDB_TYPE_INTEGER, 11, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, 25, null, XMLDB_NOTNULL, null, null);
@@ -73,11 +73,11 @@ function xmldb_block_quickmail_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        upgrade_block_savepoint(true, 2011021812, 'quickmail');
+        upgrade_block_savepoint(true, 2011021812, 'clampmail');
     }
 
     if ($oldversion < 2012021014) {
-        $table = new xmldb_table('block_quickmail_alternate');
+        $table = new xmldb_table('block_clampmail_alternate');
 
         $field = new xmldb_field('id');
         $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
@@ -113,8 +113,8 @@ function xmldb_block_quickmail_upgrade($oldversion) {
         }
 
         foreach (array('log', 'drafts') as $table) {
-            // Define field alternateid to be added to block_quickmail_log.
-            $table = new xmldb_table('block_quickmail_' . $table);
+            // Define field alternateid to be added to block_clampmail_log.
+            $table = new xmldb_table('block_clampmail_' . $table);
             $field = new xmldb_field('alternateid', XMLDB_TYPE_INTEGER, '10',
                 XMLDB_UNSIGNED, null, null, null, 'userid');
 
@@ -125,14 +125,14 @@ function xmldb_block_quickmail_upgrade($oldversion) {
         }
 
         // Quickmail savepoint reached.
-        upgrade_block_savepoint($result, 2012021014, 'quickmail');
+        upgrade_block_savepoint($result, 2012021014, 'clampmail');
     }
 
     if ($oldversion < 2012061112) {
         // Restructure database references to the new filearea locations.
         foreach (array('log', 'drafts') as $type) {
             $params = array(
-                'component' => 'block_quickmail_' . $type,
+                'component' => 'block_clampmail_' . $type,
                 'filearea' => 'attachment'
             );
 
@@ -140,13 +140,13 @@ function xmldb_block_quickmail_upgrade($oldversion) {
 
             foreach ($attachments as $attachment) {
                 $attachment->filearea = 'attachment_' . $type;
-                $attachment->component = 'block_quickmail';
+                $attachment->component = 'block_clampmail';
 
                 $result = $result && $DB->update_record('files', $attachment);
             }
         }
 
-        upgrade_block_savepoint($result, 2012061112, 'quickmail');
+        upgrade_block_savepoint($result, 2012061112, 'clampmail');
     }
 
     return $result;

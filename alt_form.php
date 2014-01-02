@@ -16,7 +16,7 @@
 
 require_once($CFG->libdir . '/formslib.php');
 
-class quickmail_alternate_form extends moodleform {
+class clampmail_alternate_form extends moodleform {
     public function definition() {
         $m =& $this->_form;
 

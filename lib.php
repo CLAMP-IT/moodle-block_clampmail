@@ -16,9 +16,9 @@
 
 // Written at Louisiana State University.
 
-abstract class quickmail {
+abstract class clampmail {
     public static function _s($key, $a = null) {
-        return get_string($key, 'block_quickmail', $a);
+        return get_string($key, 'block_clampmail', $a);
     }
 
     public static function format_time($time) {
@@ -36,12 +36,12 @@ abstract class quickmail {
         $fs = get_file_storage();
 
         $fs->delete_area_files(
-            $contextid, 'block_quickmail',
+            $contextid, 'block_clampmail',
             'attachment_' . $filearea, $itemid
         );
 
         $fs->delete_area_files(
-            $contextid, 'block_quickmail',
+            $contextid, 'block_clampmail',
             $filearea, $itemid
         );
 
@@ -49,11 +49,11 @@ abstract class quickmail {
     }
 
     public static function history_cleanup($contextid, $itemid) {
-        return self::cleanup('block_quickmail_log', $contextid, $itemid);
+        return self::cleanup('block_clampmail_log', $contextid, $itemid);
     }
 
     public static function draft_cleanup($contextid, $itemid) {
-        return self::cleanup('block_quickmail_drafts', $contextid, $itemid);
+        return self::cleanup('block_clampmail_drafts', $contextid, $itemid);
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class quickmail {
     public static function process_attachments($context, $email, $table, $id) {
         global $CFG, $USER;
 
-        $base_path = "block_quickmail/{$USER->id}";
+        $base_path = "block_clampmail/{$USER->id}";
         $moodle_base = "$CFG->tempdir/$base_path";
 
         if (!file_exists($moodle_base)) {
@@ -79,7 +79,7 @@ abstract class quickmail {
 
             $files = $fs->get_area_files(
                 $context->id,
-                'block_quickmail',
+                'block_clampmail',
                 'attachment_' . $table,
                 $id,
                 'id'
@@ -141,15 +141,15 @@ abstract class quickmail {
 
         $fields = 'name,value';
         $params = array('coursesid' => $courseid);
-        $table = 'block_quickmail_config';
+        $table = 'block_clampmail_config';
 
         $config = $DB->get_records_menu($table, $params, '', $fields);
 
         if (empty($config)) {
             $m = 'moodle';
-            $roleselection = get_config($m, 'block_quickmail_roleselection');
-            $prepender = get_config($m, 'block_quickmail_prepend_class');
-            $receipt = get_config($m, 'block_quickmail_receipt');
+            $roleselection = get_config($m, 'block_clampmail_roleselection');
+            $prepender = get_config($m, 'block_clampmail_prepend_class');
+            $receipt = get_config($m, 'block_clampmail_receipt');
 
             $config = array(
                 'roleselection' => $roleselection,
@@ -165,7 +165,7 @@ abstract class quickmail {
         global $DB;
 
         $params = array('coursesid' => $courseid);
-        $DB->delete_records('block_quickmail_config', $params);
+        $DB->delete_records('block_clampmail_config', $params);
     }
 
     public static function save_config($courseid, $data) {
@@ -179,24 +179,24 @@ abstract class quickmail {
             $config->name = $name;
             $config->value = $value;
 
-            $DB->insert_record('block_quickmail_config', $config);
+            $DB->insert_record('block_clampmail_config', $config);
         }
     }
 
     public function delete_dialog($courseid, $type, $typeid) {
         global $CFG, $DB, $USER, $OUTPUT;
 
-        $email = $DB->get_record('block_quickmail_'.$type, array('id' => $typeid));
+        $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));
 
         if (empty($email)) {
-            print_error('not_valid_typeid', 'block_quickmail', '', $typeid);
+            print_error('not_valid_typeid', 'block_clampmail', '', $typeid);
         }
 
         $params = array('courseid' => $courseid, 'type' => $type);
         $yes_params = $params + array('typeid' => $typeid, 'action' => 'confirm');
 
-        $optionyes = new moodle_url('/blocks/quickmail/emaillog.php', $yes_params);
-        $optionno = new moodle_url('/blocks/quickmail/emaillog.php', $params);
+        $optionyes = new moodle_url('/blocks/clampmail/emaillog.php', $yes_params);
+        $optionno = new moodle_url('/blocks/clampmail/emaillog.php', $params);
 
         $table = new html_table();
         $table->head = array(get_string('date'), self::_s('subject'));
@@ -216,7 +216,7 @@ abstract class quickmail {
     public static function list_entries($courseid, $type, $page, $perpage, $userid, $count, $can_delete) {
         global $CFG, $DB, $OUTPUT;
 
-        $dbtable = 'block_quickmail_'.$type;
+        $dbtable = 'block_clampmail_'.$type;
 
         $table = new html_table();
 
@@ -243,14 +243,14 @@ abstract class quickmail {
             $actions = array();
 
             $open_link = html_writer::link(
-                new moodle_url('/blocks/quickmail/email.php', $params),
+                new moodle_url('/blocks/clampmail/email.php', $params),
                 $OUTPUT->pix_icon('i/search', 'Open Email')
             );
             $actions[] = $open_link;
 
             if ($can_delete) {
                 $delete_link = html_writer::link (
-                    new moodle_url('/blocks/quickmail/emaillog.php',
+                    new moodle_url('/blocks/clampmail/emaillog.php',
                         $params + array('action' => 'delete')
                     ),
                     $OUTPUT->pix_icon("i/cross_red_big", "Delete Email")
@@ -265,7 +265,7 @@ abstract class quickmail {
         }
 
         $paging = $OUTPUT->paging_bar($count, $page, $perpage,
-            '/blocks/quickmail/emaillog.php?type='.$type.'&amp;courseid='.$courseid);
+            '/blocks/clampmail/emaillog.php?type='.$type.'&amp;courseid='.$courseid);
 
         $html = $paging;
         $html .= html_writer::table($table);
@@ -274,13 +274,13 @@ abstract class quickmail {
     }
 }
 
-function block_quickmail_pluginfile($course, $record, $context, $filearea, $args, $forcedownload) {
+function block_clampmail_pluginfile($course, $record, $context, $filearea, $args, $forcedownload) {
     $fs = get_file_storage();
     global $DB;
 
     list($itemid, $filename) = $args;
     $params = array(
-        'component' => 'block_quickmail',
+        'component' => 'block_clampmail',
         'filearea' => $filearea,
         'itemid' => $itemid,
         'filename' => $filename

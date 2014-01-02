@@ -18,7 +18,7 @@
 
 $capabilities = array(
 
-    'block/quickmail:addinstance' => array(
+    'block/clampmail:addinstance' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_COURSE,
         'archetypes'    => array(
@@ -27,7 +27,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom'  => 'moodle/site:manageblocks'
     ),
-    'block/quickmail:cansend' => array(
+    'block/clampmail:cansend' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
@@ -37,7 +37,7 @@ $capabilities = array(
             'teacher' => CAP_ALLOW
         )
     ),
-    'block/quickmail:allowalternate' => array(
+    'block/clampmail:allowalternate' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
@@ -47,7 +47,7 @@ $capabilities = array(
             'coursecreator' => CAP_ALLOW
         )
     ),
-    'block/quickmail:canconfig' => array(
+    'block/clampmail:canconfig' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
@@ -55,7 +55,7 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW
         )
     ),
-    'block/quickmail:canimpersonate' => array(
+    'block/clampmail:canimpersonate' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(

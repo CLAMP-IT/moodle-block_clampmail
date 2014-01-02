@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 $string['pluginname'] = 'Quickmail';
-$string['quickmail:cansend'] = "Allows users to send email through Quickmail";
-$string['quickmail:canconfig'] = "Allows users to configure Quickmail instance.";
-$string['quickmail:canimpersonate'] = "Allows users to log in as other users and view history.";
-$string['quickmail:allowalternate'] = "Allows users to add an alternate email for courses.";
-$string['quickmail:addinstance'] = 'Add a new Quickmail block';
+$string['clampmail:cansend'] = "Allows users to send email through Quickmail";
+$string['clampmail:canconfig'] = "Allows users to configure Quickmail instance.";
+$string['clampmail:canimpersonate'] = "Allows users to log in as other users and view history.";
+$string['clampmail:allowalternate'] = "Allows users to add an alternate email for courses.";
+$string['clampmail:addinstance'] = 'Add a new Quickmail block';
 $string['alternate'] = 'Alternate Emails';
 $string['composenew'] = 'Compose New Email';
 $string['email'] = 'Email';

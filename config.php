@@ -26,19 +26,19 @@ $courseid = required_param('courseid', PARAM_INT);
 $reset = optional_param('reset', 0, PARAM_INT);
 
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_quickmail', '', $courseid);
+    print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
 $context= get_context_instance(CONTEXT_COURSE, $courseid);
 
-require_capability('block/quickmail:canconfig', $context);
+require_capability('block/clampmail:canconfig', $context);
 
-$blockname = quickmail::_s('pluginname');
-$header = quickmail::_s('config');
+$blockname = clampmail::_s('pluginname');
+$header = clampmail::_s('config');
 
 $PAGE->set_context($context);
 $PAGE->set_course($course);
-$PAGE->set_url('/blocks/quickmail/config.php', array('courseid' => $courseid));
+$PAGE->set_url('/blocks/clampmail/config.php', array('courseid' => $courseid));
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname. ': '. $header);
 $PAGE->navbar->add($header);
@@ -49,7 +49,7 @@ $changed = false;
 
 if ($reset) {
     $changed = true;
-    quickmail::default_config($courseid);
+    clampmail::default_config($courseid);
 }
 
 $roles = $DB->get_records_menu('role', null, 'sortorder ASC', 'id, shortname');
@@ -65,11 +65,11 @@ if ($data = $form->get_data()) {
 
     $config['roleselection'] = implode(',', $config['roleselection']);
 
-    quickmail::save_config($courseid, $config);
+    clampmail::save_config($courseid, $config);
     $changed = true;
 }
 
-$config = quickmail::load_config($courseid);
+$config = clampmail::load_config($courseid);
 $config['roleselection'] = explode(',', $config['roleselection']);
 
 $form->set_data($config);

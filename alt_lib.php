@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-interface quickmail_alternate_actions {
+interface clampmail_alternate_actions {
     const VIEW = 'view';
     const DELETE = 'delete';
     const INTERACT = 'interact';
@@ -23,25 +23,25 @@ interface quickmail_alternate_actions {
     const VERIFY = 'verify';
 }
 
-abstract class quickmail_alternate implements quickmail_alternate_actions {
+abstract class clampmail_alternate implements clampmail_alternate_actions {
 
     private static function base_url($courseid, $additional= array()) {
         $params = array('courseid' => $courseid) + $additional;
-        return new moodle_url('/blocks/quickmail/alternate.php', $params);
+        return new moodle_url('/blocks/clampmail/alternate.php', $params);
     }
 
     public static function get($course) {
         global $DB;
 
         $params = array('courseid' => $course->id);
-        return $DB->get_records('block_quickmail_alternate', $params, 'valid DESC');
+        return $DB->get_records('block_clampmail_alternate', $params, 'valid DESC');
     }
 
     public static function get_one($id) {
         global $DB;
 
         $params = array('id' => $id);
-        return $DB->get_record('block_quickmail_alternate', $params, '*', MUST_EXIST);
+        return $DB->get_record('block_clampmail_alternate', $params, '*', MUST_EXIST);
     }
 
     public static function delete($course, $id) {
@@ -55,13 +55,13 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
 
         $cancel_url = self::base_url($course->id);
 
-        return $OUTPUT->confirm(quickmail::_s('sure', $email), $confirm_url, $cancel_url);
+        return $OUTPUT->confirm(clampmail::_s('sure', $email), $confirm_url, $cancel_url);
     }
 
     public static function confirmed($course, $id) {
         global $DB;
 
-        $DB->delete_records('block_quickmail_alternate', array('id' => $id));
+        $DB->delete_records('block_clampmail_alternate', array('id' => $id));
 
         return redirect(self::base_url($course->id, array('flash' => 1)));
     }
@@ -78,7 +78,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
             'instance' => $course->id,
             'value' => $value,
             'userid' => $userid,
-            'script' => 'blocks/quickmail'
+            'script' => 'blocks/clampmail'
         );
 
         $back_url = self::base_url($course->id);
@@ -94,20 +94,20 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
                 'id' => $id, 'action' => self::INFORMATION
             ));
 
-            $html = $OUTPUT->notification(quickmail::_s('entry_key_not_valid', $entry));
+            $html = $OUTPUT->notification(clampmail::_s('entry_key_not_valid', $entry));
             $html .= $OUTPUT->continue_button($reactivate);
             return $html;
         }
 
         // One at a time...They can resend the link if they want.
-        delete_user_key('blocks/quickmail', $userid);
+        delete_user_key('blocks/clampmail', $userid);
 
         $entry->valid = 1;
-        $DB->update_record('block_quickmail_alternate', $entry);
+        $DB->update_record('block_clampmail_alternate', $entry);
 
         $entry->course = $course->fullname;
 
-        $html = $OUTPUT->notification(quickmail::_s('entry_activated', $entry), 'notifysuccess');
+        $html = $OUTPUT->notification(clampmail::_s('entry_activated', $entry), 'notifysuccess');
         $html .= $OUTPUT->continue_button($back_url);
 
         return $html;
@@ -120,7 +120,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
 
         // No restriction.
         // Valid forever.
-        $value = get_user_key('blocks/quickmail', $USER->id, $course->id);
+        $value = get_user_key('blocks/clampmail', $USER->id, $course->id);
 
         $url = self::base_url($course->id);
 
@@ -135,30 +135,30 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
         $a->course = $course->fullname;
         $a->fullname = fullname($USER);
 
-        $from = quickmail::_s('alternate_from');
-        $subject = quickmail::_s('alternate_subject');
-        $html_body = quickmail::_s('alternate_body', $a);
+        $from = clampmail::_s('alternate_from');
+        $subject = clampmail::_s('alternate_subject');
+        $html_body = clampmail::_s('alternate_body', $a);
         $body = strip_tags($html_body);
 
         // Send email.
         $user = clone($USER);
         $user->email = $entry->address;
-        $user->firstname = quickmail::_s('pluginname');
-        $user->lastname = quickmail::_s('alternate');
+        $user->firstname = clampmail::_s('pluginname');
+        $user->lastname = clampmail::_s('alternate');
 
         $result = email_to_user($user, $from, $subject, $body, $html_body);
 
         // Add to log.
-        add_to_log($course->id, 'quickmail', 'add', $url->out(),
-            quickmail::_s('alternate') . ' ' . $entry->address);
+        add_to_log($course->id, 'clampmail', 'add', $url->out(),
+            clampmail::_s('alternate') . ' ' . $entry->address);
 
         $html = $OUTPUT->box_start();
 
         if ($result) {
-            $html .= $OUTPUT->notification(quickmail::_s('entry_saved', $entry), 'notifysuccess');
-            $html .= html_writer::tag('p', quickmail::_s('entry_success', $entry));
+            $html .= $OUTPUT->notification(clampmail::_s('entry_saved', $entry), 'notifysuccess');
+            $html .= html_writer::tag('p', clampmail::_s('entry_success', $entry));
         } else {
-            $html .= $OUTPUT->notification(quickmail::_s('entry_failure', $entry));
+            $html .= $OUTPUT->notification(clampmail::_s('entry_failure', $entry));
         }
 
         $html .= $OUTPUT->continue_button($url);
@@ -168,7 +168,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
     }
 
     public static function interact($course, $id) {
-        $form = new quickmail_alternate_form(null, array(
+        $form = new clampmail_alternate_form(null, array(
             'course' => $course, 'action' => self::INTERACT
         ));
 
@@ -178,7 +178,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
             global $DB;
 
             // Check if email exists in this course.
-            $older = $DB->get_record('block_quickmail_alternate', array(
+            $older = $DB->get_record('block_clampmail_alternate', array(
                 'address' => $data->address, 'courseid' => $data->courseid
             ));
 
@@ -195,10 +195,10 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
                     $data->valid = $valid;
                 }
 
-                $DB->update_record('block_quickmail_alternate', $data);
+                $DB->update_record('block_clampmail_alternate', $data);
             } else {
                 unset($data->id);
-                $data->id = $DB->insert_record('block_quickmail_alternate', $data);
+                $data->id = $DB->insert_record('block_clampmail_alternate', $data);
             }
 
             $action = $data->valid ? self::VERIFY : self::INFORMATION;
@@ -213,7 +213,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
         }
 
         // MDL-31677.
-        $reflect = new ReflectionClass('quickmail_alternate_form');
+        $reflect = new ReflectionClass('clampmail_alternate_form');
         $form_field = $reflect->getProperty('_form');
         $form_field->setAccessible(true);
 
@@ -229,7 +229,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
 
         if (empty($alternates)) {
 
-            $html = $OUTPUT->notification(quickmail::_s('no_alternates', $course));
+            $html = $OUTPUT->notification(clampmail::_s('no_alternates', $course));
             $html .= $OUTPUT->continue_button($new_url);
             return $html;
         }
@@ -237,11 +237,11 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
         $table = new html_table();
         $table->head = array(
             get_string('email'),
-            quickmail::_s('valid'),
+            clampmail::_s('valid'),
             get_string('action')
         );
 
-        $approval = array(quickmail::_s('waiting'), quickmail::_s('approved'));
+        $approval = array(clampmail::_s('waiting'), clampmail::_s('approved'));
 
         $icons = array(
             self::INTERACT => $OUTPUT->pix_icon('i/edit', get_string('edit')),
@@ -270,7 +270,7 @@ abstract class quickmail_alternate implements quickmail_alternate_actions {
             $table->data[] = new html_table_row($row);
         }
 
-        $new_link = html_writer::link($new_url, quickmail::_s('alternate_new'));
+        $new_link = html_writer::link($new_url, clampmail::_s('alternate_new'));
 
         $html = html_writer::tag('div', $new_link, array('class' => 'new_link'));
         $html .= $OUTPUT->box_start();

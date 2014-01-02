@@ -12,7 +12,7 @@ $(document).ready () ->
 
         $(selectors).each clear
 
-    quickmail_changer = () ->
+    clampmail_changer = () ->
         role = $("#roles").val();
 
         clear_selections()
@@ -39,8 +39,8 @@ $(document).ready () ->
             $(from).children(filter).appendTo to
             $(from).children(filter).remove()
 
-    $("#groups").change quickmail_changer
-    $("#roles").change quickmail_changer
+    $("#groups").change clampmail_changer
+    $("#roles").change clampmail_changer
 
     $("#add_button").click move(potentials, mailed, ':selected')
     $("#add_all").click move(potentials, mailed, '*')

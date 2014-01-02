@@ -28,7 +28,7 @@ negation of sending archives as attachments.
 
 ## Download
 
-Visit [Quickmail's Github page][quickmail_github] to either download a package or clone the git repository.
+Visit [Quickmail's Github page][clampmail_github] to either download a package or clone the git repository.
 
 ## Installation
 
@@ -60,10 +60,10 @@ Quickmail adopts the same license that Moodle does.
 
 ![Configuration][config]
 
-[quickmail_github]: https://github.com/lsuits/quickmail
+[clampmail_github]: https://github.com/lsuits/clampmail
 [block_doc]: http://docs.moodle.org/20/en/Installing_contributed_modules_or_plugins#Block_installation
 [block]: https://tigerbytes2.lsu.edu/users/pcali1/work/block.png
 [config]: https://tigerbytes2.lsu.edu/users/pcali1/work/config.png
 [signature]: https://tigerbytes2.lsu.edu/users/pcali1/work/signature.png
 [email]: https://tigerbytes2.lsu.edu/users/pcali1/work/email.png
-[issues]: https://github.com/lsuits/quickmail/issues
+[issues]: https://github.com/lsuits/clampmail/issues
