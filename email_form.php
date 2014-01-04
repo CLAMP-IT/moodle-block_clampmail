@@ -102,7 +102,7 @@ class email_form extends moodleform {
         $draft_link = html_writer::link ($gen_url('drafts'), clampmail::_s('drafts'));
         $links[] =& $mform->createElement('static', 'draft_link', '', $draft_link);
 
-        $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
+        $context = context_course::instance($COURSE->id);
 
         $config = clampmail::load_config($COURSE->id);
 

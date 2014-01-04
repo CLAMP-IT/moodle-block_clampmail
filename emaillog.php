@@ -33,7 +33,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 
 // Has to be in on of these.
 if (!in_array($type, array('log', 'drafts'))) {

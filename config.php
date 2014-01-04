@@ -29,7 +29,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
-$context= get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 
 require_capability('block/clampmail:canconfig', $context);
 

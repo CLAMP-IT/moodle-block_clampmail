@@ -33,7 +33,7 @@ if ($courseid and !$course = $DB->get_record('course', array('id' => $courseid))
 
 $config = clampmail::load_config($courseid);
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 
 $has_permission = (
     has_capability('block/clampmail:cansend', $context) or

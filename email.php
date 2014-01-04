@@ -45,7 +45,7 @@ if (!empty($type) and empty($typeid)) {
 
 $config = clampmail::load_config($courseid);
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
     print_error('no_permission', 'block_clampmail');
 }
@@ -107,9 +107,7 @@ $users = array();
 $users_to_roles = array();
 $users_to_groups = array();
 
-$everyone = get_enrolled_users($context, '', 0,
-    'u.id, u.firstname, u.lastname, u.email, u.mailformat, u.maildisplay',
-    'u.lastname, u.firstname');
+$everyone = get_enrolled_users($context, '', 0, user_picture::fields('u'));
 
 foreach ($everyone as $userid => $user) {
     $usergroups = groups_get_user_groups($courseid, $userid);
