@@ -14,8 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-// Written at Louisiana State University.
+/**
+ * block_clampmail version information.
+ *
+ * @package   block_clampmail
+ * @copyright 2013 Collaborative Liberal Arts Moodle Project
+ * @copyright 2012 Louisiana State University (original Quickmail block)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-$plugin->version = 2013061700;
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '2.0.1 (CLAMP)';
+defined('MOODLE_INTERNAL') || die;
+
+$plugin->version   = 2014010400; // The current module version (Date: YYYYMMDDXX).
+$plugin->requires  = 2012062500; // Requires this Moodle version.
+$plugin->component = 'block_clampmail'; // Full name of the plugin (used for diagnostics).
+$plugin->maturity = MATURITY_STABLE; // The current stability of this version (used for diagnostics).
+$plugin->release = '1.0'; // The release name of this version (used for diagnostics).
