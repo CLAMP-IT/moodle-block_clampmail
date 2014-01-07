@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-// Written at Louisiana State University.
+/**
+ * @package   block_clampmail
+ * @copyright 2013 Collaborative Liberal Arts Moodle Project
+ * @copyright 2012 Louisiana State University (original Quickmail block)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 $capabilities = array(
 

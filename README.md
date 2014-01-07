@@ -1,6 +1,6 @@
 # Quickmail
 
-Quickmail is a Moodle block that provides selective, bulk emailing within courses.
+Quickmail is a Moodle block that provides selective, bulk emailing within courses. CLAMPMail is a fork maintained by the Collaborative Liberal Arts Moodle Project which sends attachments via email instead of providing a download link within Moodle.
 
 ## Features
 
@@ -13,57 +13,19 @@ Quickmail is a Moodle block that provides selective, bulk emailing within course
 * Alternate sending email
 * Embed images and other content in emails and signatures
 
-## Multiple Attachments
+## Multiple attachments
 
 Quickmail supports multiple attachments by zipping up a Moodle filearea, and
 sending it along to `email_to_user`.
 
 1. Quickmail assumes that `$CFG->tempdir` is in `$CFG->dataroot`. This
 limitation exists because Quickmail uses `email_to_user`.
-2. Make sure your email service supports zip's, otherwise they will be filtered.
-
-__Note__: There are future plans to have Quickmail piggyback on 2.x internal
-messaging, which will provide a lot of implicit benefits as well as the
-negation of sending archives as attachments.
-
-## Download
-
-Visit [Quickmail's Github page][clampmail_github] to either download a package or clone the git repository.
+2. Make sure your email service supports zip files, otherwise they will be filtered.
 
 ## Installation
 
-Quickmail should be installed like any other block. See [the Moodle Docs page on block installation][block_doc].
-
-## Contributions
-
-Contributions of any form are welcome. Github pull requests are preferred.
-
-File any bugs, improvements, or feature requiests in our [issue tracker][issues].
+Visit <https://github.com/CLAMP-IT/clampmail> to either download a package or clone the git repository. Then visit the admin screen to allow the install to complete.
 
 ## License
 
 Quickmail adopts the same license that Moodle does.
-
-## Screenshots
-
-![Block][block]
-
----
-
-![Email][email]
-
----
-
-![Signatures][signature]
-
----
-
-![Configuration][config]
-
-[clampmail_github]: https://github.com/lsuits/clampmail
-[block_doc]: http://docs.moodle.org/20/en/Installing_contributed_modules_or_plugins#Block_installation
-[block]: https://tigerbytes2.lsu.edu/users/pcali1/work/block.png
-[config]: https://tigerbytes2.lsu.edu/users/pcali1/work/config.png
-[signature]: https://tigerbytes2.lsu.edu/users/pcali1/work/signature.png
-[email]: https://tigerbytes2.lsu.edu/users/pcali1/work/email.png
-[issues]: https://github.com/lsuits/clampmail/issues
