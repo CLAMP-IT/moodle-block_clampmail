@@ -258,7 +258,7 @@ abstract class clampmail {
                     new moodle_url('/blocks/clampmail/emaillog.php',
                         $params + array('action' => 'delete')
                     ),
-                    $OUTPUT->pix_icon("i/cross_red_big", "Delete Email")
+                    $OUTPUT->pix_icon("t/delete", "Delete Email")
                 );
 
                 $actions[] = $delete_link;
