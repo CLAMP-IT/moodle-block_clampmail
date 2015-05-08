@@ -28,6 +28,7 @@ $string['clampmail:canimpersonate'] = "Allows users to log in as other users and
 $string['clampmail:allowalternate'] = "Allows users to add an alternate email for courses.";
 $string['clampmail:addinstance'] = 'Add a new Quickmail block';
 $string['alternate'] = 'Alternate Emails';
+$string['eventalternateemailadded'] = 'Alternate email added';
 $string['composenew'] = 'Compose New Email';
 $string['email'] = 'Email';
 $string['drafts'] = 'View Drafts';
