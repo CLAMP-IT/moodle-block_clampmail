@@ -118,7 +118,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
 if ($canimpersonate) {
-    $sql = "SELECT DISTINCT(l.userid), u.firstname, u.lastname
+    $sql = "SELECT DISTINCT(l.userid), u.firstname, u.lastname, u.firstnamephonetic, u.lastnamephonetic, u.middlename, u.alternatename
                 FROM {block_clampmail_$type} l,
                      {user} u
                 WHERE u.id = l.userid AND courseid = ? ORDER BY u.lastname";
