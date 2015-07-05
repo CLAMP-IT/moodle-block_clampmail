@@ -250,7 +250,7 @@ if ($form->is_cancelled()) {
         // Send emails
         if (isset($data->send)) {
             if ($type == 'drafts') {
-                clampmail::draft_cleanup($typeid);
+                clampmail::draft_cleanup($context->id, $typeid);
             }
 
             list($filename, $file, $actual_file) = clampmail::process_attachments(

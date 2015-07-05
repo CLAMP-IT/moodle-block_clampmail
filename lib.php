@@ -36,7 +36,8 @@ abstract class clampmail {
         // Clean up the files associated with this email
         // Fortunately, they are only db references, but
         // they shouldn't be there, nonetheless.
-        $filearea = end(explode('_', $table));
+        $tablename = explode('_', $table);
+        $filearea = end($tablename);
 
         $fs = get_file_storage();
 
