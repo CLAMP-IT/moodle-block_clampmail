@@ -149,9 +149,8 @@ if (!empty($type)) {
     $email->subject = optional_param('subject', '', PARAM_TEXT);
     $email->message = optional_param('message_editor[text]', '', PARAM_RAW);
     $email->mailto = optional_param('mailto', '', PARAM_TEXT);
-    $email->format = $USER->mailformat;
 }
-$email->messageformat = $email->format;
+$email->messageformat = editors_get_preferred_format();
 $email->messagetext = $email->message;
 
 $default_sigid = $DB->get_field('block_clampmail_signatures', 'id', array(
