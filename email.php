@@ -100,9 +100,7 @@ if (!has_capability('moodle/site:accessallgroups', $context)) {
     $mastercap = false;
     $mygroups = groups_get_user_groups($courseid);
     $gids = implode(',', array_values($mygroups['0']));
-    $groups = empty($gids) ?
-        array() :
-        $DB->get_records_select('groups', 'id IN ('.$gids.')');
+    $groups = empty($gids) ? array() : $DB->get_records_select('groups', 'id IN ('.$gids.')');
 }
 
 $globalaccess = empty($allgroups);
@@ -117,9 +115,7 @@ $everyone = get_enrolled_users($context, '', 0, user_picture::fields('u', array(
 foreach ($everyone as $userid => $user) {
     $usergroups = groups_get_user_groups($courseid, $userid);
 
-    $gids = ($globalaccess or $mastercap) ?
-        array_values($usergroups['0']) :
-        array_intersect(array_values($mygroups['0']), array_values($usergroups['0']));
+    $gids = ($globalaccess or $mastercap) ? array_values($usergroups['0']) : array_intersect(array_values($mygroups['0']), array_values($usergroups['0']));
 
     $userroles = get_user_roles($context, $userid);
     $filterd = clampmail::filter_roles($userroles, $roles);
@@ -130,7 +126,8 @@ foreach ($everyone as $userid => $user) {
         continue;
     }
 
-    $groupmapper = function($id) use ($allgroups) { return $allgroups[$id]; };
+    $groupmapper = function($id) use ($allgroups) { return $allgroups[$id];
+    };
 
     $users_to_groups[$userid] = array_map($groupmapper, $gids);
     $users_to_roles[$userid] = $filterd;
@@ -189,7 +186,8 @@ $form = new email_form(null,
         'groups' => $groups,
         'users_to_roles' => $users_to_roles,
         'users_to_groups' => $users_to_groups,
-        'sigs' => array_map(function($sig) { return $sig->title; }, $sigs),
+        'sigs' => array_map(function($sig) { return $sig->title;
+        }, $sigs),
         'alternates' => $alternates
     )
 );

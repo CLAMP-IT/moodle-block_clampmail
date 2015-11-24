@@ -158,7 +158,7 @@ echo $OUTPUT->heading($header);
 
 $first = array(0 => 'New '.clampmail::_s('sig'));
 $only_names = function ($sig) {
-    return ($sig->default_flag) ? $sig->title . ' (Default)': $sig->title;
+    return ($sig->default_flag) ? $sig->title . ' (Default)' : $sig->title;
 };
 $sig_options = $first + array_map($only_names, $dbsigs);
 

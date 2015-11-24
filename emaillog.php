@@ -124,7 +124,8 @@ if ($canimpersonate) {
                 WHERE u.id = l.userid AND courseid = ? ORDER BY u.lastname";
     $users = $DB->get_records_sql($sql, array($courseid));
 
-    $user_options = array_map(function($user) { return fullname($user); }, $users);
+    $user_options = array_map(function($user) { return fullname($user);
+    }, $users);
 
     $url = new moodle_url('emaillog.php', array(
         'courseid' => $courseid,

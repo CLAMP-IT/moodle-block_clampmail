@@ -160,7 +160,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
             'courseid' => $course->id,
             'context' => context_course::instance($course->id),
             'other'    => array(
-                'address'=> $entry->address
+                'address' => $entry->address
             )
         ));
         $event->trigger();

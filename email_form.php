@@ -35,7 +35,8 @@ class email_form extends moodleform {
         if (empty($users_to_groups[$user->id])) {
             $groups = clampmail::_s('no_section');
         } else {
-            $only_names = function($group) { return $group->name; };
+            $only_names = function($group) { return $group->name;
+            };
             $groups = implode(',', array_map($only_names, $users_to_groups[$user->id]));
         }
 
@@ -46,7 +47,8 @@ class email_form extends moodleform {
         $users_to_groups = $this->_customdata['users_to_groups'];
         $users_to_roles = $this->_customdata['users_to_roles'];
 
-        $only_sn = function($role) { return $role->shortname; };
+        $only_sn = function($role) { return $role->shortname;
+        };
 
         $roles = implode(',', array_map($only_sn, $users_to_roles[$user->id]));
 
@@ -56,7 +58,8 @@ class email_form extends moodleform {
         if (empty($users_to_groups[$user->id])) {
             $groups = 0;
         } else {
-            $only_id = function($group) { return $group->id; };
+            $only_id = function($group) { return $group->id;
+            };
             $groups = implode(',', array_map($only_id, $users_to_groups[$user->id]));
             $groups .= ',all';
         }

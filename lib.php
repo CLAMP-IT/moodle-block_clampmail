@@ -129,7 +129,8 @@ abstract class clampmail {
             return !$file->is_directory() and $file->get_filename() != '.';
         });
 
-        $only_names = function ($file) { return $file->get_filename(); };
+        $only_names = function ($file) { return $file->get_filename();
+        };
 
         $only_named_files = array_map($only_names, $only_files);
 
@@ -230,7 +231,7 @@ abstract class clampmail {
         $logs = $DB->get_records($dbtable, $params,
             'time DESC', '*', $page * $perpage, $perpage * ($page + 1));
 
-        $table->head= array(get_string('date'), self::_s('subject'),
+        $table->head = array(get_string('date'), self::_s('subject'),
             self::_s('attachment'), get_string('action'));
 
         $table->data = array();
