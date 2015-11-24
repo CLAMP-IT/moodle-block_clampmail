@@ -24,48 +24,42 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-require_login();
+$courseid    = required_param('courseid', PARAM_INT);
+$type        = optional_param('type', 'log', PARAM_ALPHA);
+$typeid      = optional_param('typeid', 0, PARAM_INT);
+$action      = optional_param('page', 0, PARAM_INT);
+$page        = optional_param('page', 0, PARAM_INT);
+$perpage     = optional_param('perpage', 10, PARAM_INT);
+$userid      = optional_param('userid', $USER->id, PARAM_INT);
+$course      = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
-$courseid = required_param('courseid', PARAM_INT);
-$type = optional_param('type', 'log', PARAM_ALPHA);
-$typeid = optional_param('typeid', 0, PARAM_INT);
-$action = optional_param('action', null, PARAM_ALPHA);
-$page = optional_param('page', 0, PARAM_INT);
-$perpage = optional_param('perpage', 10, PARAM_INT);
-$userid = optional_param('userid', $USER->id, PARAM_INT);
+require_login($course);
 
-if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
-}
+// Setup page.
+$PAGE->set_url('/block/clampmail/emaillog.php', array('courseid' => $courseid));
+$PAGE->set_pagelayout('report');
 
-$context = context_course::instance($courseid);
+// Check permissions.
+$coursecontext = context_course::instance($course->id);
+require_capability('block/clampmail:cansend', $coursecontext);
 
 // Has to be in on of these.
 if (!in_array($type, array('log', 'drafts'))) {
     print_error('not_valid', 'block_clampmail', '', $type);
 }
 
-$canimpersonate = has_capability('block/clampmail:canimpersonate', $context);
+$canimpersonate = has_capability('block/clampmail:canimpersonate', $coursecontext);
 if (!$canimpersonate and $userid != $USER->id) {
     print_error('not_valid_user', 'block_clampmail');
 }
 
 $config = clampmail::load_config($courseid);
 
-$valid_actions = array('delete', 'confirm');
+$validactions = array('delete', 'confirm');
 
-$can_send = has_capability('block/clampmail:cansend', $context);
+$candelete = ($type == 'drafts');
 
-$proper_permission = ($can_send or !empty($config['allowstudents']));
-
-$can_delete = ($can_send or ($proper_permission and $type == 'drafts'));
-
-// Stops students from tempering with history.
-if (!$proper_permission or (!$can_delete and in_array($action, $valid_actions))) {
-    print_error('no_permission', 'block_clampmail');
-}
-
-if (isset($action) and !in_array($action, $valid_actions)) {
+if (isset($action) and !in_array($action, $validactions)) {
     print_error('not_valid_action', 'block_clampmail', '', $action);
 }
 
@@ -76,7 +70,7 @@ if (isset($action) and empty($typeid)) {
 $blockname = get_string('pluginname', 'block_clampmail');
 $header = get_string($type, 'block_clampmail');
 
-$PAGE->set_context($context);
+$PAGE->set_context($coursecontext);
 $PAGE->set_course($course);
 $PAGE->navbar->add($blockname);
 $PAGE->navbar->add($header);
@@ -93,7 +87,7 @@ $count = $DB->count_records($dbtable, $params);
 
 switch ($action) {
     case "confirm":
-        if (clampmail::cleanup($dbtable, $context->id, $typeid)) {
+        if (clampmail::cleanup($dbtable, $coursecontext->id, $typeid)) {
             $url = new moodle_url('/blocks/clampmail/emaillog.php', array(
                 'courseid' => $courseid,
                 'type' => $type
@@ -106,7 +100,7 @@ switch ($action) {
         $html = clampmail::delete_dialog($courseid, $type, $typeid);
         break;
     default:
-        $html = clampmail::list_entries($courseid, $type, $page, $perpage, $userid, $count, $can_delete);
+        $html = clampmail::list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete);
 }
 
 if ($canimpersonate and $USER->id != $userid) {

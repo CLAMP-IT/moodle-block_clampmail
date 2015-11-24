@@ -30,20 +30,19 @@ if ($ADMIN->fulltree) {
 
     $roles = $DB->get_records('role', null, 'sortorder ASC');
 
-    $default_sns = array('editingteacher', 'teacher', 'student');
-    $defaults = array_filter($roles, function ($role) use ($default_sns) {
-        return in_array($role->shortname, $default_sns);
+    $defaultroles = array('editingteacher', 'teacher', 'student');
+    $defaults = array_filter($roles, function ($role) use ($defaultroles) {
+        return in_array($role->shortname, $defaultroles);
     });
 
-    $only_names = function ($role) { return $role->shortname;
+    $onlynames = function ($role) { return $role->shortname;
     };
 
-    $select_roles = get_string('select_roles', 'block_clampmail');
     $settings->add(
         new admin_setting_configmultiselect('block_clampmail_roleselection',
-            $select_roles, $select_roles,
+            get_string('select_roles', 'block_clampmail'), get_string('select_roles', 'block_clampmail'),
             array_keys($defaults),
-            array_map($only_names, $roles)
+            array_map($onlynames, $roles)
         )
     );
 

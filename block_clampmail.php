@@ -53,64 +53,64 @@ class block_clampmail extends block_list {
         $config = clampmail::load_config($COURSE->id);
         $permission = has_capability('block/clampmail:cansend', $context);
 
-        $icon_class = array('class' => 'icon');
+        $iconclass = array('class' => 'icon');
 
         if ($permission) {
             $cparam = array('courseid' => $COURSE->id);
 
-            $send_email_str = get_string('composenew', 'block_clampmail');
-            $send_email = html_writer::link(
+            $sendemailstr = get_string('composenew', 'block_clampmail');
+            $sendemail = html_writer::link(
                 new moodle_url('/blocks/clampmail/email.php', $cparam),
-                $send_email_str
+                $sendemailstr
             );
-            $this->content->items[] = $send_email;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/email', $send_email_str, 'moodle', $icon_class);
+            $this->content->items[] = $sendemail;
+            $this->content->icons[] = $OUTPUT->pix_icon('i/email', $sendemailstr, 'moodle', $iconclass);
 
-            $signature_str = get_string('signature', 'block_clampmail');
+            $signaturestr = get_string('signature', 'block_clampmail');
             $signature = html_writer::link(
                 new moodle_url('/blocks/clampmail/signature.php', $cparam),
-                $signature_str
+                $signaturestr
             );
             $this->content->items[] = $signature;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', $signature_str, 'moodle', $icon_class);
+            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', $signaturestr, 'moodle', $iconclass);
 
-            $draft_params = $cparam + array('type' => 'drafts');
-            $drafts_email_str = get_string('drafts', 'block_clampmail');
+            $draftparams = $cparam + array('type' => 'drafts');
+            $draftsemailstr = get_string('drafts', 'block_clampmail');
             $drafts = html_writer::link(
-                new moodle_url('/blocks/clampmail/emaillog.php', $draft_params),
-                $drafts_email_str
+                new moodle_url('/blocks/clampmail/emaillog.php', $draftparams),
+                $draftsemailstr
             );
             $this->content->items[] = $drafts;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $drafts_email_str, 'moodle', $icon_class);
+            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $draftsemailstr, 'moodle', $iconclass);
 
-            $history_str = get_string('history', 'block_clampmail');
+            $historystr = get_string('history', 'block_clampmail');
             $history = html_writer::link(
                 new moodle_url('/blocks/clampmail/emaillog.php', $cparam),
-                $history_str
+                $historystr
             );
             $this->content->items[] = $history;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $history_str, 'moodle', $icon_class);
+            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $historystr, 'moodle', $iconclass);
         }
 
         if (has_capability('block/clampmail:allowalternate', $context)) {
-            $alt_str = get_string('alternate', 'block_clampmail');
+            $altstr = get_string('alternate', 'block_clampmail');
             $alt = html_writer::link(
                 new moodle_url('/blocks/clampmail/alternate.php', $cparam),
-                $alt_str
+                $altstr
             );
 
             $this->content->items[] = $alt;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', $alt_str, 'moodle', $icon_class);
+            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', $altstr, 'moodle', $iconclass);
         }
 
         if (has_capability('block/clampmail:canconfig', $context)) {
-            $config_str = get_string('config', 'block_clampmail');
+            $configstr = get_string('config', 'block_clampmail');
             $config = html_writer::link(
                 new moodle_url('/blocks/clampmail/config.php', $cparam),
-                $config_str
+                $configstr
             );
             $this->content->items[] = $config;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $config_str, 'moodle', $icon_class);
+            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $configstr, 'moodle', $iconclass);
         }
 
         return $this->content;

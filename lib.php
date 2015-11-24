@@ -64,20 +64,20 @@ abstract class clampmail {
     public static function process_attachments($context, $email, $table, $id) {
         global $CFG, $USER;
 
-        $base_path = "block_clampmail/{$USER->id}";
-        $moodle_base = "$CFG->tempdir/$base_path";
+        $basepath = "block_clampmail/{$USER->id}";
+        $moodlebase = "$CFG->tempdir/$basepath";
 
-        if (!file_exists($moodle_base)) {
-            mkdir($moodle_base, $CFG->directorypermissions, true);
+        if (!file_exists($moodlebase)) {
+            mkdir($moodlebase, $CFG->directorypermissions, true);
         }
 
-        $filename = $file = $actual_file = '';
+        $filename = $file = $actualfile = '';
 
         if (!empty($email->attachment)) {
             $fs = get_file_storage();
-            $stored_files = array();
-            $safe_path = preg_replace('/\//', "\\/", $CFG->dataroot);
-            $base_file_path = preg_replace("/$safe_path\\//", '', $moodle_base);
+            $storedfiles = array();
+            $safepath = preg_replace('/\//', "\\/", $CFG->dataroot);
+            $basefilepath = preg_replace("/$safepath\\//", '', $moodlebase);
 
             $files = $fs->get_area_files(
                 $context->id,
@@ -92,25 +92,25 @@ abstract class clampmail {
                 if ($item->is_directory() && $item->get_filename() == '.') {
                     continue;
                 }
-                $stored_files[$item->get_filepath().$item->get_filename()] = $item;
+                $storedfiles[$item->get_filepath().$item->get_filename()] = $item;
             }
 
             // Create a zip archive if more than one file.
-            if (count($stored_files) == 1) {
-                $obj = current($stored_files);
+            if (count($storedfiles) == 1) {
+                $obj = current($storedfiles);
                 $filename = $obj->get_filename();
-                $file = $base_file_path . '/' . $filename;
-                $actual_file = $moodle_base . '/' . $filename;
-                $obj->copy_content_to($actual_file);
+                $file = $basefilepath . '/' . $filename;
+                $actualfile = $moodlebase . '/' . $filename;
+                $obj->copy_content_to($actualfile);
             } else {
                 $filename = 'attachment.zip';
-                $file = $base_file_path . '/' . $filename;
-                $actual_file = $moodle_base . '/' . $filename;
+                $file = $basefilepath . '/' . $filename;
+                $actualfile = $moodlebase . '/' . $filename;
                 $packer = get_file_packer();
-                $packer->archive_to_pathname($stored_files, $actual_file);
+                $packer->archive_to_pathname($storedfiles, $actualfile);
             }
         }
-        return array($filename, $file, $actual_file);
+        return array($filename, $file, $actualfile);
     }
 
     public static function attachment_names($draft) {
@@ -125,16 +125,16 @@ abstract class clampmail {
             return !$file->is_directory() and $file->get_filename() != '.';
         });
 
-        $only_names = function ($file) { return $file->get_filename();
+        $onlynames = function ($file) { return $file->get_filename();
         };
 
-        $only_named_files = array_map($only_names, $only_files);
+        $onlynamedfiles = array_map($onlynames, $only_files);
 
-        return implode(',', $only_named_files);
+        return implode(',', $onlynamedfiles);
     }
 
-    public static function filter_roles($user_roles, $master_roles) {
-        return array_uintersect($master_roles, $user_roles, function($a, $b) {
+    public static function filter_roles($userroles, $masterroles) {
+        return array_uintersect($masterroles, $userroles, function($a, $b) {
             return strcmp($a->shortname, $b->shortname);
         });
     }
@@ -196,13 +196,13 @@ abstract class clampmail {
         }
 
         $params = array('courseid' => $courseid, 'type' => $type);
-        $yes_params = $params + array('typeid' => $typeid, 'action' => 'confirm');
+        $yesparams = $params + array('typeid' => $typeid, 'action' => 'confirm');
 
-        $optionyes = new moodle_url('/blocks/clampmail/emaillog.php', $yes_params);
+        $optionyes = new moodle_url('/blocks/clampmail/emaillog.php', $yesparams);
         $optionno = new moodle_url('/blocks/clampmail/emaillog.php', $params);
 
         $table = new html_table();
-        $table->head = array(get_string('date'), self::_s('subject'));
+        $table->head = array(get_string('date'), get_string('subject', 'block_clampmail'));
         $table->data = array(
             new html_table_row(array(
                 new html_table_cell(self::format_time($email->time)),
@@ -210,13 +210,13 @@ abstract class clampmail {
             )
         );
 
-        $msg = self::_s('delete_confirm', html_writer::table($table));
+        $msg = get_string('delete_confirm', 'block_clampmail', html_writer::table($table));
 
         $html = $OUTPUT->confirm($msg, $optionyes, $optionno);
         return $html;
     }
 
-    public static function list_entries($courseid, $type, $page, $perpage, $userid, $count, $can_delete) {
+    public static function list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete) {
         global $DB, $OUTPUT;
 
         $dbtable = 'block_clampmail_'.$type;
@@ -227,8 +227,8 @@ abstract class clampmail {
         $logs = $DB->get_records($dbtable, $params,
             'time DESC', '*', $page * $perpage, $perpage * ($page + 1));
 
-        $table->head = array(get_string('date'), self::_s('subject'),
-            self::_s('attachment'), get_string('action'));
+        $table->head = array(get_string('date'), get_string('subject', 'block_clampmail'),
+            get_string('attachment', 'block_clampmail'), get_string('action'));
 
         $table->data = array();
 
@@ -245,26 +245,23 @@ abstract class clampmail {
 
             $actions = array();
 
-            $open_link = html_writer::link(
+            // Open link.
+            $actions[] = html_writer::link(
                 new moodle_url('/blocks/clampmail/email.php', $params),
                 $OUTPUT->pix_icon('i/search', 'Open Email')
             );
-            $actions[] = $open_link;
 
-            if ($can_delete) {
-                $delete_link = html_writer::link (
+            if ($candelete) {
+                // Delete link.
+                $actions[] = html_writer::link (
                     new moodle_url('/blocks/clampmail/emaillog.php',
                         $params + array('action' => 'delete')
                     ),
                     $OUTPUT->pix_icon("t/delete", "Delete Email")
                 );
-
-                $actions[] = $delete_link;
             }
 
-            $action_links = implode(' ', $actions);
-
-            $table->data[] = array($date, $subject, $attachments, $action_links);
+            $table->data[] = array($date, $subject, $attachments, implode(' ', $actions));
         }
 
         $paging = $OUTPUT->paging_bar($count, $page, $perpage,

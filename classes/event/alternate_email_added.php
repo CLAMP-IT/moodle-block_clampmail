@@ -1,4 +1,6 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class alternate_email_added extends \core\event\base {
     protected function init() {
-        $this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
+        $this->data['crud'] = 'c'; // C(reate), r(ead), u(pdate), d(elete).
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
