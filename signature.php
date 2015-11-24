@@ -25,165 +25,142 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once('signature_form.php');
 
-require_login();
+$courseid    = required_param('courseid', PARAM_INT);
+$signatureid = optional_param('id', 0, PARAM_INT);
+$updated     = optional_param('updated', 0, PARAM_INT);
+$confirm     = optional_param('confirm', 0, PARAM_INT);
+$course      = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
-$courseid = required_param('courseid', PARAM_INT);
-$sigid = optional_param('id', 0, PARAM_INT);
-$flash = optional_param('flash', 0, PARAM_INT);
-$confirm = optional_param('confirm', 0, PARAM_INT);
+require_login($course);
 
 if ($courseid and !$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
-$config = clampmail::load_config($courseid);
+// Setup page.
+$PAGE->set_url('/block/clampmail/signature.php', array('courseid' => $courseid));
+$PAGE->set_pagelayout('report');
 
-$context = context_course::instance($courseid);
+// Check permissions.
+$coursecontext = context_course::instance($course->id);
+require_capability('block/clampmail:cansend', $coursecontext);
 
-$has_permission = (
-    has_capability('block/clampmail:cansend', $context) or
-    !empty($config['allowstudents'])
-);
-
-if (!$has_permission) {
-    print_error('no_permission', 'block_clampmail');
-}
-
-$blockname = get_string('pluginname', 'block_clampmail');
-$header = get_string('signature', 'block_clampmail');
-
-$title = "{$blockname}: {$header}";
-
-$PAGE->set_context($context);
-
-$PAGE->set_course($course);
-$PAGE->set_url('/blocks/clampmail/signature.php', array(
-    'courseid' => $courseid, 'id' => $sigid
-));
-
-$PAGE->navbar->add($blockname);
-$PAGE->navbar->add($header);
-$PAGE->set_title($title);
-$PAGE->set_heading($title);
-$PAGE->set_pagetype($blockname);
-$PAGE->set_pagelayout('standard');
-
-$params = array('userid' => $USER->id);
-$dbsigs = $DB->get_records('block_clampmail_signatures', $params);
-
-$sig = (!empty($sigid) and isset($sigs[$sigid])) ? $sigs[$sigid] : new stdClass;
-
-if (empty($sigid) or !isset($dbsigs[$sigid])) {
-    $sig = new stdClass;
-    $sig->id = null;
-    $sig->title = '';
-    $sig->signature = '';
-} else {
-    $sig = $dbsigs[$sigid];
-}
-
-$sig->courseid = $courseid;
-$sig->signatureformat = $USER->mailformat;
-
-$options = array(
-    'trusttext' => true,
-    'subdirs' => true,
-    'maxfiles' => EDITOR_UNLIMITED_FILES,
-    'context' => $context
-);
-
-$sig = file_prepare_standard_editor($sig, 'signature', $options, $context,
-    'block_clampmail', 'signature', $sig->id);
-
-$form = new signature_form(null, array('signature_options' => $options));
-
+// Delete signature if requested.
 if ($confirm) {
-    $DB->delete_records('block_clampmail_signatures', array('id' => $sigid));
-    redirect(new moodle_url('/blocks/clampmail/signature.php', array(
-        'courseid' => $courseid,
-        'flash' => 1
-    )));
+    $DB->delete_records('block_clampmail_signatures', array('id' => $signatureid, 'userid' => $USER->id));
+    redirect(new moodle_url('/blocks/clampmail/signature.php', array('courseid' => $courseid, 'updated' => 1)));
 }
 
-if ($form->is_cancelled()) {
+// Get all the signatures.
+$signatures = clampmail::get_signatures($USER->id);
+$signatureoptions = array(0 => get_string('newsignature', 'block_clampmail'));
+foreach($signatures as $sigid => $sig) {
+    $signatureoptions[$sigid] = $sig->title;
+    if (1 == $sig->default_flag) {
+        $signatureoptions[$sigid] = get_string('default_signature', 'block_clampmail', $sig->title);
+    } else {
+        $signatureoptions[$sigid] = $sig->title;
+    }
+}
+
+// Prepare signature for editor.
+if (empty($signatureid)) {
+    $signature = new stdClass;
+    $signature->signature = '';
+} else {
+    $signature = $signatures[$signatureid];
+}
+$signature->signatureformat = $USER->mailformat;
+$signature = file_prepare_standard_editor(
+    $signature,
+    'signature',
+     array(
+         'context' => $coursecontext
+     ),
+     $coursecontext,
+     'block_clampmail',
+     'signature',
+     $signatureid
+);
+
+// Finish setting up the page.
+$PAGE->set_title($course->shortname . ': '.
+    get_string('pluginname', 'block_clampmail') . ': '.
+    get_string('signature', 'block_clampmail'));
+$PAGE->set_heading($course->fullname);
+
+// Create form.
+$mform = new clampmail_signature_form('signature.php', array(
+    'courseid' => $courseid
+));
+$mform->set_data($signature);
+
+// Process form.
+if ($mform->is_cancelled()) {
     redirect(new moodle_url('/course/view.php', array('id' => $courseid)));
-} else if ($data = $form->get_data()) {
-    if (isset($data->delete)) {
+} else if ($fromform = $mform->get_data()) {
+    if (!empty($fromform->delete)) {
         $delete = true;
-    }
-
-    if (empty($data->title)) {
-        $warnings[] = get_string('required', 'block_clampmail');
-    }
-
-    if (empty($warnings) and empty($delete)) {
-        $data->signature = $data->signature_editor['text'];
-
-        if (empty($data->default_flag)) {
-            $data->default_flag = 0;
+    } else {
+        $fromform->signature = $fromform->signature_editor['text'];
+        $fromform->userid    = $USER->id;
+        if (empty($fromform->default_flag)) {
+            $fromform->default_flag = 0;
         }
 
-        $params = array('userid' => $USER->id, 'default_flag' => 1);
-        $default = $DB->get_record('block_clampmail_signatures', $params);
-
-        if ($default and !empty($data->default_flag)) {
-            $default->default_flag = 0;
-            $DB->update_record('block_clampmail_signatures', $default);
+        // If the new default clear all defaults.
+        if (1 == $fromform->default_flag) {
+            $default = $DB->get_record('block_clampmail_signatures',
+                array('userid' => $fromform->userid, 'default_flag' => 1));
+            if (!empty($default)) {
+                $default->default_flag = 0;
+                $DB->update_record('block_clampmail_signatures', $default);
+            }
         }
 
-        if (!$default) {
-            $data->default_flag = 1;
+        // Update database.
+        if (empty($fromform->id)) {
+            $fromform->id = $DB->insert_record('block_clampmail_signatures', $fromform);
+        } else {
+            $DB->update_record('block_clampmail_signatures', $fromform);
         }
 
-        if (empty($data->id)) {
-            $data->id = null;
-            $data->id = $DB->insert_record('block_clampmail_signatures', $data);
-        }
-
-        // Persist relative links.
-        $data = file_postupdate_standard_editor($data, 'signature', $options,
-            $context, 'block_clampmail', 'signature', $data->id);
-
-        $DB->update_record('block_clampmail_signatures', $data);
-
-        $url = new moodle_url('signature.php', array(
-            'id' => $data->id, 'courseid' => $course->id, 'flash' => 1
-        ));
-        redirect($url);
+        // Return to view signature; this also reloads the signatures.
+        redirect(new moodle_url('signature.php', array(
+            'id' => $fromform->id, 'courseid' => $courseid, 'updated' => 1)));
     }
 }
 
+// Display header.
 echo $OUTPUT->header();
-echo $OUTPUT->heading($header);
 
-$first = array(0 => 'New '.get_string('sig', 'block_clampmail'));
-$only_names = function ($sig) {
-    return ($sig->default_flag) ? $sig->title . ' (Default)' : $sig->title;
-};
-$sig_options = $first + array_map($only_names, $dbsigs);
-
-$form->set_data($sig);
-
-if ($flash) {
+// Display notifications.
+if ($updated) {
     echo $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');
 }
 
-if (!empty($delete)) {
-    $msg = get_string('are_you_sure', 'block_clampmail', $sig);
-    $confirm_url = new moodle_url('/blocks/clampmail/signature.php', array(
-        'id' => $sig->id,
-        'courseid' => $courseid,
-        'confirm' => 1
-    ));
-    $cancel_url = new moodle_url('/blocks/clampmail/signature.php', array(
-        'id' => $sig->id,
-        'courseid' => $courseid
-    ));
-    echo $OUTPUT->confirm($msg, $confirm_url, $cancel_url);
+// Display deletion confirmation.
+if (!empty($delete) && !empty($fromform->id)) {
+    echo $OUTPUT->confirm(get_string('delete_signature_confirm', 'block_clampmail', $signature->title),
+        new moodle_url('signature.php', array(
+            'id' => $signature->id,
+            'courseid' => $courseid,
+            'confirm' => 1
+        )),
+        new moodle_url('signature.php', array(
+            'id' => $signature->id,
+            'courseid' => $courseid
+        ))
+    );
 } else {
-    echo $OUTPUT->single_select('signature.php?courseid='.$courseid, 'id', $sig_options, $sigid);
+    // Display signature selector.
+    echo $OUTPUT->single_select(new moodle_url('signature.php',
+        array('courseid' => $courseid)),
+        'id', $signatureoptions, $signatureid);
 
-    $form->display();
+    // Display form.
+    $mform->display();
 }
 
+// Display footer.
 echo $OUTPUT->footer();

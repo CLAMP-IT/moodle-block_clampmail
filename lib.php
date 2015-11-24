@@ -275,6 +275,13 @@ abstract class clampmail {
         $html .= $paging;
         return $html;
     }
+
+    public static function get_signatures($userid) {
+        global $DB;
+        $signatures = $DB->get_records('block_clampmail_signatures',
+            array('userid' => $userid), 'default_flag DESC');
+        return $signatures;
+    }
 }
 
 function block_clampmail_pluginfile($course, $record, $context, $filearea, $args, $forcedownload) {
