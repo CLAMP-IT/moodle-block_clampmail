@@ -73,8 +73,8 @@ if (isset($action) and empty($typeid)) {
     print_error('not_valid_typeid', 'block_clampmail', '', $action);
 }
 
-$blockname = clampmail::_s('pluginname');
-$header = clampmail::_s($type);
+$blockname = get_string('pluginname', 'block_clampmail');
+$header = get_string($type, 'block_clampmail');
 
 $PAGE->set_context($context);
 $PAGE->set_course($course);
@@ -132,13 +132,13 @@ if ($canimpersonate) {
         'type' => $type
     ));
 
-    $default_option = array('' => clampmail::_s('select_users'));
+    $default_option = array('' => get_string('select_users', 'block_clampmail'));
 
     echo $OUTPUT->single_select($url, 'userid', $user_options, $userid, $default_option);
 }
 
 if (empty($count)) {
-    echo $OUTPUT->notification(clampmail::_s('no_'.$type));
+    echo $OUTPUT->notification(get_string('no_'.$type), 'block_clampmail');
 
     echo $OUTPUT->continue_button('/blocks/clampmail/email.php?courseid='.$courseid);
 

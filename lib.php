@@ -22,10 +22,6 @@
  */
 
 abstract class clampmail {
-    public static function _s($key, $a = null) {
-        return get_string($key, 'block_clampmail', $a);
-    }
-
     public static function format_time($time) {
         return userdate($time, '%A, %d %B %Y, %I:%M %P');
     }

@@ -39,8 +39,8 @@ $context = context_course::instance($courseid);
 require_login($course);
 require_capability('block/clampmail:allowalternate', $context);
 
-$blockname = clampmail::_s('pluginname');
-$heading = clampmail::_s('alternate');
+$blockname = get_string('pluginname', 'block_clampmail');
+$heading = get_string('alternate', 'block_clampmail');
 $title = "$blockname: $heading";
 
 $url = new moodle_url('/blocks/clampmail/alternate.php', array('courseid' => $courseid));

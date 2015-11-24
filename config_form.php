@@ -31,14 +31,14 @@ class config_form extends moodleform {
             new moodle_url('/blocks/clampmail/config.php', array(
                 'courseid' => $this->_customdata['courseid'],
                 'reset' => 1
-            )), clampmail::_s('reset')
+            )), get_string('reset', 'block_clampmail')
         );
         $mform->addElement('static', 'reset', '', $reset_link);
 
         $student_select = array(0 => get_string('no'), 1 => get_string('yes'));
 
         $roles =& $mform->addElement('select', 'roleselection',
-            clampmail::_s('select_roles'), $this->_customdata['roles']);
+            get_string('select_roles', 'block_clampmail'), $this->_customdata['roles']);
 
         $roles->setMultiple(true);
 
@@ -49,10 +49,10 @@ class config_form extends moodleform {
         );
 
         $mform->addElement('select', 'prepend_class',
-            clampmail::_s('prepend_class'), $options);
+            get_string('prepend_class', 'block_clampmail'), $options);
 
         $mform->addElement('select', 'receipt',
-            clampmail::_s('receipt'), $student_select);
+            get_string('receipt', 'block_clampmail'), $student_select);
 
         $mform->addElement('submit', 'save', get_string('savechanges'));
         $mform->addElement('hidden', 'courseid', $this->_customdata['courseid']);

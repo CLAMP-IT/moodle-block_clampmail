@@ -36,13 +36,13 @@ class signature_form extends moodleform {
         $mform->addElement('hidden', 'userid', $USER->id);
         $mform->setType('userid', PARAM_INT);
 
-        $mform->addElement('text', 'title', clampmail::_s('title'));
+        $mform->addElement('text', 'title', get_string('title', 'block_clampmail'));
         $mform->setType('title', PARAM_TEXT);
         $mform->addRule('title', get_string('maximumchars', '', 125), 'maxlength', 125, 'client');
-        $mform->addElement('editor', 'signature_editor', clampmail::_s('sig'),
+        $mform->addElement('editor', 'signature_editor', get_string('sig', 'block_clampmail'),
             null, $this->_customdata['signature_options']);
         $mform->setType('signature_editor', PARAM_RAW);
-        $mform->addElement('checkbox', 'default_flag', clampmail::_s('default_flag'));
+        $mform->addElement('checkbox', 'default_flag', get_string('default_flag', 'block_clampmail'));
 
         $buttons = array(
             $mform->createElement('submit', 'save', get_string('savechanges')),
@@ -50,7 +50,7 @@ class signature_form extends moodleform {
             $mform->createElement('cancel')
         );
 
-        $mform->addGroup($buttons, 'buttons', clampmail::_s('actions'), array(' '), false);
+        $mform->addGroup($buttons, 'buttons', get_string('actions', 'block_clampmail'), array(' '), false);
         $mform->addRule('title', null, 'required', null, 'client');
     }
 }

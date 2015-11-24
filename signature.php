@@ -49,8 +49,8 @@ if (!$has_permission) {
     print_error('no_permission', 'block_clampmail');
 }
 
-$blockname = clampmail::_s('pluginname');
-$header = clampmail::_s('signature');
+$blockname = get_string('pluginname', 'block_clampmail');
+$header = get_string('signature', 'block_clampmail');
 
 $title = "{$blockname}: {$header}";
 
@@ -113,7 +113,7 @@ if ($form->is_cancelled()) {
     }
 
     if (empty($data->title)) {
-        $warnings[] = clampmail::_s('required');
+        $warnings[] = get_string('required', 'block_clampmail');
     }
 
     if (empty($warnings) and empty($delete)) {
@@ -156,7 +156,7 @@ if ($form->is_cancelled()) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
-$first = array(0 => 'New '.clampmail::_s('sig'));
+$first = array(0 => 'New '.get_string('sig', 'block_clampmail'));
 $only_names = function ($sig) {
     return ($sig->default_flag) ? $sig->title . ' (Default)' : $sig->title;
 };

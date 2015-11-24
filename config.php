@@ -38,8 +38,8 @@ $context = context_course::instance($courseid);
 
 require_capability('block/clampmail:canconfig', $context);
 
-$blockname = clampmail::_s('pluginname');
-$header = clampmail::_s('config');
+$blockname = get_string('pluginname', 'block_clampmail');
+$header = get_string('config', 'block_clampmail');
 
 $PAGE->set_context($context);
 $PAGE->set_course($course);

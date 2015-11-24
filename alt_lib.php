@@ -62,7 +62,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
 
         $cancel_url = self::base_url($course->id);
 
-        return $OUTPUT->confirm(clampmail::_s('sure', $email), $confirm_url, $cancel_url);
+        return $OUTPUT->confirm(get_string('sure', 'block_clampmail', $email), $confirm_url, $cancel_url);
     }
 
     public static function confirmed($course, $id) {
@@ -101,7 +101,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
                 'id' => $id, 'action' => self::INFORMATION
             ));
 
-            $html = $OUTPUT->notification(clampmail::_s('entry_key_not_valid', $entry));
+            $html = $OUTPUT->notification(get_string('entry_key_not_valid', 'block_clampmail', $entry));
             $html .= $OUTPUT->continue_button($reactivate);
             return $html;
         }
@@ -114,7 +114,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
 
         $entry->course = $course->fullname;
 
-        $html = $OUTPUT->notification(clampmail::_s('entry_activated', $entry), 'notifysuccess');
+        $html = $OUTPUT->notification(get_string('entry_activated', 'block_clampmail', $entry), 'notifysuccess');
         $html .= $OUTPUT->continue_button($back_url);
 
         return $html;
@@ -142,16 +142,16 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         $a->course = $course->fullname;
         $a->fullname = fullname($USER);
 
-        $from = clampmail::_s('alternate_from');
-        $subject = clampmail::_s('alternate_subject');
-        $html_body = clampmail::_s('alternate_body', $a);
+        $from = get_string('alternate_from', 'block_clampmail');
+        $subject = get_string('alternate_subject', 'block_clampmail');
+        $html_body = get_string('alternate_body', 'block_clampmail', $a);
         $body = strip_tags($html_body);
 
         // Send email.
         $user = clone($USER);
         $user->email = $entry->address;
-        $user->firstname = clampmail::_s('pluginname');
-        $user->lastname = clampmail::_s('alternate');
+        $user->firstname = get_string('pluginname', 'block_clampmail');
+        $user->lastname = get_string('alternate', 'block_clampmail');
 
         $result = email_to_user($user, $from, $subject, $body, $html_body);
 
@@ -168,10 +168,10 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         $html = $OUTPUT->box_start();
 
         if ($result) {
-            $html .= $OUTPUT->notification(clampmail::_s('entry_saved', $entry), 'notifysuccess');
-            $html .= html_writer::tag('p', clampmail::_s('entry_success', $entry));
+            $html .= $OUTPUT->notification(get_string('entry_saved', 'block_clampmail', $entry), 'notifysuccess');
+            $html .= html_writer::tag('p', get_string('entry_success', 'block_clampmail', $entry));
         } else {
-            $html .= $OUTPUT->notification(clampmail::_s('entry_failure', $entry));
+            $html .= $OUTPUT->notification(get_string('entry_failure', 'block_clampmail', $entry));
         }
 
         $html .= $OUTPUT->continue_button($url);
@@ -242,7 +242,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
 
         if (empty($alternates)) {
 
-            $html = $OUTPUT->notification(clampmail::_s('no_alternates', $course));
+            $html = $OUTPUT->notification(get_string('no_alternates', 'block_clampmail', $course));
             $html .= $OUTPUT->continue_button($new_url);
             return $html;
         }
@@ -250,11 +250,11 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         $table = new html_table();
         $table->head = array(
             get_string('email'),
-            clampmail::_s('valid'),
+            get_string('valid', 'block_clampmail'),
             get_string('action')
         );
 
-        $approval = array(clampmail::_s('waiting'), clampmail::_s('approved'));
+        $approval = array(get_string('waiting', 'block_clampmail'), get_string('approved', 'block_clampmail'));
 
         $icons = array(
             self::INTERACT => $OUTPUT->pix_icon('i/edit', get_string('edit')),
@@ -283,7 +283,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
             $table->data[] = new html_table_row($row);
         }
 
-        $new_link = html_writer::link($new_url, clampmail::_s('alternate_new'));
+        $new_link = html_writer::link($new_url, get_string('alternate_new', 'block_clampmail'));
 
         $html = html_writer::tag('div', $new_link, array('class' => 'new_link'));
         $html .= $OUTPUT->box_start();

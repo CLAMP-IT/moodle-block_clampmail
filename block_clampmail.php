@@ -25,7 +25,7 @@ require_once($CFG->dirroot . '/blocks/clampmail/lib.php');
 
 class block_clampmail extends block_list {
     public function init() {
-        $this->title = clampmail::_s('pluginname');
+        $this->title = get_string('pluginname', 'block_clampmail');
     }
 
     public function applicable_formats() {
@@ -58,7 +58,7 @@ class block_clampmail extends block_list {
         if ($permission) {
             $cparam = array('courseid' => $COURSE->id);
 
-            $send_email_str = clampmail::_s('composenew');
+            $send_email_str = get_string('composenew', 'block_clampmail');
             $send_email = html_writer::link(
                 new moodle_url('/blocks/clampmail/email.php', $cparam),
                 $send_email_str
@@ -66,7 +66,7 @@ class block_clampmail extends block_list {
             $this->content->items[] = $send_email;
             $this->content->icons[] = $OUTPUT->pix_icon('i/email', $send_email_str, 'moodle', $icon_class);
 
-            $signature_str = clampmail::_s('signature');
+            $signature_str = get_string('signature', 'block_clampmail');
             $signature = html_writer::link(
                 new moodle_url('/blocks/clampmail/signature.php', $cparam),
                 $signature_str
@@ -75,7 +75,7 @@ class block_clampmail extends block_list {
             $this->content->icons[] = $OUTPUT->pix_icon('i/edit', $signature_str, 'moodle', $icon_class);
 
             $draft_params = $cparam + array('type' => 'drafts');
-            $drafts_email_str = clampmail::_s('drafts');
+            $drafts_email_str = get_string('drafts', 'block_clampmail');
             $drafts = html_writer::link(
                 new moodle_url('/blocks/clampmail/emaillog.php', $draft_params),
                 $drafts_email_str
@@ -83,7 +83,7 @@ class block_clampmail extends block_list {
             $this->content->items[] = $drafts;
             $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $drafts_email_str, 'moodle', $icon_class);
 
-            $history_str = clampmail::_s('history');
+            $history_str = get_string('history', 'block_clampmail');
             $history = html_writer::link(
                 new moodle_url('/blocks/clampmail/emaillog.php', $cparam),
                 $history_str
@@ -93,7 +93,7 @@ class block_clampmail extends block_list {
         }
 
         if (has_capability('block/clampmail:allowalternate', $context)) {
-            $alt_str = clampmail::_s('alternate');
+            $alt_str = get_string('alternate', 'block_clampmail');
             $alt = html_writer::link(
                 new moodle_url('/blocks/clampmail/alternate.php', $cparam),
                 $alt_str
@@ -104,7 +104,7 @@ class block_clampmail extends block_list {
         }
 
         if (has_capability('block/clampmail:canconfig', $context)) {
-            $config_str = clampmail::_s('config');
+            $config_str = get_string('config', 'block_clampmail');
             $config = html_writer::link(
                 new moodle_url('/blocks/clampmail/config.php', $cparam),
                 $config_str
