@@ -118,7 +118,7 @@ if ($canimpersonate) {
                 WHERE u.id = l.userid AND courseid = ? ORDER BY u.lastname";
     $users = $DB->get_records_sql($sql, array($courseid));
 
-    $user_options = array_map(function($user) { return fullname($user);
+    $useroptions = array_map(function($user) { return fullname($user);
     }, $users);
 
     $url = new moodle_url('emaillog.php', array(
@@ -126,9 +126,9 @@ if ($canimpersonate) {
         'type' => $type
     ));
 
-    $default_option = array('' => get_string('select_users', 'block_clampmail'));
+    $defaultoption = array('' => get_string('select_users', 'block_clampmail'));
 
-    echo $OUTPUT->single_select($url, 'userid', $user_options, $userid, $default_option);
+    echo $OUTPUT->single_select($url, 'userid', $useroptions, $userid, $defaultoption);
 }
 
 if (empty($count)) {

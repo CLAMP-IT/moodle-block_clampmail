@@ -54,7 +54,7 @@ if ($confirm) {
 // Get all the signatures.
 $signatures = clampmail::get_signatures($USER->id);
 $signatureoptions = array(0 => get_string('newsignature', 'block_clampmail'));
-foreach($signatures as $sigid => $sig) {
+foreach ($signatures as $sigid => $sig) {
     $signatureoptions[$sigid] = $sig->title;
     if (1 == $sig->default_flag) {
         $signatureoptions[$sigid] = get_string('default_signature', 'block_clampmail', $sig->title);

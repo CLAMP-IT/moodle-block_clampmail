@@ -121,14 +121,14 @@ abstract class clampmail {
         $fs = get_file_storage();
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $draft, 'id');
 
-        $only_files = array_filter($files, function($file) {
+        $onlyfiles = array_filter($files, function($file) {
             return !$file->is_directory() and $file->get_filename() != '.';
         });
 
         $onlynames = function ($file) { return $file->get_filename();
         };
 
-        $onlynamedfiles = array_map($onlynames, $only_files);
+        $onlynamedfiles = array_map($onlynames, $onlyfiles);
 
         return implode(',', $onlynamedfiles);
     }
