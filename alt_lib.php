@@ -52,7 +52,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
     }
 
     public static function delete($course, $id) {
-        global $OUTPUT, $DB;
+        global $OUTPUT;
 
         $email = self::get_one($id);
 
@@ -96,7 +96,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         }
 
         // Verify key.
-        if (empty($value) or !$key = $DB->get_record('user_private_key', $params)) {
+        if (empty($value) or !$DB->get_record('user_private_key', $params)) {
             $reactivate = self::base_url($course->id, array(
                 'id' => $id, 'action' => self::INFORMATION
             ));
@@ -121,7 +121,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
     }
 
     public static function inform($course, $id) {
-        global $DB, $OUTPUT, $USER;
+        global $OUTPUT, $USER;
 
         $entry = self::get_one($id);
 

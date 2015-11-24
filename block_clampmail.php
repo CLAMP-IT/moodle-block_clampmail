@@ -37,7 +37,7 @@ class block_clampmail extends block_list {
     }
 
     public function get_content() {
-        global $CFG, $COURSE, $OUTPUT;
+        global $COURSE, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;

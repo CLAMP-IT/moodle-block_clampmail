@@ -68,7 +68,7 @@ class email_form extends moodleform {
     }
 
     public function definition() {
-        global $CFG, $USER, $COURSE, $OUTPUT;
+        global $USER, $COURSE, $OUTPUT;
 
         $mform =& $this->_form;
 
