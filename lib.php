@@ -186,7 +186,7 @@ abstract class clampmail {
         }
     }
 
-    public function delete_dialog($courseid, $type, $typeid) {
+    public static function delete_dialog($courseid, $type, $typeid) {
         global $DB, $OUTPUT;
 
         $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));

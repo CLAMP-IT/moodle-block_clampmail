@@ -21,28 +21,27 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->libdir . '/formslib.php');
+require_once("$CFG->libdir/formslib.php");
 
-class signature_form extends moodleform {
+class clampmail_signature_form extends moodleform {
     public function definition() {
-        global $USER;
+        global $CFG;
 
-        $mform =& $this->_form;
-
-        $mform->addElement('hidden', 'courseid', '');
+        $mform = $this->_form;
+        $mform->addElement('hidden', 'courseid');
         $mform->setType('courseid', PARAM_INT);
-        $mform->addElement('hidden', 'id', '');
+        $mform->setDefault('courseid', $this->_customdata['courseid']);
+        $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'userid', $USER->id);
-        $mform->setType('userid', PARAM_INT);
 
         $mform->addElement('text', 'title', get_string('title', 'block_clampmail'));
         $mform->setType('title', PARAM_TEXT);
         $mform->addRule('title', get_string('maximumchars', '', 125), 'maxlength', 125, 'client');
-        $mform->addElement('editor', 'signature_editor', get_string('sig', 'block_clampmail'),
-            null, $this->_customdata['signature_options']);
-        $mform->setType('signature_editor', PARAM_RAW);
-        $mform->addElement('checkbox', 'default_flag', get_string('default_flag', 'block_clampmail'));
+        $mform->addRule('title', null, 'required', null, 'client');
+
+        $mform->addElement('editor', 'signature_editor', get_string('signature', 'block_clampmail'));
+        $mform->setType('signature', PARAM_RAW);
+        $mform->addElement('checkbox', 'default_flag', get_string('default'));
 
         $buttons = array(
             $mform->createElement('submit', 'save', get_string('savechanges')),
@@ -50,7 +49,6 @@ class signature_form extends moodleform {
             $mform->createElement('cancel')
         );
 
-        $mform->addGroup($buttons, 'buttons', get_string('actions', 'block_clampmail'), array(' '), false);
-        $mform->addRule('title', null, 'required', null, 'client');
+        $mform->addGroup($buttons, 'buttons', '', array(' '), false);
     }
 }
