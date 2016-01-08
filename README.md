@@ -13,7 +13,7 @@ Quickmail is a Moodle block that provides selective, bulk emailing within course
 * Alternate sending email
 * Embed images and other content in emails and signatures
 
-## Multiple attachments
+### Multiple attachments
 
 Quickmail supports multiple attachments by zipping up a Moodle filearea, and
 sending it along to `email_to_user`.
@@ -21,6 +21,10 @@ sending it along to `email_to_user`.
 1. Quickmail assumes that `$CFG->tempdir` is in `$CFG->dataroot`. This
 limitation exists because Quickmail uses `email_to_user`.
 2. Make sure your email service supports zip files, otherwise they will be filtered.
+
+### Alternate emails
+
+Teachers may define alternate emails for sending. These are available course-wide for anyone with the proper role.
 
 ## Installation
 

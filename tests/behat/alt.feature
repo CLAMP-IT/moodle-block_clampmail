@@ -9,11 +9,13 @@ Feature: Alternate email addresses
       | fullname | shortname | category | groupmode |
       | Test Course | CF101 | 0 | 1 |
     And the following "users" exist:
-      | username | firstname | lastname | email |
-      | teacher1 | Teacher | 1 | teacher1@example.com |
+      | username | firstname | lastname | email                |
+      | teacher1 | Ted       | Teacher  | teacher1@example.com |
+      | teacher2 | Terry     | Teacher  | teacher2@example.com |
     And the following "course enrolments" exist:
-      | user | course | role |
-      | teacher1 | CF101 | editingteacher |
+      | user     | course | role           |
+      | teacher1 | CF101  | editingteacher |
+      | teacher2 | CF101  | editingteacher |
     And I log in as "teacher1"
     And I follow "Test Course"
     And I turn editing mode on
@@ -32,7 +34,12 @@ Feature: Alternate email addresses
     Then I should see "Alternate address teacher1_alt@example.com has been saved"
     When I press "Continue"
     Then I should see "Waiting"
-    When I follow "Delete"
-    Then I should see "Are you sure you want to delete teacher1_alt@example.com?"
-    When I press "Continue"
+    And I log out
+    And I log in as "teacher2"
+    And I follow "Test Course"
+    And I follow "Alternate Emails"
+    And I should see "teacher1_alt@example.com"
+    And I follow "Delete"
+    And I should see "Are you sure you want to delete teacher1_alt@example.com?"
+    And I press "Continue"
     Then I should see "Changes saved"
