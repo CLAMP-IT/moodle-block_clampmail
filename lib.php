@@ -99,8 +99,14 @@ abstract class clampmail {
             if (count($storedfiles) == 1) {
                 $obj = current($storedfiles);
                 $filename = $obj->get_filename();
+
+                // Ensure that bad periods and ellipses are removed.
+                while (preg_match( "~\\.\\.~" , $filename)) {
+                    $filename = str_replace('..', '.', $filename);
+                }
                 $file = $basefilepath . '/' . $filename;
                 $actualfile = $moodlebase . '/' . $filename;
+
                 $obj->copy_content_to($actualfile);
             } else {
                 $filename = 'attachment.zip';
