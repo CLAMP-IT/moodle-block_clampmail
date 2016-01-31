@@ -254,7 +254,7 @@ abstract class clampmail {
             // Open link.
             $actions[] = html_writer::link(
                 new moodle_url('/blocks/clampmail/email.php', $params),
-                $OUTPUT->pix_icon('i/search', 'Open Email')
+                $OUTPUT->pix_icon('i/search', get_string('open_email', 'block_clampmail'))
             );
 
             if ($candelete) {
@@ -263,7 +263,7 @@ abstract class clampmail {
                     new moodle_url('/blocks/clampmail/emaillog.php',
                         $params + array('action' => 'delete')
                     ),
-                    $OUTPUT->pix_icon("t/delete", "Delete Email")
+                    $OUTPUT->pix_icon("t/delete", get_string('delete_email', 'block_clampmail'))
                 );
             }
 

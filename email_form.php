@@ -120,7 +120,7 @@ class email_form extends moodleform {
         );
 
         if ($cansend) {
-            $historylink = html_writer::link($genurl('log'), get_string('history', 'block_clampmail'));
+            $historylink = html_writer::link($genurl('log'), get_string('log', 'block_clampmail'));
             $links[] =& $mform->createElement('static', 'history_link', '', $historylink);
         }
 

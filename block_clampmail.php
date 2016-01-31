@@ -66,7 +66,7 @@ class block_clampmail extends block_list {
             $this->content->items[] = $sendemail;
             $this->content->icons[] = $OUTPUT->pix_icon('i/email', $sendemailstr, 'moodle', $iconclass);
 
-            $signaturestr = get_string('signature', 'block_clampmail');
+            $signaturestr = get_string('manage_signatures', 'block_clampmail');
             $signature = html_writer::link(
                 new moodle_url('/blocks/clampmail/signature.php', $cparam),
                 $signaturestr
@@ -83,7 +83,7 @@ class block_clampmail extends block_list {
             $this->content->items[] = $drafts;
             $this->content->icons[] = $OUTPUT->pix_icon('i/settings', $draftsemailstr, 'moodle', $iconclass);
 
-            $historystr = get_string('history', 'block_clampmail');
+            $historystr = get_string('log', 'block_clampmail');
             $history = html_writer::link(
                 new moodle_url('/blocks/clampmail/emaillog.php', $cparam),
                 $historystr
