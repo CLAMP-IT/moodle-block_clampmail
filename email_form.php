@@ -212,7 +212,7 @@ class email_form extends moodleform {
         $mform->addRule('subject', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         $mform->addElement('editor', 'message_editor', get_string('message', 'block_clampmail'),
-            null, $this->_customdata['editor_options']);
+            $this->_customdata['editor_options']);
 
         $options = $this->_customdata['sigs'] + array(-1 => 'No '. get_string('sig', 'block_clampmail'));
         $mform->addElement('select', 'sigid', get_string('signature', 'block_clampmail'), $options);

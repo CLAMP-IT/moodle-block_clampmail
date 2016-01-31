@@ -140,14 +140,15 @@ if (empty($users)) {
 
 if (!empty($type)) {
     $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));
+    $email->messageformat = $email->format;
 } else {
-    $email = new stdClass;
-    $email->id = null;
-    $email->subject = optional_param('subject', '', PARAM_TEXT);
-    $email->message = optional_param('message_editor[text]', '', PARAM_RAW);
-    $email->mailto = optional_param('mailto', '', PARAM_TEXT);
+    $email                = new stdClass;
+    $email->id            = null;
+    $email->subject       = optional_param('subject', '', PARAM_TEXT);
+    $email->message       = optional_param('message_editor[text]', '', PARAM_RAW);
+    $email->mailto        = optional_param('mailto', '', PARAM_TEXT);
+    $email->messageformat = editors_get_preferred_format();
 }
-$email->messageformat = editors_get_preferred_format();
 $email->messagetext = $email->message;
 
 $defaultsigid = $DB->get_field('block_clampmail_signatures', 'id', array(
@@ -163,7 +164,8 @@ $editoroptions = array(
     'trusttext' => true,
     'subdirs' => true,
     'maxfiles' => EDITOR_UNLIMITED_FILES,
-    'context' => $context
+    'context' => $context,
+    'format' => $email->messageformat
 );
 
 $email = file_prepare_standard_editor($email, 'message', $editoroptions,
