@@ -33,7 +33,7 @@ class email_form extends moodleform {
         $userstogroups = $this->_customdata['users_to_groups'];
 
         if (empty($userstogroups[$user->id])) {
-            $groups = get_string('no_section', 'block_clampmail');
+            $groups = get_string('no_group', 'block_clampmail');
         } else {
             $onlynames = function($group) { return $group->name;
             };
@@ -89,12 +89,12 @@ class email_form extends moodleform {
         }
 
         $groupoptions = empty($this->_customdata['groups']) ? array() : array(
-            'all' => get_string('all_sections', 'block_clampmail')
+            'all' => get_string('all_groups', 'block_clampmail')
         );
         foreach ($this->_customdata['groups'] as $group) {
             $groupoptions[$group->id] = $group->name;
         }
-        $groupoptions[0] = get_string('no_section', 'block_clampmail');
+        $groupoptions[0] = get_string('no_group', 'block_clampmail');
 
         $useroptions = array();
         foreach ($this->_customdata['users'] as $user) {
@@ -169,7 +169,7 @@ class email_form extends moodleform {
         $filters->text = html_writer::tag('div',
             html_writer::select($roleoptions, '', 'none', null, array('id' => 'roles'))
         ) . html_writer::tag('div',
-            get_string('potential_sections', 'block_clampmail'),
+            get_string('potential_groups', 'block_clampmail'),
             array('class' => 'object_labels')
         ) . html_writer::tag('div',
             html_writer::select($groupoptions, '', 'all', null,
