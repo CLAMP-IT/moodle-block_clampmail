@@ -1,3 +1,8 @@
+## 1.3.1 (February 1, 2016)
+
+- Fixed a misspelled string
+- Minor code cleanup
+
 ## 1.3.0 (January 31, 2016)
 
 - Fixed bug where emails would sometimes be sent without formatting
