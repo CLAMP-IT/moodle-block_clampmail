@@ -115,7 +115,11 @@ $everyone = get_enrolled_users($context, '', 0, user_picture::fields('u', array(
 foreach ($everyone as $userid => $user) {
     $usergroups = groups_get_user_groups($courseid, $userid);
 
-    $gids = ($globalaccess or $mastercap) ? array_values($usergroups['0']) : array_intersect(array_values($mygroups['0']), array_values($usergroups['0']));
+    if ($globalaccess || $mastercap) {
+        $gids = array_values($usergroups['0']);
+    } else {
+        $gids = array_intersect(array_values($mygroups['0']), array_values($usergroups['0']));
+    }
 
     $userroles = get_user_roles($context, $userid);
     $filterd = clampmail::filter_roles($userroles, $roles);
@@ -246,7 +250,7 @@ if ($form->is_cancelled()) {
         file_save_draft_area_files($data->attachments, $context->id,
             'block_clampmail', 'attachment_' . $table, $data->id);
 
-        // Send emails
+        // Send emails.
         if (isset($data->send)) {
             if ($type == 'drafts') {
                 clampmail::draft_cleanup($context->id, $typeid);
