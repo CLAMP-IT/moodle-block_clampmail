@@ -9,12 +9,13 @@ Feature: Send email
       | fullname    | shortname | category | groupmode |
       | Test Course | CF101     | 0        | 1         |
     And the following "users" exist:
-      | username | firstname | lastname | email |
-      | teacher1 | Teacher | 1 | teacher1@example.com |
-      | student1 | Student | 1 | student1@example.com |
-      | student2 | Student | 2 | student2@example.com |
-      | student3 | Student | 3 | student3@example.com |
-      | student4 | Student | 4 | student4@example.com |
+      | username | firstname | lastname | email | emailstop |
+      | teacher1 | Teacher | 1 | teacher1@example.com | 0 |
+      | student1 | Student | 1 | student1@example.com | 0 |
+      | student2 | Student | 2 | student2@example.com | 0 |
+      | student3 | Student | 3 | student3@example.com | 0 |
+      | student4 | Student | 4 | student4@example.com | 0 |
+      | student5 | Student | 5 | student5@example.com | 1 |
     And the following "course enrolments" exist:
       | user | course | role |
       | teacher1 | CF101 | editingteacher |
@@ -55,5 +56,6 @@ Feature: Send email
     Then I should see "View history"
     And I should see "uploadtext.txt"
     And I follow "Open email"
-    Then I should see "Student 3" in the "#mail_users" "css_element"
+    And I should see "Student 3" in the "#mail_users" "css_element"
     And I should see "Student 4" in the "#mail_users" "css_element"
+    And I should not see "Student 5" in the "#mail_users" "css_element"

@@ -34,12 +34,19 @@ class users {
      */
     public static function get_users($courseid, $groupmode) {
         $context = \context_course::instance($courseid);
+        $users   = array();
 
-        $users = get_enrolled_users(
-            $context, '', 0, \user_picture::fields('u', array('mailformat', 'maildisplay')), "", 0, 0, true
+        $usersfromdb = get_enrolled_users(
+            $context, '', 0, \user_picture::fields('u', array('mailformat', 'maildisplay', 'emailstop')), "", 0, 0, true
         );
 
-        foreach ($users as $userid => $user) {
+        foreach ($usersfromdb as $userid => $user) {
+            // Respect the emailstop field.
+            if ($user->emailstop == 1) {
+                continue;
+            }
+
+            $users[$userid] = $user;
             $users[$userid]->groups = self::get_user_group_ids($courseid, $userid, $groupmode);
             $users[$userid]->roles = self::get_user_roles($context, $userid);
         }
