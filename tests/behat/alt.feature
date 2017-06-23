@@ -17,7 +17,7 @@ Feature: Alternate email addresses
       | teacher1 | CF101  | editingteacher |
       | teacher2 | CF101  | editingteacher |
     And I log in as "teacher1"
-    And I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I turn editing mode on
     When I add the "Quickmail" block
     Then I should see "Alternate emails"
@@ -36,7 +36,7 @@ Feature: Alternate email addresses
     Then I should see "Waiting"
     And I log out
     And I log in as "teacher2"
-    And I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I follow "Alternate emails"
     And I should see "teacher1_alt@example.com"
     And I follow "Delete"

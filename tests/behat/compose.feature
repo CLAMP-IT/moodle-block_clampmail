@@ -33,7 +33,7 @@ Feature: Send email
       | student3 | GROUPB |
       | student4 | GROUPB |
     And I log in as "teacher1"
-    And I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I turn editing mode on
     When I add the "Quickmail" block
     Then I should see "Compose new email"

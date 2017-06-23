@@ -19,7 +19,7 @@ Feature: Block configuration
       | student1 | CF101 | student |
       | student2 | CF101 | student |
     And I log in as "teacher1"
-    And I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I turn editing mode on
     When I add the "Quickmail" block
     Then I should see "Configuration"
