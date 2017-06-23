@@ -1,3 +1,8 @@
+## 1.3.3 (June 23, 2017)
+
+- Minor code cleanup
+- Updated Behat tests for Moodle 3.3
+
 ## 1.3.2 (January 11, 2017)
 
 - Set the alternate address page to use the report layout
