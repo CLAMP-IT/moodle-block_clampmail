@@ -1,3 +1,9 @@
+## 3.1.0 (August 28, 2017)
+
+- Fixed a bug in which the real email address was not set as reply-to.
+- Changed version numbering to match stable version
+- Dropped support for versions prior to Moodle 3.1
+
 ## 1.3.2 (January 11, 2017)
 
 - Set the alternate address page to use the report layout
