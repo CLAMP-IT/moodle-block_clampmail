@@ -3,6 +3,16 @@ language: php
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.npm
+
+addons:
+  firefox: "47.0.1"
+  postgresql: "9.3"
+  apt:
+    packages:
+      - oracle-java8-installer
+      - oracle-java8-set-default
+      - postfix
 
 php:
  - 5.6
@@ -21,13 +31,10 @@ matrix:
   fast_finish: true
 
 before_install:
-  - echo "always_populate_raw_post_data = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - phpenv config-rm xdebug.ini
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq postfix
+  - nvm install node
   - cd ../..
-  - composer selfupdate
-  - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
+  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 before_script:
