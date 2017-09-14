@@ -1,18 +1,12 @@
 language: php
 
+dist: precise
+
+sudo: true
+
 cache:
   directories:
     - $HOME/.composer/cache
-    - $HOME/.npm
-
-addons:
-  firefox: "47.0.1"
-  postgresql: "9.3"
-  apt:
-    packages:
-      - oracle-java8-installer
-      - oracle-java8-set-default
-      - postfix
 
 php:
  - 5.6
@@ -32,7 +26,6 @@ matrix:
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - nvm install node
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^1
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
