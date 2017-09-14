@@ -23,7 +23,7 @@
 
 require_once('../../config.php');
 require_once('lib.php');
-require_once('email_form.php');
+require_once($CFG->libdir . '/formslib.php');
 
 require_login();
 
@@ -91,51 +91,24 @@ foreach ($roles as $id => $role) {
     }
 }
 
-$allgroups = groups_get_all_groups($courseid);
+// Build groups list.
+$groupmode = $course->groupmode;
+$groups = block_clampmail\groups::get_groups($groupmode, $courseid);
 
-$mastercap = true;
-$groups = $allgroups;
+// Get all the users in the course.
+$users = $everyone = block_clampmail\users::get_users($courseid);
 
-if (!has_capability('moodle/site:accessallgroups', $context)) {
-    $mastercap = false;
-    $mygroups = groups_get_user_groups($courseid);
-    $gids = implode(',', array_values($mygroups['0']));
-    $groups = empty($gids) ? array() : $DB->get_records_select('groups', 'id IN ('.$gids.')');
-}
+// Exclude the current user.
+unset($users[$USER->id]);
 
-$globalaccess = empty($allgroups);
-
-// Fill the course users by.
-$users = array();
-$userstoroles = array();
-$userstogroups = array();
-
-$everyone = get_enrolled_users($context, '', 0, user_picture::fields('u', array('mailformat', 'maildisplay')), "", 0, 0, true);
-
-foreach ($everyone as $userid => $user) {
-    $usergroups = groups_get_user_groups($courseid, $userid);
-
-    if ($globalaccess || $mastercap) {
-        $gids = array_values($usergroups['0']);
-    } else {
-        $gids = array_intersect(array_values($mygroups['0']), array_values($usergroups['0']));
+// In separate groups we filter out users for students.
+if ($groupmode == SEPARATEGROUPS && !has_capability('moodle/site:accessallgroups', $context)) {
+    foreach ($everyone as $userid => $user) {
+        // Drop users who aren't in a group the user can see.
+        if (empty(array_intersect_key($groups, array_flip($user->groups)))) {
+            unset($users[$userid]);
+        }
     }
-
-    $userroles = get_user_roles($context, $userid);
-    $filterd = clampmail::filter_roles($userroles, $roles);
-
-    // Available groups.
-    if ((!$globalaccess and !$mastercap) and
-        empty($gids) or empty($filterd) or $userid == $USER->id) {
-        continue;
-    }
-
-    $groupmapper = function($id) use ($allgroups) { return $allgroups[$id];
-    };
-
-    $userstogroups[$userid] = array_map($groupmapper, $gids);
-    $userstoroles[$userid] = $filterd;
-    $users[$userid] = $user;
 }
 
 if (empty($users)) {
@@ -183,15 +156,14 @@ if (!empty($email->mailto)) {
     }
 }
 
-$form = new email_form(null,
+$form = new block_clampmail\email_form(null,
     array(
         'editor_options' => $editoroptions,
         'selected' => $selected,
         'users' => $users,
         'roles' => $roles,
         'groups' => $groups,
-        'users_to_roles' => $userstoroles,
-        'users_to_groups' => $userstogroups,
+        'groupmode' => $groupmode,
         'sigs' => array_map(function($sig) { return $sig->title;
         }, $sigs),
         'alternates' => $alternates
