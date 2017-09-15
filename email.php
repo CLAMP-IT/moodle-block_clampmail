@@ -111,8 +111,10 @@ if ($groupmode == SEPARATEGROUPS && !has_capability('moodle/site:accessallgroups
     }
 }
 
+// Stop execution if there's no valid email target.
+$returnurl = new moodle_url('/course/view.php', array('id' => $course->id));
 if (empty($users)) {
-    print_error('no_users', 'block_clampmail');
+    notice(get_string('no_users', 'block_clampmail'), $returnurl);
 }
 
 if (!empty($type)) {
