@@ -96,7 +96,7 @@ $groupmode = $course->groupmode;
 $groups = block_clampmail\groups::get_groups($groupmode, $courseid);
 
 // Get all the users in the course.
-$users = $everyone = block_clampmail\users::get_users($courseid);
+$users = $everyone = block_clampmail\users::get_users($courseid, $groupmode);
 
 // Exclude the current user.
 unset($users[$USER->id]);

@@ -28,10 +28,11 @@ class users {
 
     /**
      * Get all users in the course, with mappings for roles and groups.
-     * @param integer $id the course id.
+     * @param int $id the course id.
+     * @param int $groupmode the current groupmode.
      * @return array of user objects
      */
-    public static function get_users($courseid) {
+    public static function get_users($courseid, $groupmode) {
         $context = \context_course::instance($courseid);
 
         $users = get_enrolled_users(
@@ -39,7 +40,7 @@ class users {
         );
 
         foreach ($users as $userid => $user) {
-            $users[$userid]->groups = self::get_user_group_ids($courseid, $userid);
+            $users[$userid]->groups = self::get_user_group_ids($courseid, $userid, $groupmode);
             $users[$userid]->roles = self::get_user_roles($context, $userid);
         }
 
@@ -52,7 +53,7 @@ class users {
      * @param int $userid
      * @return array
      */
-    public static function get_user_roles($context, $userid) {
+    private static function get_user_roles($context, $userid) {
         $roles = get_user_roles($context, $userid);
         $userroles = array();
         if (empty($roles) || !is_array($roles)) {
@@ -69,9 +70,15 @@ class users {
      * Takes the output of groups_get_user_groups() for each user and returns an array of group ids.
      * @param int $courseid
      * @param int $userid
+     * @param int $groupmode the current groupmode.
      * @return array
      */
-    private static function get_user_group_ids($courseid, $userid) {
+    private static function get_user_group_ids($courseid, $userid, $groupmode) {
+        // When NOGROUPS is set, we use 0 to indicate "not in a group."
+        if ($groupmode == NOGROUPS) {
+            return array(0);
+        }
+
         $groups = groups_get_user_groups($courseid, $userid);
         $usergroups = array();
         if (empty($groups) || !is_array($groups)) {

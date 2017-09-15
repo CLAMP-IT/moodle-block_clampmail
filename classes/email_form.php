@@ -69,7 +69,9 @@ class email_form extends \moodleform {
         $userdisplay = $this->get_user_display($user);
 
         // Add select all functionality.
-        $user->groups[] = 'all';
+        if ($this->_customdata['groupmode'] != NOGROUPS) {
+            $user->groups[] = 'all';
+        }
         $user->roles[]  = 'none';
 
         $option = \html_writer::tag(
