@@ -102,7 +102,7 @@ $users = $everyone = block_clampmail\users::get_users($courseid, $groupmode);
 unset($users[$USER->id]);
 
 // In separate groups we filter out users for students.
-if ($groupmode == SEPARATEGROUPS && !has_capability('moodle/site:accessallgroups', $context)) {
+if ($groupmode == SEPARATEGROUPS && !has_capability('block/clampmail:cansendtoall', $context)) {
     foreach ($everyone as $userid => $user) {
         // Drop users who aren't in a group the user can see.
         if (empty(array_intersect_key($groups, array_flip($user->groups)))) {

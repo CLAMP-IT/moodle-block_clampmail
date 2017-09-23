@@ -68,6 +68,7 @@ $string['clampmail:allowalternate'] = 'Allows users to add an alternate email fo
 $string['clampmail:canconfig'] = 'Allows users to configure Quickmail instance.';
 $string['clampmail:canimpersonate'] = 'Allows users to log in as other users and view history.';
 $string['clampmail:cansend'] = 'Allows users to send email through Quickmail';
+$string['clampmail:cansendtoall'] = 'Allows users to email all users in a course regardless of group settings';
 $string['composenew'] = 'Compose new email';
 $string['config'] = 'Configuration';
 $string['default_flag'] = 'Default';

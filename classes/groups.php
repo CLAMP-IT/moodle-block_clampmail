@@ -47,7 +47,7 @@ class groups {
                 $groups = $allgroups;
                 break;
             case SEPARATEGROUPS:
-                if (has_capability('moodle/site:accessallgroups', $context)) {
+                if (has_capability('block/clampmail:cansendtoall', $context)) {
                     $groups = $allgroups;
                 } else {
                     $mygroups = groups_get_user_groups($courseid);
