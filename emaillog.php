@@ -53,7 +53,7 @@ if (!$canimpersonate and $userid != $USER->id) {
     print_error('not_valid_user', 'block_clampmail');
 }
 
-$config = clampmail::load_config($courseid);
+$config = block_clampmail\config::load_configuration($course);
 
 $validactions = array('delete', 'confirm');
 

@@ -16,21 +16,31 @@
 
 /**
  * @package   block_clampmail
- * @copyright 2013 Collaborative Liberal Arts Moodle Project
- * @copyright 2012 Louisiana State University (original Quickmail block)
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-function xmldb_block_clampmail_upgrade($oldversion) {
-    global $CFG;
+global $CFG;
+require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
 
-    require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
+class block_clampmail_upgradelib_testcase extends advanced_testcase {
+    public function test_upgradelib() {
+        global $DB;
+        $this->resetAfterTest(true);
 
-    if ($oldversion < 2017092301) {
-        // Move configuration to plugin namespace.
+        // Create config in main namespace.
+        set_config('block_clampmail_roleselection', 'foo,bar');
+        set_config('block_clampmail_prepend_class', 'baz');
+        set_config('block_clampmail_receipt', 'bar');
+
+        // Migrate configuration.
         block_clampmail_migrate_settings();
-        upgrade_plugin_savepoint(true, 2017092301, 'block', 'clampmail');
+
+        // Ensure new config was set.
+        $this->assertEquals('foo,bar', get_config('block_clampmail', 'roleselection'));
+        $this->assertEquals('baz', get_config('block_clampmail', 'prepend_class'));
+        $this->assertEquals('bar', get_config('block_clampmail', 'receipt'));
     }
 }

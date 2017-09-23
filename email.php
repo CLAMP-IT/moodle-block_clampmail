@@ -48,7 +48,7 @@ if (!empty($type) and empty($typeid)) {
     print_error('no_typeid', 'block_clampmail', '', $string);
 }
 
-$config = clampmail::load_config($courseid);
+$config = block_clampmail\config::load_configuration($course);
 
 $context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
@@ -92,7 +92,7 @@ foreach ($roles as $id => $role) {
 }
 
 // Build groups list.
-$groupmode = $course->groupmode;
+$groupmode = $config['groupmode'];
 $groups = block_clampmail\groups::get_groups($groupmode, $courseid);
 
 // Get all the users in the course.

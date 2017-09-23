@@ -134,7 +134,7 @@ class email_form extends \moodleform {
 
         $context = \context_course::instance($COURSE->id);
 
-        $config = \clampmail::load_config($COURSE->id);
+        $config = config::load_configuration($COURSE);
 
         $cansend = (
             has_capability('block/clampmail:cansend', $context) or

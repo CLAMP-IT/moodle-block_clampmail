@@ -6,10 +6,10 @@ Feature: Send email to groups
 
   Background:
     Given the following "courses" exist:
-      | fullname | shortname | category | groupmode |
-      | Test Course Separate | CF101 | 0 | 1 |
-      | Test Course Visible  | CF102 | 0 | 2 |
-      | Test Course NoGroups | CF100 | 0 | 0 |
+      | fullname | shortname | category | groupmode | groupmodeforce |
+      | Test Course Separate | CF101 | 0 | 1 | 1 |
+      | Test Course Visible  | CF102 | 0 | 2 | 1 |
+      | Test Course NoGroups | CF100 | 0 | 0 | 1 |
     And the following "users" exist:
       | username | firstname | lastname | email |
       | teacher1 | Teacher | 1 | teacher1@example.com |
@@ -150,8 +150,7 @@ Feature: Send email to groups
     And I am on "Test Course Separate" course homepage
     And I follow "Compose new email"
     And I set the following fields to these values:
-      | groups | Group A |
-      | groups | Group B |
+      | groups | Group A,Group B |
     And I press "Add"
     And I set the following fields to these values:
       | Subject | Doom At 11 |

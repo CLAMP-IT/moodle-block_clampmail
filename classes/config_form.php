@@ -21,16 +21,18 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_clampmail;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/formslib.php');
 
-class config_form extends moodleform {
+class config_form extends \moodleform {
     public function definition() {
         $mform =& $this->_form;
 
-        $resetlink = html_writer::link(
-            new moodle_url('/blocks/clampmail/config.php', array(
+        $resetlink = \html_writer::link(
+            new \moodle_url('/blocks/clampmail/config.php', array(
                 'courseid' => $this->_customdata['courseid'],
                 'reset' => 1
             )), get_string('reset', 'block_clampmail')
@@ -55,6 +57,16 @@ class config_form extends moodleform {
 
         $mform->addElement('select', 'receipt',
             get_string('receipt', 'block_clampmail'), $studentselect);
+
+        // Groups mode.
+        $choices = array();
+        $choices[NOGROUPS] = get_string('groupsnone', 'group');
+        $choices[SEPARATEGROUPS] = get_string('groupsseparate', 'group');
+        $choices[VISIBLEGROUPS] = get_string('groupsvisible', 'group');
+        $mform->addElement('select', 'groupmode', get_string('groupmode', 'group'), $choices);
+        if ($this->_customdata['groupmodeforce'] == 1) {
+            $mform->hardFreeze('groupmode');
+        }
 
         $mform->addElement('submit', 'save', get_string('savechanges'));
         $mform->addElement('hidden', 'courseid', $this->_customdata['courseid']);

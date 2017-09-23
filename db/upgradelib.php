@@ -16,21 +16,25 @@
 
 /**
  * @package   block_clampmail
- * @copyright 2013 Collaborative Liberal Arts Moodle Project
- * @copyright 2012 Louisiana State University (original Quickmail block)
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-function xmldb_block_clampmail_upgrade($oldversion) {
-    global $CFG;
+function block_clampmail_migrate_settings() {
+    // Existing settings.
+    $roleselection = get_config('moodle', 'block_clampmail_roleselection');
+    $prependclass  = get_config('moodle', 'block_clampmail_prepend_class');
+    $receipt       = get_config('moodle', 'block_clampmail_receipt');
 
-    require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
+    // Copy to new settings.
+    set_config('roleselection', $roleselection, 'block_clampmail');
+    set_config('prepend_class', $prependclass, 'block_clampmail');
+    set_config('receipt', $receipt, 'block_clampmail');
 
-    if ($oldversion < 2017092301) {
-        // Move configuration to plugin namespace.
-        block_clampmail_migrate_settings();
-        upgrade_plugin_savepoint(true, 2017092301, 'block', 'clampmail');
-    }
+    // Remove existing settings.
+    unset_config('block_clampmail_roleselection');
+    unset_config('block_clampmail_prepend_class');
+    unset_config('block_clampmail_receipt');
 }
