@@ -21,11 +21,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_clampmail;
+
 defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/formslib.php');
 
-class clampmail_alternate_form extends moodleform {
+class alternate_form extends \moodleform {
     public function definition() {
         $m =& $this->_form;
 
