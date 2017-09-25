@@ -71,7 +71,7 @@ $PAGE->navbar->add($blockname);
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname . ': '.$header);
-$PAGE->set_url('/course/view.php', array('courseid' => $courseid));
+$PAGE->set_url('/blocks/clampmail/email.php', array('courseid' => $courseid));
 $PAGE->set_pagetype($blockname);
 $PAGE->set_pagelayout('standard');
 

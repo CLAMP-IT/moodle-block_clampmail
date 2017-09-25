@@ -38,7 +38,7 @@ if ($courseid and !$course = $DB->get_record('course', array('id' => $courseid))
 }
 
 // Setup page.
-$PAGE->set_url('/block/clampmail/signature.php', array('courseid' => $courseid));
+$PAGE->set_url('/blocks/clampmail/signature.php', array('courseid' => $courseid));
 $PAGE->set_pagelayout('report');
 
 // Check permissions.

@@ -35,10 +35,6 @@ $course      = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXI
 
 require_login($course);
 
-// Setup page.
-$PAGE->set_url('/block/clampmail/emaillog.php', array('courseid' => $courseid));
-$PAGE->set_pagelayout('report');
-
 // Check permissions.
 $coursecontext = context_course::instance($course->id);
 require_capability('block/clampmail:cansend', $coursecontext);
@@ -76,7 +72,7 @@ $PAGE->navbar->add($blockname);
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': ' . $header);
 $PAGE->set_heading($blockname . ': ' . $header);
-$PAGE->set_url('/course/view.php', array('id' => $courseid));
+$PAGE->set_url('/blocks/clampmail/emaillog.php', array('courseid' => $courseid, 'type' => $type));
 $PAGE->set_pagetype($blockname);
 $PAGE->set_pagelayout('standard');
 
