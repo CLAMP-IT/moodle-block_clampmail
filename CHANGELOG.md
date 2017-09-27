@@ -1,3 +1,11 @@
+## 3.3.1 (September 27, 2017)
+
+- Overhauled how groups are handled; Separate groups remains the default behavior but the teacher may choose a different mode at the block level. The site administrator may set a default for new blocks.
+- Added a new capability, `block/clampmail:cansendtoall`, which controls whether someone may email all groups regardless of group membership.
+- The block will now respect the `emailstop` setting in user profiles.
+- The "there are no users you are capable of emailing" error drops the user on to the course page instead of site home.
+- Code cleanup and minor bug fixes.
+
 ## 3.3.0 (August 28, 2017)
 
 - Fixed a bug in which the real email address was not set as reply-to.
