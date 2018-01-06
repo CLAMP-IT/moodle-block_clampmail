@@ -33,4 +33,6 @@ function xmldb_block_clampmail_upgrade($oldversion) {
         block_clampmail_migrate_settings();
         upgrade_plugin_savepoint(true, 2017092301, 'block', 'clampmail');
     }
+
+    return true;
 }
