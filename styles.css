@@ -62,3 +62,8 @@
 #page-Quickmail .mform input#id_subject {
     width: 75%;
 }
+
+.block_clampmail .unlist > li > .column {
+    display: inline-block;
+    vertical-align: unset;
+}
