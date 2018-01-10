@@ -1,3 +1,7 @@
+## 3.3.2 (January 10, 2018)
+
+- Bug fix which prevented the upgrade from completing successfully.
+
 ## 3.3.1 (September 27, 2017)
 
 - Overhauled how groups are handled; Separate groups remains the default behavior but the teacher may choose a different mode at the block level. The site administrator may set a default for new blocks.
