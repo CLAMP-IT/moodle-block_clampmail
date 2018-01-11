@@ -1,3 +1,11 @@
+# Changelog
+
+## 3.3.3 (January 11, 2018)
+
+- Styling fix for Boost.
+- Bug fix for the required icon on the selected recipients element.
+- Added Moodle 3.4 stable branch to test matrix.
+
 ## 3.3.2 (January 10, 2018)
 
 - Bug fix which prevented the upgrade from completing successfully.
