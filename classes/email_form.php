@@ -148,7 +148,7 @@ class email_form extends \moodleform {
 
         $mform->addGroup($links, 'links', '&nbsp;', array(' | '), false);
 
-        $reqimg = \html_writer::empty_tag('img', array('src' => $OUTPUT->pix_icon('req', get_string('requiredelement', 'form')), 'class' => 'req'));
+        $reqimg = $OUTPUT->pix_icon('req', get_string('requiredelement', 'form'), 'moodle', array('class' => 'req'));
 
         $table = new \html_table();
         $table->attributes['class'] = 'emailtable';
