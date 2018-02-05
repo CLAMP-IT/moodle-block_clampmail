@@ -160,7 +160,6 @@ class email_form extends \moodleform {
         $selectedrequiredlabel->text = \html_writer::tag('label', $selectedrequiredstrong, array('for' => 'mail_users'));
 
         $rolefilterlabel = new \html_table_cell();
-        $rolefilterlabel->colspan = "2";
         $rolefilterlabel->text = \html_writer::tag('label',
             get_string('role_filter', 'block_clampmail'), array('class' => 'object_labels', 'for' => 'roles'));
 
@@ -206,7 +205,7 @@ class email_form extends \moodleform {
             array('id' => 'from_users', 'multiple' => 'multiple', 'size' => 20))
         );
 
-        $table->data[] = new \html_table_row(array($selectedrequiredlabel, $rolefilterlabel));
+        $table->data[] = new \html_table_row(array($selectedrequiredlabel, new \html_table_cell(), $rolefilterlabel));
         $table->data[] = new \html_table_row(array($selectfilter, $centerbuttons, $filters));
 
         if (has_capability('block/clampmail:allowalternate', $context)) {
