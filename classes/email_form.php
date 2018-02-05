@@ -154,13 +154,15 @@ class email_form extends \moodleform {
         $table->attributes['class'] = 'emailtable';
 
         $selectedrequiredlabel = new \html_table_cell();
-        $selectedrequiredlabel->text = \html_writer::tag('strong',
-            get_string('selected', 'block_clampmail') . $reqimg, array('class' => 'required'));
+        $selectedrequiredspan = \html_writer::tag('span', $reqimg, array('class' => 'req'));
+        $selectedrequiredstrong = \html_writer::tag('strong',
+            get_string('selected', 'block_clampmail') . $selectedrequiredspan, array('class' => 'required'));
+        $selectedrequiredlabel->text = \html_writer::tag('label', $selectedrequiredstrong, array('for' => 'mail_users'));
 
         $rolefilterlabel = new \html_table_cell();
         $rolefilterlabel->colspan = "2";
-        $rolefilterlabel->text = \html_writer::tag('div',
-            get_string('role_filter', 'block_clampmail'), array('class' => 'object_labels'));
+        $rolefilterlabel->text = \html_writer::tag('label',
+            get_string('role_filter', 'block_clampmail'), array('class' => 'object_labels', 'for' => 'roles'));
 
         $selectfilter = new \html_table_cell();
         $selectfilter->text = \html_writer::tag('select',
@@ -190,15 +192,15 @@ class email_form extends \moodleform {
         $filters = new \html_table_cell();
         $filters->text = \html_writer::tag('div',
             \html_writer::select($roleoptions, '', 'none', null, array('id' => 'roles'))
-        ) . \html_writer::tag('div',
+        ) . \html_writer::tag('label',
             get_string('potential_groups', 'block_clampmail'),
-            array('class' => 'object_labels')
+            array('class' => 'object_labels', 'for' => 'groups')
         ) . \html_writer::tag('div',
             \html_writer::select($groupoptions, '', 'all', null,
             array('id' => 'groups', 'multiple' => 'multiple', 'size' => 5))
-        ) . \html_writer::tag('div',
+        ) . \html_writer::tag('label',
             get_string('potential_users', 'block_clampmail'),
-            array('class' => 'object_labels')
+            array('class' => 'object_labels', 'for' => 'from_users')
         ) . \html_writer::tag('div',
             \html_writer::tag('select', $this->display_options($this->_customdata['users']),
             array('id' => 'from_users', 'multiple' => 'multiple', 'size' => 20))
