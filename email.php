@@ -92,8 +92,13 @@ foreach ($roles as $id => $role) {
 }
 
 // Build groups list.
+// We force NOGROUPS if the course has no defined groups.
+$allgroups = groups_get_all_groups($courseid);
 $groupmode = $config['groupmode'];
-$groups = block_clampmail\groups::get_groups($groupmode, $courseid);
+if (empty($allgroups) ) {
+    $groupmode = NOGROUPS;
+}
+$groups = block_clampmail\groups::get_groups($groupmode, $courseid, $allgroups);
 
 // Get all the users in the course.
 $users = $everyone = block_clampmail\users::get_users($courseid, $groupmode);

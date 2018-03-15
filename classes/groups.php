@@ -30,13 +30,13 @@ class groups {
      *
      * @param int $groupmode the group mode.
      * @param int $courseid the course id.
+     * @param array $allgroups the course groups.
      *
      * @return array
      */
-    public static function get_groups($groupmode, $courseid) {
+    public static function get_groups($groupmode, $courseid, $allgroups) {
         global $DB;
 
-        $allgroups = groups_get_all_groups($courseid);
         $context   = \context_course::instance($courseid);
 
         switch ($groupmode) {

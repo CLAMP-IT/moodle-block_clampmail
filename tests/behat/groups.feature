@@ -10,6 +10,7 @@ Feature: Send email to groups
       | Test Course Separate | CF101 | 0 | 1 | 1 |
       | Test Course Visible  | CF102 | 0 | 2 | 1 |
       | Test Course NoGroups | CF100 | 0 | 0 | 1 |
+      | Test Course Separate NoGroups | CF103 | 0 | 1 | 1 |
     And the following "users" exist:
       | username | firstname | lastname | email |
       | teacher1 | Teacher | 1 | teacher1@example.com |
@@ -22,6 +23,7 @@ Feature: Send email to groups
       | teacher1 | CF101 | editingteacher |
       | teacher1 | CF102 | editingteacher |
       | teacher1 | CF100 | editingteacher |
+      | teacher1 | CF103 | editingteacher |
       | student1 | CF101 | student |
       | student2 | CF101 | student |
       | student3 | CF101 | student |
@@ -34,6 +36,10 @@ Feature: Send email to groups
       | student2 | CF100 | student |
       | student3 | CF100 | student |
       | student4 | CF100 | student |
+      | student1 | CF103 | student |
+      | student2 | CF103 | student |
+      | student3 | CF103 | student |
+      | student4 | CF103 | student |
     And the following "groups" exist:
       | name    | description | course | idnumber |
       | Group A | Group A     | CF101  | GROUPA   |
@@ -57,6 +63,7 @@ Feature: Send email to groups
       | block/clampmail:cansend | Allow      | student        | Course       | CF101     |
       | block/clampmail:cansend | Allow      | student        | Course       | CF102     |
       | block/clampmail:cansend | Allow      | student        | Course       | CF100     |
+      | block/clampmail:cansend | Allow      | student        | Course       | CF103     |
     And I log in as "teacher1"
     And I am on "Test Course Separate" course homepage
     And I turn editing mode on
@@ -64,6 +71,8 @@ Feature: Send email to groups
     And I am on "Test Course Visible" course homepage
     And I add the "Quickmail" block
     And I am on "Test Course NoGroups" course homepage
+    And I add the "Quickmail" block
+    And I am on "Test Course Separate NoGroups" course homepage
     And I add the "Quickmail" block
     And I log out
 
@@ -152,6 +161,21 @@ Feature: Send email to groups
     And I set the following fields to these values:
       | groups | Group A,Group B |
     And I press "Add"
+    And I set the following fields to these values:
+      | Subject | Doom At 11 |
+      | Message | Salvation At Noon |
+    When I press "Send email"
+    Then I should see "View history"
+    And I follow "Open email"
+    And I should see "Student 2" in the "#mail_users" "css_element"
+    And I should see "Student 3" in the "#mail_users" "css_element"
+
+  @javascript
+  Scenario: Student emails when separate groups are set but no groups are defined
+    Given I log in as "student1"
+    And I am on "Test Course Separate NoGroups" course homepage
+    And I follow "Compose new email"
+    And I press "Add all"
     And I set the following fields to these values:
       | Subject | Doom At 11 |
       | Message | Salvation At Noon |
