@@ -105,7 +105,6 @@ class provider implements
 
     public static function _export_user_data(approved_contextlist $contextlist) {
         global $DB;
-        $contextname = "Quickmail";
 
         // If no contexts, bail out.
         if (empty($contextlist)) {
@@ -149,7 +148,7 @@ class provider implements
                 'drafts' => $drafts,
             );
 
-            writer::with_context($context)->export_data([$contextname], $data);
+            writer::with_context($context)->export_data([get_string('pluginname', 'block_clampmail')], $data);
         }
         $courses->close();
 
@@ -160,7 +159,7 @@ class provider implements
             $data = (object) [
                 'signatures' => $signatures,
             ];
-            writer::with_context($context)->export_data([$contextname], $data);
+            writer::with_context($context)->export_data([get_string('pluginname', 'block_clampmail')], $data);
         }
     }
 
