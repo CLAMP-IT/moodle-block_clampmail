@@ -42,10 +42,35 @@ class provider implements
         $collection->add_database_table(
             'block_clampmail_log',
             [
-                'userid' => 'privacy:metadata:clampmail_log:userid',
-                'subject' => 'privacy:metadata:clampmail_log:subject'
+                'userid' => 'privacy:metadata:clampmail_message:userid',
+                'mailto' => 'privacy:metadata:clampmail_message:mailto',
+                'subject' => 'privacy:metadata:clampmail_message:subject',
+                'message' => 'privacy:metadata:clampmail_message:message',
+                'time' => 'privacy:metadata:clampmail_message:time',
             ],
             'privacy:metadata:clampmail_log'
+        );
+
+        $collection->add_database_table(
+            'block_clampmail_drafts',
+            [
+                'userid' => 'privacy:metadata:clampmail_message:userid',
+                'mailto' => 'privacy:metadata:clampmail_message:mailto',
+                'subject' => 'privacy:metadata:clampmail_message:subject',
+                'message' => 'privacy:metadata:clampmail_message:message',
+                'time' => 'privacy:metadata:clampmail_message:time',
+            ],
+            'privacy:metadata:clampmail_drafts'
+        );
+
+        $collection->add_database_table(
+            'block_clampmail_signatures',
+            [
+                'userid' => 'privacy:metadata:clampmail_signatures:userid',
+                'title' => 'privacy:metadata:clampmail_signatures:title',
+                'signature' => 'privacy:metadata:clampmail_signatures:signature',
+            ],
+            'privacy:metadata:clampmail_signatures'
         );
 
         return $collection;
@@ -73,6 +98,7 @@ class provider implements
             'draftuserid' => $userid
         ];
         $contextlist->add_from_sql($sql, $params);
+        // And we also store signatures by user context.
         $contextlist->add_user_context($userid);
         return $contextlist;
     }
