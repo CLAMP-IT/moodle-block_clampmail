@@ -81,6 +81,8 @@ class provider implements
      * This can include sent items, drafts, and signatures.
      */
     public static function _get_contexts_for_userid(int $userid) {
+        global $DB;
+
         $contextlist = new \core_privacy\local\request\contextlist();
 
         $sql = "SELECT c.id
@@ -98,8 +100,13 @@ class provider implements
             'draftuserid' => $userid
         ];
         $contextlist->add_from_sql($sql, $params);
-        // And we also store signatures by user context.
-        $contextlist->add_user_context($userid);
+        // And we also store signatures by user context -- check if there are any.
+        $signatures = $DB->get_records('block_clampmail_signatures', array(
+            'userid' => $userid,
+        ));
+        if (count($signatures) > 0) {
+            $contextlist->add_user_context($userid);
+        }
         return $contextlist;
     }
 
@@ -107,7 +114,7 @@ class provider implements
         global $DB;
 
         // If no contexts, bail out.
-        if (empty($contextlist)) {
+        if (empty($contextlist->get_contextids())) {
             return;
         }
 
@@ -129,10 +136,7 @@ class provider implements
                     ctx.id {$contextsql}
                    )
         ";
-        $params = [
-            'loguserid'   => $userid,
-            'draftuserid' => $userid
-        ];
+        $params = array();
         $params += $contextparams;
 
         // Export sent messages and drafts (course context)
@@ -148,7 +152,10 @@ class provider implements
                 'drafts' => $drafts,
             );
 
-            writer::with_context($context)->export_data([get_string('pluginname', 'block_clampmail')], $data);
+            $writer = writer::with_context($context);
+            $writer->export_data([get_string('pluginname', 'block_clampmail')], $data);
+            $writer->export_metadata([get_string('pluginname', 'block_clampmail')], "sent_messages", "Description:", get_string('privacy:metadata:clampmail_log', 'block_clampmail'));
+            $writer->export_metadata([get_string('pluginname', 'block_clampmail')], "drafts", "Description:", get_string('privacy:metadata:clampmail_drafts', 'block_clampmail'));
         }
         $courses->close();
 
@@ -159,7 +166,9 @@ class provider implements
             $data = (object) [
                 'signatures' => $signatures,
             ];
-            writer::with_context($context)->export_data([get_string('pluginname', 'block_clampmail')], $data);
+            $writer = writer::with_context($context);
+            $writer->export_data([get_string('pluginname', 'block_clampmail')], $data);
+            $writer->export_metadata([get_string('pluginname', 'block_clampmail')], "signatures", "Description:", get_string('privacy:metadata:clampmail_signatures', 'block_clampmail'));
         }
     }
 
@@ -169,10 +178,10 @@ class provider implements
      * @param   context         $context   The specific context to delete data for.
      */
     public static function _delete_data_for_all_users_in_context(\context $context) {
-        if ($context->contextlevel === 30) {
+        if ($context->contextlevel === CONTEXT_USER) {
             // instanceid is userid
             static::delete_data_user_level($context->instanceid);
-        } else if ($context->contextlevel === 50) {
+        } else if ($context->contextlevel === CONTEXT_COURSE) {
             // instanceid is courseid
             static::delete_data_course_level($context->instanceid);
         }
@@ -209,10 +218,7 @@ class provider implements
                     ctx.id {$contextsql}
                    )
         ";
-        $params = [
-            'loguserid'   => $userid,
-            'draftuserid' => $userid
-        ];
+        $params = array();
         $params += $contextparams;
 
         // Delete sent messages and drafts (course context)
