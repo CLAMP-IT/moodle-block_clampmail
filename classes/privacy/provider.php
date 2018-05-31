@@ -39,27 +39,23 @@ class provider implements
     use \core_privacy\local\legacy_polyfill;
 
     public static function _get_metadata(collection $collection) {
+        $message_fields = [
+            'userid' => 'privacy:metadata:clampmail_message:userid',
+            'mailto' => 'privacy:metadata:clampmail_message:mailto',
+            'subject' => 'privacy:metadata:clampmail_message:subject',
+            'message' => 'privacy:metadata:clampmail_message:message',
+            'time' => 'privacy:metadata:clampmail_message:time',
+        ];
+
         $collection->add_database_table(
             'block_clampmail_log',
-            [
-                'userid' => 'privacy:metadata:clampmail_message:userid',
-                'mailto' => 'privacy:metadata:clampmail_message:mailto',
-                'subject' => 'privacy:metadata:clampmail_message:subject',
-                'message' => 'privacy:metadata:clampmail_message:message',
-                'time' => 'privacy:metadata:clampmail_message:time',
-            ],
+            $message_fields,
             'privacy:metadata:clampmail_log'
         );
 
         $collection->add_database_table(
             'block_clampmail_drafts',
-            [
-                'userid' => 'privacy:metadata:clampmail_message:userid',
-                'mailto' => 'privacy:metadata:clampmail_message:mailto',
-                'subject' => 'privacy:metadata:clampmail_message:subject',
-                'message' => 'privacy:metadata:clampmail_message:message',
-                'time' => 'privacy:metadata:clampmail_message:time',
-            ],
+            $message_fields,
             'privacy:metadata:clampmail_drafts'
         );
 
@@ -101,9 +97,7 @@ class provider implements
         ];
         $contextlist->add_from_sql($sql, $params);
         // And we also store signatures by user context -- check if there are any.
-        $signatures = $DB->get_records('block_clampmail_signatures', array(
-            'userid' => $userid,
-        ));
+        $signatures = $DB->get_records('block_clampmail_signatures', array('userid' => $userid));
         if (count($signatures) > 0) {
             $contextlist->add_user_context($userid);
         }
