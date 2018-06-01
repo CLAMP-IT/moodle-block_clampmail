@@ -22,28 +22,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// global $CFG;
-//
-// require_once(__DIR__ . '/helper.php');
-// require_once($CFG->dirroot . '/rating/lib.php');
-
 use \block_clampmail\privacy\provider;
 
 class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_testcase {
-
-    // Include the privacy subcontext_info trait.
-    // This includes the subcontext builders.
-    // use \mod_forum\privacy\subcontext_info;
-
-    // Include the mod_forum test helpers.
-    // This includes functions to create forums, users, discussions, and posts.
-    // use helper;
-
-    // Include the privacy helper trait for the ratings API.
-    // use \core_rating\phpunit\privacy_helper;
-
-    // Include the privacy helper trait for the tag API.
-    // use \core_tag\tests\privacy_helper;
 
     /**
      * Test setUp.
@@ -88,6 +69,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $this->data['manualenrol'] = $DB->get_record('enrol', array('enrol' => 'manual', 'courseid' => $this->data['course']->id));
         $this->data['coursecontext'] = \context_course::instance($this->data['course']->id);
 
+        // Add the block to the page.
         $page = new \moodle_page();
         $page->set_context($this->data['coursecontext']);
         $page->set_pagelayout('standard');
@@ -174,28 +156,26 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * used CLAMPMail will not have any link to that context.
      */
     public function test_user_with_no_data() {
-        global $DB;
+        $d= $this->data;
 
-        $D = $this->data;
-
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['teacher']->id, $D['teacherrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
         // Test that no contexts were retrieved.
-        $contextlist = $this->get_contexts_for_userid($D['teacher']->id, 'block_clampmail');
+        $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
         $contexts = $contextlist->get_contextids();
         $this->assertCount(0, $contexts);
 
         // Attempting to export data for this context should return nothing either.
-        $this->export_all_data_for_user($D['teacher']->id, 'block_clampmail');
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
-        // The provider should always export data for any context explicitly asked of it, but there should be no
-        // metadata, files, or discussions.
+        $this->export_all_data_for_user($d['teacher']->id, 'block_clampmail');
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
+        // The provider should always export data for any context explicitly asked of it.
+        // But there should be no metadata, files, or discussions.
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([]));
         $this->assertEmpty($writer->get_files([]));
 
         // And there should be nothing in the user context either.
-        $usercontext = \context_user::instance($D['teacher']->id);
+        $usercontext = \context_user::instance($d['teacher']->id);
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
@@ -207,67 +187,60 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * signature.
      */
     public function test_export_user_data() {
-        global $DB;
+        $d= $this->data;
 
-        $D = $this->data;
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['teacher']->id, $D['teacherrole']);
-
-        $this->insert_message('log', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_message('drafts', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_signature($D['teacher']->id);
+        $this->insert_message('log', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_signature($d['teacher']->id);
 
         // Test that correct contexts were retrieved (one course, one user).
-        $contextlist = $this->get_contexts_for_userid($D['teacher']->id, 'block_clampmail');
+        $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
         $contexts = $contextlist->get_contextids();
 
-        $usercontext = \context_user::instance($D['teacher']->id);
+        $usercontext = \context_user::instance($d['teacher']->id);
 
         $this->assertCount(2, $contexts);
         $this->assertContains($usercontext->id, $contexts);
-        $this->assertContains($D['coursecontext']->id, $contexts);
+        $this->assertContains($d['coursecontext']->id, $contexts);
 
         // Testing data export.
-        $this->export_all_data_for_user($D['teacher']->id, 'block_clampmail');
+        $this->export_all_data_for_user($d['teacher']->id, 'block_clampmail');
 
         // In course context...
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
         $this->assertNotEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertNotEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        // $this->assertNotEmpty($writer->get_files([get_string('pluginname', 'block_clampmail')]));
 
         // In user context...
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
         $this->assertNotEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertNotEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        // $this->assertEmpty($writer->get_files([]));
     }
 
     /**
      * Test deleting all data for a given user.
      */
     public function test_delete_user_data() {
-        global $DB;
+        $d= $this->data;
 
-        $D = $this->data;
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['teacher']->id, $D['teacherrole']);
+        $usercontext = \context_user::instance($d['teacher']->id);
 
-        $usercontext = \context_user::instance($D['teacher']->id);
+        $this->insert_message('log', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_signature($d['teacher']->id);
 
-        $this->insert_message('log', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_message('drafts', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_signature($D['teacher']->id);
+        $this->delete_data_for_user($d['teacher']->id);
 
-        $this->delete_data_for_user($D['teacher']->id);
-
-        $this->export_all_data_for_user($D['teacher']->id, 'block_clampmail');
+        $this->export_all_data_for_user($d['teacher']->id, 'block_clampmail');
 
         // In course context...
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        // $this->assertNotEmpt y($writer->get_files([get_string('pluginname', 'block_clampmail')]));
 
         // In user context...
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
@@ -280,47 +253,45 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * Test deleting all data for a given context.
      */
     public function test_delete_all_data() {
-        global $DB;
+        $d= $this->data;
 
-        $D = $this->data;
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['student1']->id, $d['studentrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['student2']->id, $d['studentrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['student1']->id, $D['studentrole']);
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['student2']->id, $D['studentrole']);
-        $D['me_plugin']->enrol_user($D['manualenrol'], $D['teacher']->id, $D['teacherrole']);
+        $this->insert_message('log', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('log', $d['student1']->id, $d['student2']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['student1']->id, $d['student2']->id, $d['course']->id);
+        $this->insert_message('log', $d['student2']->id, $d['teacher']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['student2']->id, $d['teacher']->id, $d['course']->id);
+        $this->insert_signature($d['teacher']->id);
+        $this->insert_signature($d['student1']->id);
+        $this->insert_signature($d['student2']->id);
 
-        $this->insert_message('log', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_message('drafts', $D['teacher']->id, $D['student1']->id, $D['course']->id);
-        $this->insert_message('log', $D['student1']->id, $D['student2']->id, $D['course']->id);
-        $this->insert_message('drafts', $D['student1']->id, $D['student2']->id, $D['course']->id);
-        $this->insert_message('log', $D['student2']->id, $D['teacher']->id, $D['course']->id);
-        $this->insert_message('drafts', $D['student2']->id, $D['teacher']->id, $D['course']->id);
-        $this->insert_signature($D['teacher']->id);
-        $this->insert_signature($D['student1']->id);
-        $this->insert_signature($D['student2']->id);
+        $this->delete_data_for_context($d['coursecontext']);
 
-        $this->delete_data_for_context($D['coursecontext']);
-
-        $this->export_all_data_for_user($D['teacher']->id, 'block_clampmail');
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
+        $this->export_all_data_for_user($d['teacher']->id, 'block_clampmail');
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        $ucontext = \context_user::instance($D['teacher']->id);
+        $ucontext = \context_user::instance($d['teacher']->id);
         $uwriter = \core_privacy\local\request\writer::with_context($ucontext);
         $this->assertNotEmpty($uwriter->get_data([get_string('pluginname', 'block_clampmail')]));
 
-        $this->export_all_data_for_user($D['student1']->id, 'block_clampmail');
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
+        $this->export_all_data_for_user($d['student1']->id, 'block_clampmail');
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        $ucontext = \context_user::instance($D['student1']->id);
+        $ucontext = \context_user::instance($d['student1']->id);
         $uwriter = \core_privacy\local\request\writer::with_context($ucontext);
         $this->assertNotEmpty($uwriter->get_data([get_string('pluginname', 'block_clampmail')]));
 
-        $this->export_all_data_for_user($D['student2']->id, 'block_clampmail');
-        $writer = \core_privacy\local\request\writer::with_context($D['coursecontext']);
+        $this->export_all_data_for_user($d['student2']->id, 'block_clampmail');
+        $writer = \core_privacy\local\request\writer::with_context($d['coursecontext']);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        $ucontext = \context_user::instance($D['student2']->id);
+        $ucontext = \context_user::instance($d['student2']->id);
         $uwriter = \core_privacy\local\request\writer::with_context($ucontext);
         $this->assertNotEmpty($uwriter->get_data([get_string('pluginname', 'block_clampmail')]));
     }
