@@ -156,7 +156,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * used CLAMPMail will not have any link to that context.
      */
     public function test_user_with_no_data() {
-        $d= $this->data;
+        $d = $this->data;
 
         $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
@@ -187,7 +187,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * signature.
      */
     public function test_export_user_data() {
-        $d= $this->data;
+        $d = $this->data;
 
         $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
@@ -223,7 +223,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
      * Test deleting all data for a given user.
      */
     public function test_delete_user_data() {
-        $d= $this->data;
+        $d = $this->data;
 
         $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
 
@@ -246,14 +246,13 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $writer = \core_privacy\local\request\writer::with_context($usercontext);
         $this->assertEmpty($writer->get_data([get_string('pluginname', 'block_clampmail')]));
         $this->assertEmpty($writer->get_all_metadata([get_string('pluginname', 'block_clampmail')]));
-        // $this->assertEmpty($writer->get_files([]));
     }
 
     /**
      * Test deleting all data for a given context.
      */
     public function test_delete_all_data() {
-        $d= $this->data;
+        $d = $this->data;
 
         $d['me_plugin']->enrol_user($d['manualenrol'], $d['student1']->id, $d['studentrole']);
         $d['me_plugin']->enrol_user($d['manualenrol'], $d['student2']->id, $d['studentrole']);

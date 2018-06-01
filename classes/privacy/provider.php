@@ -76,7 +76,7 @@ class provider implements
      * Find all courses which have a CLAMPMail block and underlying user data.
      * This can include sent items, drafts, and signatures.
      */
-    public static function _get_contexts_for_userid(int $userid) {
+    public static function _get_contexts_for_userid($userid) {
         global $DB;
 
         $contextlist = new \core_privacy\local\request\contextlist();
