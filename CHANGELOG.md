@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.3.4 (June 1, 2018)
+
+- Updated for GDPR compliance.
+- Fixed bug which prevented users from displaying when an incompatible groups mode was selected.
+- Styling fix for role filter label.
+- Use proper HTML labels in the form.
+
 ## 3.3.3 (January 11, 2018)
 
 - Styling fix for Boost.
