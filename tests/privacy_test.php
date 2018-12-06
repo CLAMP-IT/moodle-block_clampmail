@@ -65,9 +65,19 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $this->data['course'] = $this->getDataGenerator()->create_course(array(
             'shortname' => 'testcourse'
         ));
-        // Manual enrolment entry.
+
+        // Second test course.
+        $this->data['course2'] = $this->getDataGenerator()->create_course(array(
+            'shortname' => 'testcourse2'
+        ));
+
+        // Manual enrolment entry and course context.
         $this->data['manualenrol'] = $DB->get_record('enrol', array('enrol' => 'manual', 'courseid' => $this->data['course']->id));
         $this->data['coursecontext'] = \context_course::instance($this->data['course']->id);
+
+        // Manual enrolment entry and course context for test course 2.
+        $this->data['manualenrol2'] = $DB->get_record('enrol', array('enrol' => 'manual', 'courseid' => $this->data['course2']->id));
+        $this->data['coursecontext2'] = \context_course::instance($this->data['course2']->id);
 
         // Add the block to the page.
         $page = new \moodle_page();
@@ -149,6 +159,74 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
 
         $classname = $this->get_provider_classname('block_clampmail');
         $classname::_delete_data_for_user($approvedcontextlist);
+    }
+
+    /**
+     * Test the 'get_contexts_for_userid' function.
+     */
+    public function test_get_contexts_for_userid() {
+        $d = $this->data;
+
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol2'], $d['teacher']->id, $d['teacherrole']);
+
+        // No contexts.
+        $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
+        $contexts = $contextlist->get_contextids();
+        $this->assertCount(0, $contexts);
+
+        // A course context.
+        $this->insert_message('drafts', $d['teacher']->id, $d['teacher']->id, $d['course']->id);
+        $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
+        $contexts = $contextlist->get_contextids();
+        $this->assertCount(1, $contexts);
+        $this->assertEquals($d['coursecontext']->id, $contexts[0]);
+
+        // Plus a signature (user context).
+        $this->insert_signature($d['teacher']->id);
+        $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
+        $contexts = $contextlist->get_contextids();
+        $this->assertCount(2, $contexts);
+        $this->assertContains($d['coursecontext']->id, $contexts);
+        $this->assertContains(\context_user::instance($d['teacher']->id)->id, $contexts);
+    }
+
+    /**
+     * Test the 'get_users_in_context' function.
+     */
+    public function test_get_users_in_context() {
+        if (!interface_exists('\core_privacy\local\request\core_userlist_provider')) {
+            return;
+        }
+
+        $d = $this->data;
+
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['student1']->id, $d['studentrole']);
+
+        $this->insert_message('drafts', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['student1']->id, $d['teacher']->id, $d['course']->id);
+
+        $this->insert_signature($d['teacher']->id);
+
+        // Test course context.
+        $context = $d['coursecontext'];
+        $component = 'block_clampmail';
+        $userlist = new \core_privacy\local\request\userlist($context, $component);
+        $d['provider']::get_users_in_context($userlist);
+        $users = $userlist->get_userids();
+        $this->assertCount(2, $users);
+        $this->assertContains($d['teacher']->id, $users);
+        $this->assertContains($d['student1']->id, $users);
+
+        // Test user context.
+        $context = \context_user::instance($d['teacher']->id);
+        $component = 'block_clampmail';
+        $userlist = new \core_privacy\local\request\userlist($context, $component);
+        $d['provider']::get_users_in_context($userlist);
+        $users = $userlist->get_userids();
+        $this->assertCount(1, $users);
+        $this->assertContains($d['teacher']->id, $users);
     }
 
     /**
@@ -293,5 +371,54 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $ucontext = \context_user::instance($d['student2']->id);
         $uwriter = \core_privacy\local\request\writer::with_context($ucontext);
         $this->assertNotEmpty($uwriter->get_data([get_string('pluginname', 'block_clampmail')]));
+    }
+
+    /**
+     * Test deleting data for context, limited to certain users.
+     */
+    public function test_delete_data_for_users() {
+        if (!interface_exists('\core_privacy\local\request\core_userlist_provider')) {
+            return;
+        }
+
+        $d = $this->data;
+
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['student1']->id, $d['studentrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['student2']->id, $d['studentrole']);
+        $d['me_plugin']->enrol_user($d['manualenrol'], $d['teacher']->id, $d['teacherrole']);
+
+        $this->insert_message('log', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['teacher']->id, $d['student1']->id, $d['course']->id);
+        $this->insert_message('log', $d['student1']->id, $d['student2']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['student1']->id, $d['student2']->id, $d['course']->id);
+        $this->insert_message('log', $d['student2']->id, $d['teacher']->id, $d['course']->id);
+        $this->insert_message('drafts', $d['student2']->id, $d['teacher']->id, $d['course']->id);
+        $this->insert_signature($d['teacher']->id);
+        $this->insert_signature($d['student1']->id);
+        $this->insert_signature($d['student2']->id);
+
+        // Course context.
+        $context = $d['coursecontext'];
+        $component = 'block_clampmail';
+        $userlist = new \core_privacy\local\request\approved_userlist($context, $component, [$d['teacher']->id, $d['student2']->id]);
+
+        $d['provider']->delete_data_for_users($userlist);
+
+        $userlist = new \core_privacy\local\request\userlist($context, $component);
+        $d['provider']::get_users_in_context($userlist);
+        $users = $userlist->get_userids();
+        $this->assertCount(1, $users);
+        $this->assertContains($d['student1']->id, $users);
+
+        // User context.
+        $context = \context_user::instance($d['student1']->id);
+        $userlist = new \core_privacy\local\request\approved_userlist($context, $component, [$d['student1']->id]);
+
+        $d['provider']->delete_data_for_users($userlist);
+
+        $userlist = new \core_privacy\local\request\userlist($context, $component);
+        $d['provider']::get_users_in_context($userlist);
+        $users = $userlist->get_userids();
+        $this->assertCount(0, $users);
     }
 }
