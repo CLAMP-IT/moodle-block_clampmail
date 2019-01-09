@@ -18,8 +18,7 @@
  * block_clampmail version information.
  *
  * @package   block_clampmail
- * @copyright 2013 Collaborative Liberal Arts Moodle Project
- * @copyright 2012 Louisiana State University (original Quickmail block)
+ * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
