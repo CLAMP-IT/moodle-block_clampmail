@@ -1,9 +1,5 @@
 # Written at Louisiana State University
 
-(($) ->
-
-) jQuery
-
 $(document).ready () ->
     potentials = "#from_users"
     mailed = "#mail_users"
