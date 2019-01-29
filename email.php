@@ -74,7 +74,7 @@ $PAGE->set_url('/blocks/clampmail/email.php', array('courseid' => $courseid));
 $PAGE->set_pagetype($blockname);
 $PAGE->set_pagelayout('standard');
 
-$PAGE->requires->js('/blocks/clampmail/js/jquery.js');
+$PAGE->requires->jquery();
 $PAGE->requires->js('/blocks/clampmail/js/selection.js');
 
 // Build role arrays.

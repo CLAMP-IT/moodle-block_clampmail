@@ -46,7 +46,7 @@ $(document).ready () ->
     $("#remove_button").click move(mailed, potentials, ':selected')
     $("#remove_all").click move(mailed, potentials, '*')
 
-    $("#mform1").submit () ->
+    $('form.mform').on "submit", ->
         mapper = (index, elem) -> $(elem).val().split(' ')[0]
 
         ids = $(mailed).children("*").map(mapper).get().join ','
