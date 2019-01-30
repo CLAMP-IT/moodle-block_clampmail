@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.6 (January 30, 2019)
+
+- Refactor email form to remove outdated jQuery dependency.
+
 ## 3.3.5 (January 8, 2019)
 
 - Further support for GDPR compliance
