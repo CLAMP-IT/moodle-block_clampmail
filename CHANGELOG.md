@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add activity modules as a default applicable format (supports the Poster module).
+
 ## 3.3.6 (January 30, 2019)
 
 - Refactor email form to remove outdated jQuery dependency.

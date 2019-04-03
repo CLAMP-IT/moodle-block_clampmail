@@ -30,7 +30,7 @@ class block_clampmail extends block_list {
     }
 
     public function applicable_formats() {
-        return array('site' => false, 'my' => false, 'course' => true);
+        return array('site' => false, 'my' => false, 'course' => true, 'mod' => true);
     }
 
     public function has_config() {
