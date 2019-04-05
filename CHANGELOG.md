@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.3.7 (April 5, 2019)
 
 - Add activity modules as a default applicable format (supports the Poster module).
 

@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2019013000; // The current module version (Date: YYYYMMDDXX).
+$plugin->version   = 2019040500; // The current module version (Date: YYYYMMDDXX).
 $plugin->requires  = 2017051500; // Requires this Moodle version.
 $plugin->component = 'block_clampmail'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_STABLE; // The current stability of this version (used for diagnostics).
-$plugin->release   = 'v3.3.6'; // The release name of this version (used for diagnostics).
+$plugin->release   = 'v3.3.7'; // The release name of this version (used for diagnostics).
