@@ -53,6 +53,7 @@ $PAGE->navbar->add($heading);
 
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
+$PAGE->set_pagetype($blockname);
 
 if (!method_exists('clampmail_alternate', $action)) {
     // Always fallback on view.
@@ -62,7 +63,11 @@ if (!method_exists('clampmail_alternate', $action)) {
 $body = clampmail_alternate::$action($course, $id);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($heading);
+echo $OUTPUT->heading($blockname);
+echo block_clampmail\navigation::print_navigation(
+        block_clampmail\navigation::get_links($course->id, $context),
+        $heading
+);
 
 if ($flash) {
     echo $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');

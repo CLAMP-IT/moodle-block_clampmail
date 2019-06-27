@@ -16,15 +16,13 @@ Feature: Alternate email addresses
       | user     | course | role           |
       | teacher1 | CF101  | editingteacher |
       | teacher2 | CF101  | editingteacher |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    When I add the "Quickmail" block
-    Then I should see "Alternate emails"
 
   @javascript
   Scenario: Add alternate email
-    Given I follow "Alternate emails"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Alternate emails"
     Then I should see "No alternate emails found for Test Course"
     When I press "Continue"
     Then I should see "Email address"
@@ -37,6 +35,7 @@ Feature: Alternate email addresses
     And I log out
     And I log in as "teacher2"
     And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
     And I follow "Alternate emails"
     And I should see "teacher1_alt@example.com"
     And I follow "Delete"

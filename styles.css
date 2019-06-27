@@ -67,3 +67,26 @@
     display: inline-block;
     vertical-align: unset;
 }
+
+#page-Quickmail .internal-navigation {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+#page-Quickmail .internal-navigation li {
+    list-style: none;
+}
+
+#page-Quickmail .internal-navigation li:first-child:before {
+    padding: 0;
+    content: "";
+}
+
+#page-Quickmail .internal-navigation li:not(:first-child):before {
+    display: inline-block;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    color: #868e96;
+    content: "|";
+}

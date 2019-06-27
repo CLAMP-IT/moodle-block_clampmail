@@ -44,6 +44,7 @@ $PAGE->set_course($course);
 $PAGE->set_url('/blocks/clampmail/config.php', array('courseid' => $courseid));
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname. ': '. $header);
+$PAGE->navbar->add($blockname);
 $PAGE->navbar->add($header);
 $PAGE->set_pagetype($blockname);
 $PAGE->set_pagelayout('standard');
@@ -79,7 +80,11 @@ $config['roleselection'] = explode(',', $config['roleselection']);
 $form->set_data($config);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($header);
+echo $OUTPUT->heading($blockname);
+echo block_clampmail\navigation::print_navigation(
+        block_clampmail\navigation::get_links($course->id, $context),
+        $header
+);
 
 echo $OUTPUT->box_start();
 

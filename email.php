@@ -115,12 +115,6 @@ if ($groupmode == SEPARATEGROUPS && !has_capability('block/clampmail:cansendtoal
     }
 }
 
-// Stop execution if there's no valid email target.
-$returnurl = new moodle_url('/course/view.php', array('id' => $course->id));
-if (empty($users)) {
-    notice(get_string('no_users', 'block_clampmail'), $returnurl);
-}
-
 if (!empty($type)) {
     $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));
     $email->messageformat = $email->format;
@@ -312,14 +306,24 @@ if (empty($warnings)) {
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($blockname);
+echo block_clampmail\navigation::print_navigation(
+        block_clampmail\navigation::get_links($course->id, $context),
+        get_string('composenew', 'block_clampmail')
+);
 
-foreach ($warnings as $type => $warning) {
-    $class = ($type == 'success') ? 'notifysuccess' : 'notifyproblem';
-    echo $OUTPUT->notification($warning, $class);
+// Don't show the form if there's no valid email target.
+$returnurl = new moodle_url('/course/view.php', array('id' => $course->id));
+if ($form->get_user_count() == 0) {
+    notice(get_string('no_users', 'block_clampmail'), $returnurl);
+} else {
+    foreach ($warnings as $type => $warning) {
+        $class = ($type == 'success') ? 'notifysuccess' : 'notifyproblem';
+        echo $OUTPUT->notification($warning, $class);
+    }
+
+    echo html_writer::start_tag('div', array('class' => 'no-overflow'));
+    $form->display();
+    echo html_writer::end_tag('div');
+
+    echo $OUTPUT->footer();
 }
-
-echo html_writer::start_tag('div', array('class' => 'no-overflow'));
-$form->display();
-echo html_writer::end_tag('div');
-
-echo $OUTPUT->footer();

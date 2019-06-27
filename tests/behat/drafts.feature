@@ -18,15 +18,13 @@ Feature: Email drafts
       | teacher1 | CF101 | editingteacher |
       | student1 | CF101 | student |
       | student2 | CF101 | student |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    When I add the "Quickmail" block
-    Then I should see "View drafts"
 
   @javascript
   Scenario: View and delete drafts
-    Given I follow "View drafts"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "View drafts"
     Then I should see "You have no email drafts"
     When I press "Continue"
     Then I should see "Selected recipients"

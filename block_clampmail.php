@@ -44,69 +44,12 @@ class block_clampmail extends block_list {
             return $this->content;
         }
 
-        $this->content = new stdClass;
-        $this->content->items = array();
-        $this->content->icons = array();
-        $this->content->footer = '';
-
         $context = context_course::instance($COURSE->id);
 
-        $config = block_clampmail\config::load_configuration($COURSE);
-        $permission = has_capability('block/clampmail:cansend', $context);
-
-        $iconclass = array('class' => 'icon');
-
-        if ($permission) {
-            $cparam = array('courseid' => $COURSE->id);
-
-            $sendemail = html_writer::link(
-                new moodle_url('/blocks/clampmail/email.php', $cparam),
-                get_string('composenew', 'block_clampmail')
-            );
-            $this->content->items[] = $sendemail;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $iconclass);
-
-            $signature = html_writer::link(
-                new moodle_url('/blocks/clampmail/signature.php', $cparam),
-                get_string('manage_signatures', 'block_clampmail')
-            );
-            $this->content->items[] = $signature;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $iconclass);
-
-            $draftparams = $cparam + array('type' => 'drafts');
-            $drafts = html_writer::link(
-                new moodle_url('/blocks/clampmail/emaillog.php', $draftparams),
-                get_string('drafts', 'block_clampmail')
-            );
-            $this->content->items[] = $drafts;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $iconclass);
-
-            $history = html_writer::link(
-                new moodle_url('/blocks/clampmail/emaillog.php', $cparam),
-                get_string('log', 'block_clampmail')
-            );
-            $this->content->items[] = $history;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $iconclass);
-        }
-
-        if (has_capability('block/clampmail:allowalternate', $context)) {
-            $alt = html_writer::link(
-                new moodle_url('/blocks/clampmail/alternate.php', $cparam),
-                get_string('alternate', 'block_clampmail')
-            );
-
-            $this->content->items[] = $alt;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $iconclass);
-        }
-
-        if (has_capability('block/clampmail:canconfig', $context)) {
-            $config = html_writer::link(
-                new moodle_url('/blocks/clampmail/config.php', $cparam),
-                get_string('config', 'block_clampmail')
-            );
-            $this->content->items[] = $config;
-            $this->content->icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $iconclass);
-        }
+        $this->content = new stdClass;
+        $this->content->items = block_clampmail\navigation::get_links($COURSE->id, $context);
+        $this->content->icons = block_clampmail\navigation::get_icons($context);
+        $this->content->footer = '';
 
         return $this->content;
     }

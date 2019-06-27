@@ -18,15 +18,13 @@ Feature: Email history
       | teacher1 | CF101 | editingteacher |
       | student1 | CF101 | student |
       | student2 | CF101 | student |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    When I add the "Quickmail" block
-    Then I should see "View history"
 
   @javascript
   Scenario: View and delete history
-    Given I follow "View history"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "View history"
     Then I should see "You have no email history yet"
     And I press "Continue"
     And I should see "Selected recipients"
@@ -51,6 +49,7 @@ Feature: Email history
     And I navigate to "Courses > Manage courses and categories" in site administration
     And I follow "Test Course"
     And I follow "View"
+    And I navigate to "Quickmail" in current page administration
     And I follow "View history"
     And I set the field "userid" to "Teacher 1"
     Then I should see "Hello World Redux"
