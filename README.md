@@ -6,7 +6,7 @@ Quickmail is a Moodle block that provides selective, bulk emailing within course
 
 ## Requirements
 
-- Moodle 3.3 (build 2017051500 or later)
+- Moodle 3.4 (build 2017111300or later)
 
 ## Features
 
@@ -35,6 +35,8 @@ Teachers may define alternate emails for sending. These are available course-wid
 ## Installation
 
 Visit <https://github.com/CLAMP-IT/clampmail> to either download a package or clone the git repository. Then visit the admin screen to allow the install to complete.
+
+Quickmail will add a link to the course administration for accessing the module. While the block is still available for historical reasons it is not necessary for teachers to add the block to their course in order to use Quickmail.
 
 ## License
 
