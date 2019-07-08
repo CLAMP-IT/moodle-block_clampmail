@@ -275,7 +275,6 @@ function block_clampmail_extend_navigation_course($navigation, $course, $context
         $url = new moodle_url('/blocks/clampmail/email.php', array('courseid' => $course->id));
         $node = navigation_node::create(get_string('pluginname', 'block_clampmail'), $url,
                 navigation_node::TYPE_SETTING, null, null, new pix_icon('i/email', get_string('pluginname', 'block_clampmail')));
-        $node->showinflatnavigation = true;
         $navigation->add_node($node);
     }
 }
