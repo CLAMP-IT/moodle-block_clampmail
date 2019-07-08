@@ -90,7 +90,7 @@ $PAGE->set_title($course->shortname . ': '.
 $PAGE->set_heading($course->fullname);
 $PAGE->set_context($coursecontext);
 $PAGE->set_course($course);
-$PAGE->navbar->add($blockname);
+$PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname . ': '.$header);

@@ -48,7 +48,7 @@ $PAGE->set_context($context);
 $PAGE->set_course($course);
 $PAGE->set_pagelayout('report');
 
-$PAGE->navbar->add($blockname);
+$PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
 $PAGE->navbar->add($heading);
 
 $PAGE->set_title($title);

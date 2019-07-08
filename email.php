@@ -62,11 +62,10 @@ $alternates = $DB->get_records_menu('block_clampmail_alternate',
     $altparams, '', 'id, address');
 
 $blockname = get_string('pluginname', 'block_clampmail');
-$header = get_string('email', 'block_clampmail');
+$header = get_string('composenew', 'block_clampmail');
 
 $PAGE->set_context($context);
 $PAGE->set_course($course);
-$PAGE->navbar->add($blockname);
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname . ': '.$header);
