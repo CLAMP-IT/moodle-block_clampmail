@@ -6,7 +6,7 @@ Quickmail is a Moodle block that provides selective, bulk emailing within course
 
 ## Requirements
 
-- Moodle 3.4 (build 2017111300or later)
+- Moodle 3.5 (build 2018051700 or later)
 
 ## Features
 
