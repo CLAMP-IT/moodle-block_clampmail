@@ -82,10 +82,19 @@ $signature = file_prepare_standard_editor(
 );
 
 // Finish setting up the page.
+$blockname = get_string('pluginname', 'block_clampmail');
+$header = get_string('manage_signatures', 'block_clampmail');
 $PAGE->set_title($course->shortname . ': '.
     get_string('pluginname', 'block_clampmail') . ': '.
     get_string('signature', 'block_clampmail'));
 $PAGE->set_heading($course->fullname);
+$PAGE->set_context($coursecontext);
+$PAGE->set_course($course);
+$PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
+$PAGE->navbar->add($header);
+$PAGE->set_title($blockname . ': '. $header);
+$PAGE->set_heading($blockname . ': '.$header);
+$PAGE->set_pagetype($blockname);
 
 // Create form.
 $mform = new block_clampmail\signature_form('signature.php', array(
@@ -95,7 +104,7 @@ $mform->set_data($signature);
 
 // Process form.
 if ($mform->is_cancelled()) {
-    redirect(new moodle_url('/course/view.php', array('id' => $courseid)));
+    redirect(new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
 } else if ($fromform = $mform->get_data()) {
     if (!empty($fromform->delete)) {
         $delete = true;
@@ -131,6 +140,11 @@ if ($mform->is_cancelled()) {
 
 // Display header.
 echo $OUTPUT->header();
+echo $OUTPUT->heading($blockname);
+echo block_clampmail\navigation::print_navigation(
+        block_clampmail\navigation::get_links($course->id, $coursecontext),
+        $header
+);
 
 // Display notifications.
 if ($updated) {

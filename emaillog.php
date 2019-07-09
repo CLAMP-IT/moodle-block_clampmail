@@ -67,7 +67,7 @@ $header = get_string($type, 'block_clampmail');
 
 $PAGE->set_context($coursecontext);
 $PAGE->set_course($course);
-$PAGE->navbar->add($blockname);
+$PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': ' . $header);
 $PAGE->set_heading($blockname . ': ' . $header);
@@ -104,7 +104,11 @@ if ($canimpersonate and $USER->id != $userid) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($header);
+echo $OUTPUT->heading($blockname);
+echo block_clampmail\navigation::print_navigation(
+        block_clampmail\navigation::get_links($course->id, $coursecontext),
+        $header
+);
 
 if ($canimpersonate) {
     $sql = "SELECT DISTINCT(l.userid), u.firstname, u.lastname, u.firstnamephonetic, u.lastnamephonetic, u.middlename, u.alternatename

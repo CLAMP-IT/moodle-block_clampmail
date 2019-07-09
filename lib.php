@@ -262,3 +262,19 @@ function block_clampmail_pluginfile($course, $record, $context, $filearea, $args
         send_stored_file($file);
     }
 }
+
+/**
+ * Extends core navigation to display the Quickmail link in the course administration.
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param stdClass        $course The course object
+ * @param context         $context The course context
+ */
+function block_clampmail_extend_navigation_course($navigation, $course, $context) {
+    if (has_capability('block/clampmail:cansend', $context)) {
+        $url = new moodle_url('/blocks/clampmail/email.php', array('courseid' => $course->id));
+        $node = navigation_node::create(get_string('pluginname', 'block_clampmail'), $url,
+                navigation_node::TYPE_SETTING, null, null, new pix_icon('i/email', get_string('pluginname', 'block_clampmail')));
+        $navigation->add_node($node);
+    }
+}

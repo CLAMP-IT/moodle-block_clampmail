@@ -18,15 +18,13 @@ Feature: Block configuration
       | teacher1 | CF101  | editingteacher |
       | student1 | CF101  | student        |
       | student2 | CF101  | student        |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    When I add the "Quickmail" block
-    Then I should see "Configuration"
 
   @javascript
   Scenario: Reset system defaults
-    Given I follow "Configuration"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
     And I follow "Restore system defaults"
     And I should see "Changes saved"
     And the following fields match these values:
@@ -37,19 +35,25 @@ Feature: Block configuration
 
   @javascript
   Scenario: Filter roles
-    Given I follow "Configuration"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
     And I set the following fields to these values:
       | Roles to filter by | student |
     And I press "Save changes"
     Then I should see "Changes saved"
     When I follow "Test Course"
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     Then the "roles" select box should contain "Student"
     And the "roles" select box should not contain "Teacher"
 
   @javascript
   Scenario: Prepend course name
-    Given I follow "Configuration"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
     And I set the following fields to these values:
       | Prepend course name | Short name |
     And I press "Save changes"
@@ -58,19 +62,25 @@ Feature: Block configuration
 
   @javascript
   Scenario: Receive a copy
-    Given I follow "Configuration"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
     And I set the following fields to these values:
       | Receive a copy | Yes |
     And I press "Save changes"
     And I should see "Changes saved"
     Then I should see "Yes"
     When I follow "Test Course"
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     Then the field "receipt" matches value "1"
 
   @javascript
   Scenario: Group mode
-    Given I follow "Configuration"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
     And I set the following fields to these values:
       | Group mode | Visible groups |
     And I press "Save changes"

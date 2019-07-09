@@ -36,6 +36,15 @@ class email_form extends \moodleform {
     }
 
     /**
+     * Get the number of current and potential recipients.
+     *
+     * @return int
+     */
+    public function get_user_count() {
+        return count($this->_customdata['users']) + count($this->_customdata['selected']);
+    }
+
+    /**
      * Return formatted user display for the given user.
      * @param stdClass $user the user object.
      * @return string
@@ -122,30 +131,9 @@ class email_form extends \moodleform {
         }
         $groupoptions[0] = get_string('no_group', 'block_clampmail');
 
-        $links = array();
-        $genurl = function($type) use ($COURSE) {
-            $emailparam = array('courseid' => $COURSE->id, 'type' => $type);
-            return new \moodle_url('emaillog.php', $emailparam);
-        };
-
-        $draftlink = \html_writer::link ($genurl('drafts'), get_string('drafts', 'block_clampmail'));
-        $links[] =& $mform->createElement('static', 'draft_link', '', $draftlink);
-
         $context = \context_course::instance($COURSE->id);
 
         $config = config::load_configuration($COURSE);
-
-        $cansend = (
-            has_capability('block/clampmail:cansend', $context) or
-            !empty($config['allowstudents'])
-        );
-
-        if ($cansend) {
-            $historylink = \html_writer::link($genurl('log'), get_string('log', 'block_clampmail'));
-            $links[] =& $mform->createElement('static', 'history_link', '', $historylink);
-        }
-
-        $mform->addGroup($links, 'links', '&nbsp;', array(' | '), false);
 
         $reqimg = $OUTPUT->pix_icon('req', get_string('requiredelement', 'form'), 'moodle', array('class' => 'req'));
 

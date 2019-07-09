@@ -18,15 +18,13 @@ Feature: Email signatures
       | teacher1 | CF101 | editingteacher |
       | student1 | CF101 | student |
       | student2 | CF101 | student |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    When I add the "Quickmail" block
-    Then I should see "Manage signatures"
 
   @javascript
   Scenario: Add and remove signatures
-    Given I follow "Manage signatures"
+    Given I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Manage signatures"
     And I set the following fields to these values:
       | Signature | Doom At 11 |
       | default_flag | 1 |

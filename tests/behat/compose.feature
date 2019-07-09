@@ -23,17 +23,12 @@ Feature: Send email
       | student2 | CF101 | student |
       | student3 | CF101 | student |
       | student4 | CF101 | student |
-    And I log in as "teacher1"
-    And I am on "Test Course" course homepage
-    And I turn editing mode on
-    And I add the "Quickmail" block
-    And I log out
 
   @javascript
   Scenario: Internal navigation
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I follow "View drafts"
     Then I should see "You have no email drafts"
     When I press "Continue"
@@ -41,12 +36,25 @@ Feature: Send email
     Then I should see "You have no email history yet"
     When I press "Continue"
     Then I should see "Selected recipients"
+    And I follow "Manage signatures"
+    Then the "id" select box should contain "New signature"
+    When I press "Cancel"
+    Then I should see "Selected recipients"
+    When I follow "Alternate emails"
+    Then I should see "No alternate emails found for Test Course"
+    And I press "Continue"
+    And I set the following fields to these values:
+        | Email address | somebody@example.net |
+    And I press "Cancel"
+    Then I should see "No alternate emails found for Test Course"
+    When I follow "Configuration"
+    Then I should see "Prepend course name"
 
   @javascript
   Scenario: Teacher sends an attachment to everyone
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I press "Add all"
     And I set the following fields to these values:
       | Subject | Doom At 11 |

@@ -64,23 +64,12 @@ Feature: Send email to groups
       | block/clampmail:cansend | Allow      | student        | Course       | CF102     |
       | block/clampmail:cansend | Allow      | student        | Course       | CF100     |
       | block/clampmail:cansend | Allow      | student        | Course       | CF103     |
-    And I log in as "teacher1"
-    And I am on "Test Course Separate" course homepage
-    And I turn editing mode on
-    And I add the "Quickmail" block
-    And I am on "Test Course Visible" course homepage
-    And I add the "Quickmail" block
-    And I am on "Test Course NoGroups" course homepage
-    And I add the "Quickmail" block
-    And I am on "Test Course Separate NoGroups" course homepage
-    And I add the "Quickmail" block
-    And I log out
 
   @javascript
   Scenario: Teacher composes to a single group
     Given I log in as "teacher1"
     And I am on "Test Course Separate" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I set the following fields to these values:
       | groups | Group B |
     And I press "Add"
@@ -97,7 +86,7 @@ Feature: Send email to groups
   Scenario: Student uses separate groups
     Given I log in as "student1"
     And I am on "Test Course Separate" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I should not see "Student 3" in the "#from_users" "css_element"
     And I set the following fields to these values:
       | groups | Group A |
@@ -114,7 +103,7 @@ Feature: Send email to groups
   Scenario: Student uses visible groups
     Given I log in as "student1"
     And I am on "Test Course Visible" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I set the following fields to these values:
       | groups | Group C |
     And I press "Add"
@@ -134,7 +123,7 @@ Feature: Send email to groups
   Scenario: Student uses no groups
     Given I log in as "student1"
     And I am on "Test Course NoGroups" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I set the following fields to these values:
       | groups | Not in a group |
     And I press "Add"
@@ -157,7 +146,7 @@ Feature: Send email to groups
     And I log out
     And I log in as "student1"
     And I am on "Test Course Separate" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I set the following fields to these values:
       | groups | Group A,Group B |
     And I press "Add"
@@ -174,7 +163,7 @@ Feature: Send email to groups
   Scenario: Student emails when separate groups are set but no groups are defined
     Given I log in as "student1"
     And I am on "Test Course Separate NoGroups" course homepage
-    And I follow "Compose new email"
+    And I navigate to "Quickmail" in current page administration
     And I press "Add all"
     And I set the following fields to these values:
       | Subject | Doom At 11 |
