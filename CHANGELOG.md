@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.5.0 (July 9, 2019)
 
 - Added internal navigation element so that user can navigate between all Quickmail pages without returning to the course page.
 - Added a link to Quickmail from the course administration; Quickmail may now be used without explicitly adding the block to the course.
