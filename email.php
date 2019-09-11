@@ -179,7 +179,7 @@ if ($form->is_cancelled()) {
     }
 
     if (empty($data->mailto)) {
-        $warnings[] = get_string('no_users', 'block_clampmail');
+        $warnings[] = get_string('no_recipient_emails', 'block_clampmail');
     }
 
     if (empty($warnings)) {
