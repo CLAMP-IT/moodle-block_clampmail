@@ -316,7 +316,9 @@ if ($form->get_user_count() == 0) {
     notice(get_string('no_users', 'block_clampmail'), $returnurl);
 } else {
     foreach ($warnings as $type => $warning) {
-        $class = ($type == 'success') ? 'notifysuccess' : 'notifyproblem';
+        // Must use strict equality operator, as ("success" == 0) returns true,
+        // and $type can be a numeric index
+        $class = ($type === 'success') ? 'success' : 'error';
         echo $OUTPUT->notification($warning, $class);
     }
 
