@@ -94,6 +94,7 @@ $string['no_filter'] = 'No filter';
 $string['no_group'] = 'Not in a group';
 $string['no_log'] = 'You have no email history yet.';
 $string['no_permission'] = 'You do not have permission to send emails with Quickmail.';
+$string['no_recipient_emails'] = 'There are no email recipients. Either you forgot to supply one, or you selected addresses you are not allowed to send to.';
 $string['no_selected'] = 'You must select some users for emailing.';
 $string['no_subject'] = 'You must have a subject';
 $string['no_type'] = '{$a} is not in the acceptable type viewer. Please use the application correctly.';
