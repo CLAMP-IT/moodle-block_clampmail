@@ -50,7 +50,7 @@ Feature: Send email
     When I follow "Configuration"
     Then I should see "Prepend course name"
 
-  @javascript
+  @javascript @_file_upload
   Scenario: Teacher sends an attachment to everyone
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage

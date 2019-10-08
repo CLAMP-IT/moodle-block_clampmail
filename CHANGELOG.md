@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Improved the notification if there are no recipients (thanks to @BatesWebTech)
+- Properly tag upload behat tests
+
 ## 3.5.0 (July 9, 2019)
 
 - Added internal navigation element so that user can navigate between all Quickmail pages without returning to the course page.
