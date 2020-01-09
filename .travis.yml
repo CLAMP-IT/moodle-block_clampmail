@@ -7,44 +7,48 @@ cache:
 
 addons:
   firefox: "47.0.1"
-  postgresql: "9.4"
+  postgresql: "9.5"
   apt:
     packages:
       - openjdk-8-jre-headless
       - postfix
 
 php:
- - 7.0
- - 7.1
- - 7.2
+  - 7.1
+  - 7.2
+  - 7.3
 
 services:
- - mysql
+  - mysql
 
 env:
- global:
-  - IGNORE_PATHS=js/jquery.js,tests/
- matrix:
-  - DB=pgsql MOODLE_BRANCH=MOODLE_35_STABLE
-  - DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
-  - DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
-  - DB=pgsql MOODLE_BRANCH=master
-  - DB=mysqli MOODLE_BRANCH=MOODLE_35_STABLE
-  - DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
-  - DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
-  - DB=mysqli MOODLE_BRANCH=master
-
+  global:
+    - IGNORE_PATHS=js/jquery.js,tests/
+  matrix:
+    - DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
+    - DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
+    - DB=pgsql MOODLE_BRANCH=MOODLE_38_STABLE
+    - DB=pgsql MOODLE_BRANCH=master
+    - DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
+    - DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
+    - DB=mysqli MOODLE_BRANCH=MOODLE_38_STABLE
+    - DB=mysqli MOODLE_BRANCH=master
+  
 matrix:
-  fast_finish: true
+  include:
+    - php: 7.0
+      env: DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
+    - php: 7.0
+      env: DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
   exclude:
-    - php: 7.0
-      env: DB=pgsql MOODLE_BRANCH=MOODLE_37_STABLE
-    - php: 7.0
-      env: DB=mysqli MOODLE_BRANCH=MOODLE_37_STABLE
-    - php: 7.0
+    - php: 7.1
       env: DB=pgsql MOODLE_BRANCH=master
-    - php: 7.0
+    - php: 7.1
       env: DB=mysqli MOODLE_BRANCH=master
+    - php: 7.3
+      env: DB=pgsql MOODLE_BRANCH=MOODLE_36_STABLE
+    - php: 7.3
+      env: DB=mysqli MOODLE_BRANCH=MOODLE_36_STABLE
 
 before_install:
   - phpenv config-rm xdebug.ini
