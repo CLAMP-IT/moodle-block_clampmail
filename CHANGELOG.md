@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.6.0 (January 9, 2020)
 
 - Improved the notification if there are no recipients (thanks to @BatesWebTech)
 - Properly tag upload behat tests
