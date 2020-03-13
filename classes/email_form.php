@@ -213,7 +213,10 @@ class email_form extends \moodleform {
         $mform->addElement('static', 'selectors', '', \html_writer::table($table));
         $mform->setType('selectors', PARAM_RAW);
 
-        $mform->addElement('filemanager', 'attachments', get_string('attachment', 'block_clampmail'));
+        $mform->addElement('filemanager', 'attachments', get_string('attachment', 'block_clampmail'), null,
+        array(
+            'areamaxbytes' => get_config('block_clampmail', 'maxbytes')
+        ));
         $mform->setType('attachments', PARAM_FILE);
 
         $mform->addElement('text', 'subject', get_string('subject', 'block_clampmail'));

@@ -77,4 +77,13 @@ if ($ADMIN->fulltree) {
             $choices
         )
     );
+
+    $currentmaxbytes = get_config('block_clampmail', 'maxbytes');
+    if (isset($CFG->maxbytes)) {
+        $choices = get_max_upload_sizes($CFG->maxbytes, 0, 0, $currentmaxbytes);
+    } else {
+        $choices = get_max_upload_sizes(0, 0, 0, $currentmaxbytes);
+    }
+    $settings->add(new admin_setting_configselect('block_clampmail/maxbytes', new lang_string('maximumupload', 'block_clampmail'),
+        new lang_string('maximumupload_desc', 'block_clampmail'), key($choices), $choices));
 }
