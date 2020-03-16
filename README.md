@@ -38,6 +38,16 @@ Visit <https://github.com/CLAMP-IT/clampmail> to either download a package or cl
 
 Quickmail will add a link to the course administration for accessing the module. While the block is still available for historical reasons it is not necessary for teachers to add the block to their course in order to use Quickmail.
 
+## Configuration
+
+The site administrator may set the following defaults:
+
+* **Roles to filter by**: which roles appear in the role filter selection box
+* **Receive a copy**: whether, by default, a sender should receive a copy of the email
+* **Prepend course name**: whether emails should have the course idnumber or shortname prepended to the email subject
+* **Default group mode**: which group mode to use by default
+* **Maximum attachment size**: the maximum attachment size for a single email
+
 ## License
 
 Quickmail adopts the same license that Moodle does.
