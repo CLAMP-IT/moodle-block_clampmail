@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Configuration functions.
+ *
  * @package   block_clampmail
  * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,6 +26,13 @@ namespace block_clampmail;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Configuration functions.
+ *
+ * @package   block_clampmail
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class config {
 
     /**
@@ -70,7 +79,7 @@ class config {
     /**
      * Restore default configuration for the block.
      *
-     * @param int courseid The course id.
+     * @param int $courseid The course id.
      */
     public static function reset_course_configuration($courseid) {
             global $DB;

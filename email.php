@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Interface for sending an email.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -317,7 +319,7 @@ if ($form->get_user_count() == 0) {
 } else {
     foreach ($warnings as $type => $warning) {
         // Must use strict equality operator, as ("success" == 0) returns true,
-        // and $type can be a numeric index
+        // and $type can be a numeric index.
         $class = ($type === 'success') ? 'success' : 'error';
         echo $OUTPUT->notification($warning, $class);
     }

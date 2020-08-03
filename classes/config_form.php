@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Form definition for configuring the block.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,7 +28,17 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Form definition for configuring the block.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class config_form extends \moodleform {
+    /**
+     * Code that defines the form.
+     */
     public function definition() {
         $mform =& $this->_form;
 

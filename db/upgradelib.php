@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Upgrade functions.
+ *
  * @package   block_clampmail
  * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Migrate plugin settings to correct namespace.
+ */
 function block_clampmail_migrate_settings() {
     // Existing settings.
     $roleselection = get_config('moodle', 'block_clampmail_roleselection');

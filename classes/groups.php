@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Functions for groups handling.
+ *
  * @package   block_clampmail
  * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,6 +26,13 @@ namespace block_clampmail;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Functions for groups handling.
+ *
+ * @package   block_clampmail
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class groups {
     /**
      * Return the available groups for the course depending on the mode and user.

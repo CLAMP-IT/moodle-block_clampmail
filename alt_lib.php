@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Library functions for the alternate email functionality.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -23,21 +25,64 @@
 defined('MOODLE_INTERNAL') || die;
 
 interface clampmail_alternate_actions {
+    /**
+     * Modal for viewing entries.
+     */
     const VIEW = 'view';
+
+    /**
+     * Modal for deleting entries.
+     */
     const DELETE = 'delete';
+
+    /**
+     * Modal for editing entries.
+     */
     const INTERACT = 'interact';
+
+    /**
+     * Modal for confirming the deletion of entries.
+     */
     const CONFIRMED = 'confirmed';
+
+    /**
+     * Modal for notifying a user after an entry was saved.
+     */
     const INFORMATION = 'inform';
+
+    /**
+     * Modal for verifying an entry.
+     */
     const VERIFY = 'verify';
 }
 
+/**
+ * Library functions for the alternate email functionality.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 abstract class clampmail_alternate implements clampmail_alternate_actions {
 
+    /**
+     * Return the base URL for alternate email handling.
+     *
+     * @param int $courseid the course id
+     * @param array $additional additional parameters
+     * @return \moodle_url
+     */
     private static function base_url($courseid, $additional= array()) {
         $params = array('courseid' => $courseid) + $additional;
         return new moodle_url('/blocks/clampmail/alternate.php', $params);
     }
 
+    /**
+     * Get the alternate emails for the course.
+     *
+     * @param stdClass $course the course object
+     * @return array
+     */
     public static function get($course) {
         global $DB;
 
@@ -45,6 +90,12 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $DB->get_records('block_clampmail_alternate', $params, 'valid DESC');
     }
 
+    /**
+     * Get a single alternate email for the course.
+     *
+     * @param int $id the alternate email id
+     * @return array
+     */
     public static function get_one($id) {
         global $DB;
 
@@ -52,6 +103,13 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $DB->get_record('block_clampmail_alternate', $params, '*', MUST_EXIST);
     }
 
+    /**
+     * Creates a dialog box for deleting an alternate email.
+     *
+     * @param stdClass $course the course object
+     * @param int $id the alternate email to delete
+     * @return string
+     */
     public static function delete($course, $id) {
         global $OUTPUT;
 
@@ -66,6 +124,12 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $OUTPUT->confirm(get_string('alternate_delete_confirm', 'block_clampmail', $email), $confirmurl, $cancelurl);
     }
 
+    /**
+     * Deletes an alternate email from a course.
+     *
+     * @param stdClass $course the course object
+     * @param int $id the alternate email to delete
+     */
     public static function confirmed($course, $id) {
         global $DB;
 
@@ -74,6 +138,13 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return redirect(self::base_url($course->id, array('flash' => 1)));
     }
 
+    /**
+     * Generate the alternate email verification dialog.
+     *
+     * @param stdClass $course the course
+     * @param int $id the alternate email id
+     * @return string
+     */
     public static function verify($course, $id) {
         global $DB, $OUTPUT;
 
@@ -121,6 +192,15 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $html;
     }
 
+    /**
+     * Add the alternate email and notify the user.
+     *
+     * Add the alternate email and notify the user. Creates a dialog box.
+     *
+     * @param stdClass $course the course
+     * @param int $id the alternate email id
+     * @return string
+     */
     public static function inform($course, $id) {
         global $OUTPUT, $USER;
 
@@ -181,6 +261,13 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $html;
     }
 
+    /**
+     * Render form for modifying alternate email.
+     *
+     * @param stdClass $course the course
+     * @param int $id the alternate email id
+     * @return string
+     */
     public static function interact($course, $id) {
         $form = new block_clampmail\alternate_form(null, array(
             'course' => $course, 'action' => self::INTERACT
@@ -229,6 +316,12 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         return $form->render();
     }
 
+    /**
+     * Output list of alternate email addresses.
+     *
+     * @param stdClass $course the course
+     * @return string
+     */
     public static function view($course) {
         global $OUTPUT;
 

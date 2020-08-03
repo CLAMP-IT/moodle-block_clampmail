@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * User functions.
+ *
  * @package   block_clampmail
  * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,11 +26,18 @@ namespace block_clampmail;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * User functions.
+ *
+ * @package   block_clampmail
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class users {
 
     /**
      * Get all users in the course, with mappings for roles and groups.
-     * @param int $id the course id.
+     * @param int $courseid the course id.
      * @param int $groupmode the current groupmode.
      * @return array of user objects
      */

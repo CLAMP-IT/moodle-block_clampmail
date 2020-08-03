@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Upgrade tasks.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,6 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Handle plugin upgrades.
+ *
+ * @param int $oldversion the current installed version
+ * @return boolean
+ */
 function xmldb_block_clampmail_upgrade($oldversion) {
     global $CFG;
 

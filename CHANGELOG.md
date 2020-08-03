@@ -4,6 +4,7 @@
 
 - Change default branch to "main"
 - Update CI tool to version 3
+- Update PHPDocs
 
 ## 3.6.1 (March 16, 2020)
 

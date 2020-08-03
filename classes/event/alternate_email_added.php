@@ -26,9 +26,19 @@ namespace block_clampmail\event;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Alternate 'added' logging event handler.
+ *
+ * @package    block_clampmail
+ * @copyright  2014 UC Regents
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class alternate_email_added extends \core\event\base {
+    /**
+     * Initialize the event.
+     */
     protected function init() {
-        $this->data['crud'] = 'c'; // C(reate), r(ead), u(pdate), d(elete).
+        $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 

@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Library functions including primary wrapper class.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -22,11 +24,34 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Primary wrapper class with various library functions.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 abstract class clampmail {
+    /**
+     * Format a time and date string consistently.
+     *
+     * Provides a consistent date/time formatting. Wraps the core `userdate()` function.
+     *
+     * @param int $time timestamp in GMT
+     * @return string
+     */
     public static function format_time($time) {
         return userdate($time, '%A, %d %B %Y, %I:%M %P');
     }
 
+    /**
+     * Remove file references for the given email.
+     *
+     * @param string $table the name of the table
+     * @param int $contextid the contextid for the course
+     * @param int $itemid the id for the email
+     * @return boolean
+     */
     public static function cleanup($table, $contextid, $itemid) {
         global $DB;
 
@@ -51,16 +76,49 @@ abstract class clampmail {
         return $DB->delete_records($table, array('id' => $itemid));
     }
 
+    /**
+     * Remove file references for the given sent email.
+     *
+     * Remove file references for the given sent email. Wraps cleanup() with the table name.
+     *
+     * @param int $contextid the contextid for the course
+     * @param int $itemid the id for the email
+     * @return boolean
+     */
     public static function history_cleanup($contextid, $itemid) {
         return self::cleanup('block_clampmail_log', $contextid, $itemid);
     }
 
+    /**
+     * Remove file references for the given draft email.
+     *
+     * Remove file references for the given draft email. Wraps cleanup() with the table name.
+     *
+     * @param int $contextid the contextid for the course
+     * @param int $itemid the id for the email
+     * @return boolean
+     */
     public static function draft_cleanup($contextid, $itemid) {
         return self::cleanup('block_clampmail_drafts', $contextid, $itemid);
     }
 
     /**
      * Process the attached file(s). If multiple files, create a zip file.
+     *
+     * Takes the attachments and creates a new file in the temporary file area. If
+     * multiple files are specified it creates a zip archive to work around the
+     * known limitation in the core function email_to_user().
+     *
+     * The returned array includes three values:
+     * - string $filename the name of the generated file
+     * - string $file the relative path to the generated file
+     * - string $actualfile the absolute path to the generated file
+     *
+     * @param \context_course $context the course
+     * @param \stdClass $email submitted form data for the email
+     * @param string $table the given table; varies depending on whether this is a draft
+     * @param int $id the unique id for the email
+     * @return array
      */
     public static function process_attachments($context, $email, $table, $id) {
         global $CFG, $USER;
@@ -120,6 +178,15 @@ abstract class clampmail {
         return array($filename, $file, $actualfile);
     }
 
+    /**
+     * Get the names of the attached files.
+     *
+     * This is used by process_attachment() to determine whether there are attachments
+     * and is also displayed in the sent/draft tables. Returns a comma-separated list of filenames.
+     *
+     * @param int $draft the id of the draft file area
+     * @return string
+     */
     public static function attachment_names($draft) {
         global $USER;
 
@@ -140,12 +207,29 @@ abstract class clampmail {
         return implode(',', $onlynamedfiles);
     }
 
+    /**
+     * Return the roles used by CLAMPMail.
+     *
+     * @param array $userroles the roles used in the course
+     * @param array $masterroles the roles used by the block
+     * @return array
+     */
     public static function filter_roles($userroles, $masterroles) {
         return array_uintersect($masterroles, $userroles, function($a, $b) {
             return strcmp($a->shortname, $b->shortname);
         });
     }
 
+    /**
+     * Creates a deletion dialog box.
+     *
+     * Creates a deletion dialog box and returns formatted HTML.
+     *
+     * @param int $courseid the course
+     * @param string $type log or drafts
+     * @param int $typeid the id of the email or draft
+     * @return string
+     */
     public static function delete_dialog($courseid, $type, $typeid) {
         global $DB, $OUTPUT;
 
@@ -176,6 +260,20 @@ abstract class clampmail {
         return $html;
     }
 
+    /**
+     * Generates a list of emails.
+     *
+     * Generates a list of emails and returns them in formatted HTML.
+     *
+     * @param int $courseid the course
+     * @param string $type log or drafts
+     * @param int $page the currrent page
+     * @param int $perpage the number of items per page
+     * @param int $userid the user id
+     * @param int $count the total number of items
+     * @param boolean $candelete whether the user can delete; this is restricted to drafts
+     * @return string
+     */
     public static function list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete) {
         global $DB, $OUTPUT;
 
@@ -233,6 +331,12 @@ abstract class clampmail {
         return $html;
     }
 
+    /**
+     * Get the user's signatures.
+     *
+     * @param int $userid the userid
+     * @return array
+     */
     public static function get_signatures($userid) {
         global $DB;
         $signatures = $DB->get_records('block_clampmail_signatures',
@@ -241,6 +345,16 @@ abstract class clampmail {
     }
 }
 
+/**
+ * File serving.
+ *
+ * @param stdClass $course The course object.
+ * @param stdClass $record The block instance record.
+ * @param context $context The context object.
+ * @param string $filearea The file area.
+ * @param array $args List of arguments.
+ * @param bool $forcedownload Whether or not to force the download of the file.
+ */
 function block_clampmail_pluginfile($course, $record, $context, $filearea, $args, $forcedownload) {
     $fs = get_file_storage();
     global $DB;

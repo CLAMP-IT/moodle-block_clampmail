@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Privacy functions.
+ *
  * @package   block_clampmail
  * @copyright 2018 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -44,6 +46,13 @@ if (interface_exists('\core_privacy\local\request\core_userlist_provider')) {
     };
 }
 
+/**
+ * Privacy functions.
+ *
+ * @package   block_clampmail
+ * @copyright 2018 Collaborative Liberal Arts Moodle Project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements
         // This plugin does store personal user data.
         \core_privacy\local\request\plugin\provider,
@@ -96,6 +105,8 @@ class provider implements
     /**
      * Find all courses which have a CLAMPMail block and underlying user data.
      * This can include sent items (logs), drafts, and signatures.
+     *
+     * @param int $userid the user id
      *
      * @return void
      */

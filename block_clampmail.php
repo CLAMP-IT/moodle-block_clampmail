@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Block definition.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,19 +26,44 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/blocks/clampmail/lib.php');
 
+/**
+ * Block definition.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_clampmail extends block_list {
+    /**
+     * Set the block title.
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_clampmail');
     }
 
+    /**
+     * Set the applicable block formats.
+     *
+     * @return array
+     */
     public function applicable_formats() {
         return array('site' => false, 'my' => false, 'course' => true, 'mod' => true);
     }
 
+    /**
+     * Whether the block is configurable.
+     *
+     * @return boolean
+     */
     public function has_config() {
         return true;
     }
 
+    /**
+     * Generate and return the block content.
+     *
+     * @return string
+     */
     public function get_content() {
         global $COURSE, $OUTPUT;
 

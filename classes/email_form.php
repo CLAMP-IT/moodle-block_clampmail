@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Form definition for sending email.
+ *
  * @package   block_clampmail
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +28,19 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Form definition for sending email.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class email_form extends \moodleform {
     /**
      * Moves users into the selected select box.
+     *
+     * @param string $in select box contents
+     * @param stdClass $user user object
      * @return string
      */
     private function reduce_users($in, $user) {
@@ -94,6 +106,15 @@ class email_form extends \moodleform {
         return $option;
     }
 
+    /**
+     * Displays selectable users.
+     *
+     * Takes an array of selectable users and generates an HTML-formatted option item
+     * for each one of them.
+     *
+     * @param array $users an array of user objects
+     * @return string
+     */
     private function display_options($users) {
         $options = '';
         foreach ($users as $userid => $user) {
@@ -102,6 +123,9 @@ class email_form extends \moodleform {
         return $options;
     }
 
+    /**
+     * The email form definition.
+     */
     public function definition() {
         global $CFG, $USER, $COURSE, $OUTPUT;
 
