@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Update CI tool to version 3
+
 ## 3.6.1 (March 16, 2020)
 
 - Allow site administrator to configure maximum attachment size
