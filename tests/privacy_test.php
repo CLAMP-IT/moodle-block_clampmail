@@ -29,7 +29,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
     /**
      * Test setUp.
      */
-    public function setUp() {
+    public function setUp(): void {
         global $DB;
 
         $this->resetAfterTest(true);
