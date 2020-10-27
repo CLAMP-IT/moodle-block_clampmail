@@ -5,6 +5,7 @@
 - Change default branch to "main"
 - Update CI tool to version 3
 - Update PHPDocs
+- Drop support for Moodle 3.6
 
 ## 3.6.1 (March 16, 2020)
 
