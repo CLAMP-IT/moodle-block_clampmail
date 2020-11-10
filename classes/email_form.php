@@ -248,8 +248,17 @@ class email_form extends \moodleform {
         $mform->addRule('subject', null, 'required');
         $mform->addRule('subject', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $mform->addElement('editor', 'message_editor', get_string('message', 'block_clampmail'),
-            $this->_customdata['editor_options']);
+        $editor_options = $this->_customdata['editor_options'];
+
+        $mform->addElement('editor', 'message_editor', get_string('message', 'block_clampmail'), $editor_options);
+
+        $editor = editors_get_preferred_editor(FORMAT_HTML);
+        $editor->use_editor(
+            'id_test',
+            $editor_options,
+            ['return_types' => FILE_EXTERNAL]);
+
+        $mform->addElement('textarea', 'test', 'MESSAGE', 'class="col-md-9"');
 
         $options = $this->_customdata['sigs'] + array(-1 => 'No '. get_string('sig', 'block_clampmail'));
         $mform->addElement('select', 'sigid', get_string('signature', 'block_clampmail'), $options);

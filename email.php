@@ -143,7 +143,9 @@ $editoroptions = array(
     'subdirs' => true,
     'maxfiles' => EDITOR_UNLIMITED_FILES,
     'context' => $context,
-    'format' => $email->messageformat
+    'format' => $email->messageformat,
+    'atto:toolbar' => 'style1 = bold, italic'. PHP_EOL .'list = unorderedlist, orderedlist',
+    'toolbar' => 'style1 = bold, italic'. PHP_EOL .'list = unorderedlist, orderedlist',
 );
 
 $email = file_prepare_standard_editor($email, 'message', $editoroptions,
