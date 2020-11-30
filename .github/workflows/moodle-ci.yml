@@ -8,6 +8,8 @@ on:
     - cron: '0 8 * * 1'
 jobs:
   test:
+    env:
+      IGNORE_PATHS: js/jquery.js,tests/
     strategy:
       fail-fast: false
       matrix:
