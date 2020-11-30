@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Drop support for Moodle 3.11
+- Migrate CI builds to Github Actions
 
 ## 3.11.0 (August 25, 2021)
 
