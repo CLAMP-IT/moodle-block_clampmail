@@ -45,8 +45,11 @@ class users {
         $context = \context_course::instance($courseid);
         $users   = array();
 
+        $fieldsapi = \core_user\fields::for_userpic();
+        $fields    = $fieldsapi->get_sql('u', false, '', '', false)->selects . ',u.mailformat, u.maildisplay, u.emailstop';
+
         $usersfromdb = get_enrolled_users(
-            $context, '', 0, \user_picture::fields('u', array('mailformat', 'maildisplay', 'emailstop')), "", 0, 0, true
+            $context, '', 0, $fields, "", 0, 0, true
         );
 
         foreach ($usersfromdb as $userid => $user) {

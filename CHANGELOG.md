@@ -5,7 +5,8 @@
 - Change default branch to "main"
 - Update CI tool to version 3
 - Update PHPDocs
-- Drop support for Moodle 3.6-3.8
+- Drop support for Moodle 3.6-3.10
+- Update deprecated userfields call
 
 ## 3.6.1 (March 16, 2020)
 
