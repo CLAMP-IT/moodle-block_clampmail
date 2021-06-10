@@ -34,6 +34,19 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class users {
+    /**
+     * Get all the roles defined in the system.
+     *
+     * Get all the roles defined in the system. This is used for role filtering
+     * and for setting course-level capability overrides.
+     * @return array of role objects
+     */
+    public static function get_roles() {
+        global $DB;
+
+        $roles = $DB->get_records_menu('role', null, 'sortorder ASC', 'id, shortname');
+        return $roles;
+    }
 
     /**
      * Get all users in the course, with mappings for roles and groups.

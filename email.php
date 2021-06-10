@@ -49,12 +49,12 @@ if (!empty($type) and empty($typeid)) {
     print_error('no_typeid', 'block_clampmail', '', $string);
 }
 
-$config = block_clampmail\config::load_configuration($course);
-
 $context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
     print_error('no_permission', 'block_clampmail');
 }
+
+$config = block_clampmail\config::load_configuration($course);
 
 $sigs = $DB->get_records('block_clampmail_signatures',
     array('userid' => $USER->id), 'default_flag DESC');

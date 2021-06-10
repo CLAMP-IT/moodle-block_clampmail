@@ -58,10 +58,8 @@ if ($reset) {
     block_clampmail\config::reset_course_configuration($courseid);
 }
 
-$roles = $DB->get_records_menu('role', null, 'sortorder ASC', 'id, shortname');
 $form = new block_clampmail\config_form(null, array(
     'courseid' => $courseid,
-    'roles' => $roles,
     'groupmodeforce' => $course->groupmodeforce
 ));
 
@@ -78,7 +76,6 @@ if ($data = $form->get_data()) {
 
 $config = block_clampmail\config::load_configuration($course);
 $config['roleselection'] = explode(',', $config['roleselection']);
-
 $form->set_data($config);
 
 echo $OUTPUT->header();
