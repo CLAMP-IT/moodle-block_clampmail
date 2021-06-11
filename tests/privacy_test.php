@@ -187,8 +187,8 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $contextlist = $this->get_contexts_for_userid($d['teacher']->id, 'block_clampmail');
         $contexts = $contextlist->get_contextids();
         $this->assertCount(2, $contexts);
-        $this->assertContains($d['coursecontext']->id, $contexts);
-        $this->assertContains(\context_user::instance($d['teacher']->id)->id, $contexts);
+        $this->assertContainsEquals($d['coursecontext']->id, $contexts);
+        $this->assertContainsEquals(\context_user::instance($d['teacher']->id)->id, $contexts);
     }
 
     /**
@@ -216,8 +216,8 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $d['provider']::get_users_in_context($userlist);
         $users = $userlist->get_userids();
         $this->assertCount(2, $users);
-        $this->assertContains($d['teacher']->id, $users);
-        $this->assertContains($d['student1']->id, $users);
+        $this->assertContainsEquals($d['teacher']->id, $users);
+        $this->assertContainsEquals($d['student1']->id, $users);
 
         // Test user context.
         $context = \context_user::instance($d['teacher']->id);
@@ -226,7 +226,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $d['provider']::get_users_in_context($userlist);
         $users = $userlist->get_userids();
         $this->assertCount(1, $users);
-        $this->assertContains($d['teacher']->id, $users);
+        $this->assertContainsEquals($d['teacher']->id, $users);
     }
 
     /**
@@ -280,8 +280,8 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $usercontext = \context_user::instance($d['teacher']->id);
 
         $this->assertCount(2, $contexts);
-        $this->assertContains($usercontext->id, $contexts);
-        $this->assertContains($d['coursecontext']->id, $contexts);
+        $this->assertContainsEquals($usercontext->id, $contexts);
+        $this->assertContainsEquals($d['coursecontext']->id, $contexts);
 
         // Testing data export.
         $this->export_all_data_for_user($d['teacher']->id, 'block_clampmail');
@@ -408,7 +408,7 @@ class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_test
         $d['provider']::get_users_in_context($userlist);
         $users = $userlist->get_userids();
         $this->assertCount(1, $users);
-        $this->assertContains($d['student1']->id, $users);
+        $this->assertContainsEquals($d['student1']->id, $users);
 
         // User context.
         $context = \context_user::instance($d['student1']->id);
