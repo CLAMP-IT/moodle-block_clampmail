@@ -52,6 +52,9 @@ class config {
             $config = self::load_default_configuration();
         }
 
+        $context = \context_course::instance($course->id);
+        $config['cansend'] = get_roles_with_caps_in_context($context, array('block/clampmail:cansend'));
+
         // Respect groupmodeforce.
         if ($course->groupmodeforce == 1) {
             $config['groupmode'] = $course->groupmode;
@@ -82,9 +85,16 @@ class config {
      * @param int $courseid The course id.
      */
     public static function reset_course_configuration($courseid) {
-            global $DB;
-            $params = array('coursesid' => $courseid);
-            $DB->delete_records('block_clampmail_config', $params);
+        global $DB;
+        $params = array('coursesid' => $courseid);
+        $DB->delete_records('block_clampmail_config', $params);
+
+        // Reset capability overrides.
+        $roles = users::get_roles();
+        $context = \context_course::instance($courseid);
+        foreach ($roles as $roleid => $rolename) {
+            role_change_permission($roleid, $context, 'block/clampmail:cansend', CAP_INHERIT);
+        }
     }
 
     /**
@@ -98,6 +108,17 @@ class config {
 
         // Clear values.
         self::reset_course_configuration($courseid);
+
+        // Extract the cansend configuration.
+        $cansend = $data['cansend'];
+        unset($data['cansend']);
+
+        $roles = users::get_roles();
+        $context = \context_course::instance($courseid);
+        foreach ($roles as $roleid => $rolename) {
+            $permission = (in_array($roleid, $cansend)) ? CAP_ALLOW : CAP_PREVENT;
+            role_change_permission($roleid, $context, 'block/clampmail:cansend', $permission);
+        }
 
         foreach ($data as $name => $value) {
             $config = new \stdClass;

@@ -58,12 +58,6 @@ Feature: Send email to groups
       | student3 | GROUPD |
       | student4 | GROUPD |
       | student2 | GROUPE |
-    And the following "permission overrides" exist:
-      | capability              | permission | role           | contextlevel | reference |
-      | block/clampmail:cansend | Allow      | student        | Course       | CF101     |
-      | block/clampmail:cansend | Allow      | student        | Course       | CF102     |
-      | block/clampmail:cansend | Allow      | student        | Course       | CF100     |
-      | block/clampmail:cansend | Allow      | student        | Course       | CF103     |
 
   @javascript
   Scenario: Teacher composes to a single group
@@ -84,7 +78,16 @@ Feature: Send email to groups
 
   @javascript
   Scenario: Student uses separate groups
-    Given I log in as "student1"
+    Given I log in as "teacher1"
+    And I am on "Test Course Separate" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
+    And I log out
+    And I log in as "student1"
     And I am on "Test Course Separate" course homepage
     And I navigate to "Quickmail" in current page administration
     And I should not see "Student 3" in the "#from_users" "css_element"
@@ -101,6 +104,15 @@ Feature: Send email to groups
 
   @javascript
   Scenario: Student uses visible groups
+    Given I log in as "teacher1"
+    And I am on "Test Course Visible" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
+    And I log out
     Given I log in as "student1"
     And I am on "Test Course Visible" course homepage
     And I navigate to "Quickmail" in current page administration
@@ -121,6 +133,15 @@ Feature: Send email to groups
 
   @javascript
   Scenario: Student uses no groups
+    Given I log in as "teacher1"
+    And I am on "Test Course NoGroups" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
+    And I log out
     Given I log in as "student1"
     And I am on "Test Course NoGroups" course homepage
     And I navigate to "Quickmail" in current page administration
@@ -139,6 +160,13 @@ Feature: Send email to groups
   @javascript
   Scenario: Teacher allows students to email all users in separate groups
     Given I log in as "teacher1"
+    And I am on "Test Course Separate" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
     And I am on "Test Course Separate" course homepage
     And I navigate to "Users > Permissions" in current page administration
     And I override the system permissions of "Student" role with:
@@ -161,7 +189,16 @@ Feature: Send email to groups
 
   @javascript
   Scenario: Student emails when separate groups are set but no groups are defined
-    Given I log in as "student1"
+    Given I log in as "teacher1"
+    And I am on "Test Course Separate NoGroups" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
+    And I log out
+    And I log in as "student1"
     And I am on "Test Course Separate NoGroups" course homepage
     And I navigate to "Quickmail" in current page administration
     And I press "Add all"
