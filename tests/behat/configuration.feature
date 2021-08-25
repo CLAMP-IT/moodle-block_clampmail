@@ -100,6 +100,7 @@ Feature: Block configuration
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     And I log in as "student1"
     And I am on "Test Course" course homepage
     And I navigate to "Quickmail" in current page administration

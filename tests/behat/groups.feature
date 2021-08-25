@@ -86,6 +86,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     And I log in as "student1"
     And I am on "Test Course Separate" course homepage
     And I navigate to "Quickmail" in current page administration
@@ -111,6 +112,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     Given I log in as "student1"
     And I am on "Test Course Visible" course homepage
     And I navigate to "Quickmail" in current page administration
@@ -139,6 +141,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     Given I log in as "student1"
     And I am on "Test Course NoGroups" course homepage
     And I navigate to "Quickmail" in current page administration
@@ -164,6 +167,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     And I am on "Test Course Separate" course homepage
     And I navigate to "Users > Permissions" in current page administration
     And I override the system permissions of "Student" role with:
@@ -194,6 +198,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
+    And I log out
     And I log in as "student1"
     And I am on "Test Course Separate NoGroups" course homepage
     And I navigate to "Quickmail" in current page administration
