@@ -92,6 +92,7 @@ Feature: Block configuration
     Given I log in as "student1"
     And I am on "Test Course" course homepage
     And "Quickmail" "link" should not exist in current page administration
+    And I log out
     And I log in as "teacher1"
     And I am on "Test Course" course homepage
     And I navigate to "Quickmail" in current page administration
