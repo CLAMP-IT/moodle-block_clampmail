@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 3.11.0 (August 25, 2021)
 
+- Added student-use feature to configuration
 - Change default branch to "main"
 - Update CI tool to version 3
 - Update PHPDocs
