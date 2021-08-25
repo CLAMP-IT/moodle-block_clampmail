@@ -86,3 +86,20 @@ Feature: Block configuration
     And I press "Save changes"
     And I should see "Changes saved"
     And I should see "Visible groups"
+
+  @javascript
+  Scenario: Configure send email roles
+    Given I log in as "student1"
+    And I am on "Test Course" course homepage
+    And "Quickmail" "link" should not exist in current page administration
+    And I log in as "teacher1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
+    And I follow "Configuration"
+    And I set the following fields to these values:
+      | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
+    And I press "Save changes"
+    And I should see "Changes saved"
+    And I log in as "student1"
+    And I am on "Test Course" course homepage
+    And I navigate to "Quickmail" in current page administration
