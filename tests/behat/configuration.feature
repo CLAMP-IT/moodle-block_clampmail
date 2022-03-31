@@ -43,7 +43,7 @@ Feature: Block configuration
       | Roles to filter by | student |
     And I press "Save changes"
     Then I should see "Changes saved"
-    When I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I navigate to "Quickmail" in current page administration
     Then the "roles" select box should contain "Student"
     And the "roles" select box should not contain "Teacher"
@@ -71,7 +71,7 @@ Feature: Block configuration
     And I press "Save changes"
     And I should see "Changes saved"
     Then I should see "Yes"
-    When I follow "Test Course"
+    And I am on "Test Course" course homepage
     And I navigate to "Quickmail" in current page administration
     Then the field "receipt" matches value "1"
 

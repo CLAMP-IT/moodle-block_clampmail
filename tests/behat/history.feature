@@ -47,8 +47,7 @@ Feature: Email history
     And I log out
     And I log in as "admin"
     And I navigate to "Courses > Manage courses and categories" in site administration
-    And I follow "Test Course"
-    And I follow "View"
+    And I am on "Test Course" course homepage
     And I navigate to "Quickmail" in current page administration
     And I follow "View history"
     And I set the field "userid" to "Teacher 1"

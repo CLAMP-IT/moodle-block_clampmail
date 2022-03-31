@@ -167,8 +167,7 @@ Feature: Send email to groups
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
     And I press "Save changes"
     And I should see "Changes saved"
-    And I am on "Test Course Separate" course homepage
-    And I navigate to "Users > Permissions" in current page administration
+    And I am on the "Test Course Separate" "permissions" page
     And I override the system permissions of "Student" role with:
       | block/clampmail:cansendtoall | Allow |
     And I log out

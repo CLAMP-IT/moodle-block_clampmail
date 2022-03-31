@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Drop support for Moodle 3.11
+
 ## 3.11.0 (August 25, 2021)
 
 - Added student-use feature to configuration
