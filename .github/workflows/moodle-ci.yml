@@ -53,9 +53,8 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ matrix.extensions }}
-          ini-values: max_input_vars=5000
+          ini-values: max_input_vars=5000,sendmail_path = "/usr/sbin/sendmail -t -i "
           coverage: none
-          ini-values: sendmail_path = "/usr/sbin/sendmail -t -i "
 
       - name: Initialise moodle-plugin-ci
         run: |
