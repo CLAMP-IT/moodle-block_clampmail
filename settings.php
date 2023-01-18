@@ -66,6 +66,13 @@ if ($ADMIN->fulltree) {
             0, $options
         )
     );
+    
+    $settings->add(
+        new admin_setting_configselect('block_clampmail/attachfile',
+            get_string('attachfile', 'block_clampmail'), get_string('attachfile_help', 'block_clampmail'),
+            1, $select
+        )
+   );
 
     $choices = array();
     $choices[NOGROUPS] = get_string('groupsnone', 'group');
