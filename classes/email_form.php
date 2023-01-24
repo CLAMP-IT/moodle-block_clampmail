@@ -243,7 +243,7 @@ class email_form extends \moodleform {
                 $mform->addElement('filemanager', 'attachments', get_string('attachment', 'block_clampmail'), null,
                 array(
                 'areamaxbytes' => get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes, get_config('block_clampmail', 'maxbytes'))
-            ));
+                ));
                 $mform->setType('attachments', PARAM_FILE);
         }
 
