@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## 3.11.1 (January 31, 2023)
 
 - Drop support for Moodle 3.11
 - Migrate CI builds to Github Actions
+- Fixed bug which prevented viewing history when an unenrolled user was one of the recipients
 
 ## 3.11.0 (August 25, 2021)
 
