@@ -89,6 +89,7 @@ $string['manage_signatures'] = 'Manage signatures';
 $string['maximumupload'] = 'Maximum attachment size';
 $string['maximumupload_desc'] = 'Maximum attachment size for an individual email.';
 $string['message'] = 'Message';
+$string['missing_recipient'] = 'The recipient with the id {$a} is no longer enrolled in this course.';
 $string['newsignature'] = 'New signature';
 $string['no_alternates'] = 'No alternate emails found for {$a->fullname}. Continue to make one.';
 $string['no_course'] = 'Invalid course with id of {$a}';

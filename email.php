@@ -149,11 +149,16 @@ $editoroptions = array(
 $email = file_prepare_standard_editor($email, 'message', $editoroptions,
     $context, 'block_clampmail', $type, $email->id);
 
+$warnings = array();
 $selected = array();
 if (!empty($email->mailto)) {
     foreach (explode(',', $email->mailto) as $id) {
-        $selected[$id] = $users[$id];
-        unset($users[$id]);
+        if (array_key_exists($id, $users)) {
+            $selected[$id] = $users[$id];
+            unset($users[$id]);
+        } else {
+            $warnings[] = get_string('missing_recipient', 'block_clampmail', $id);
+        }
     }
 }
 
@@ -170,8 +175,6 @@ $form = new block_clampmail\email_form(null,
         'alternates' => $alternates
     )
 );
-
-$warnings = array();
 
 if ($form->is_cancelled()) {
     redirect(new moodle_url('/course/view.php?id='.$courseid));
