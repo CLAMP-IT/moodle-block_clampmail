@@ -27,13 +27,13 @@ defined('MOODLE_INTERNAL') || die;
 $capabilities = array(
 
     'block/clampmail:addinstance' => array(
-        'captype'       => 'write',
-        'contextlevel'  => CONTEXT_COURSE,
-        'archetypes'    => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
-        'clonepermissionsfrom'  => 'moodle/site:manageblocks'
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
     'block/clampmail:cansend' => array(
         'captype' => 'write',
@@ -77,6 +77,6 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW
         ),
-        'clonepermissionsfrom'  => 'moodle/site:accessallgroups'
+        'clonepermissionsfrom' => 'moodle/site:accessallgroups'
     )
 );

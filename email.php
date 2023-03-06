@@ -120,11 +120,11 @@ if (!empty($type)) {
     $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));
     $email->messageformat = $email->format;
 } else {
-    $email                = new stdClass;
-    $email->id            = null;
-    $email->subject       = optional_param('subject', '', PARAM_TEXT);
-    $email->message       = optional_param('message_editor[text]', '', PARAM_RAW);
-    $email->mailto        = optional_param('mailto', '', PARAM_TEXT);
+    $email = new stdClass;
+    $email->id = null;
+    $email->subject = optional_param('subject', '', PARAM_TEXT);
+    $email->message = optional_param('message_editor[text]', '', PARAM_RAW);
+    $email->mailto = optional_param('mailto', '', PARAM_TEXT);
     $email->messageformat = editors_get_preferred_format();
 }
 $email->messagetext = $email->message;

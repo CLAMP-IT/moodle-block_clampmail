@@ -126,7 +126,7 @@ class provider implements
                        bcd.userid = :draftuserid
                    )";
         $params = [
-            'loguserid'   => $userid,
+            'loguserid' => $userid,
             'draftuserid' => $userid
         ];
         $contextlist->add_from_sql($sql, $params);
@@ -413,10 +413,10 @@ class provider implements
             $mailto = implode(',', $mailto);
 
             $message = (object) [
-                'subject'   => format_string($record->subject, true),
-                'mailto'    => $mailto,
-                'message'   => $record->message,
-                'time'      => transform::datetime($record->time),
+                'subject' => format_string($record->subject, true),
+                'mailto' => $mailto,
+                'message' => $record->message,
+                'time' => transform::datetime($record->time),
             ];
             array_push($messages, $message);
         }

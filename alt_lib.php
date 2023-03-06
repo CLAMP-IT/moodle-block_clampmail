@@ -240,7 +240,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         $event = \block_clampmail\event\alternate_email_added::create(array(
             'courseid' => $course->id,
             'context' => context_course::instance($course->id),
-            'other'    => array(
+            'other' => array(
                 'address' => $entry->address
             )
         ));

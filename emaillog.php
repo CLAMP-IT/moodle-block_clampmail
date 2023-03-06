@@ -25,14 +25,14 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-$courseid    = required_param('courseid', PARAM_INT);
-$type        = optional_param('type', 'log', PARAM_ALPHA);
-$typeid      = optional_param('typeid', 0, PARAM_INT);
-$action      = optional_param('action', null, PARAM_ALPHA);
-$page        = optional_param('page', 0, PARAM_INT);
-$perpage     = optional_param('perpage', 10, PARAM_INT);
-$userid      = optional_param('userid', $USER->id, PARAM_INT);
-$course      = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+$courseid = required_param('courseid', PARAM_INT);
+$type = optional_param('type', 'log', PARAM_ALPHA);
+$typeid = optional_param('typeid', 0, PARAM_INT);
+$action = optional_param('action', null, PARAM_ALPHA);
+$page = optional_param('page', 0, PARAM_INT);
+$perpage = optional_param('perpage', 10, PARAM_INT);
+$userid = optional_param('userid', $USER->id, PARAM_INT);
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_login($course);
 

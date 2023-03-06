@@ -30,8 +30,8 @@ defined('MOODLE_INTERNAL') || die;
 function block_clampmail_migrate_settings() {
     // Existing settings.
     $roleselection = get_config('moodle', 'block_clampmail_roleselection');
-    $prependclass  = get_config('moodle', 'block_clampmail_prepend_class');
-    $receipt       = get_config('moodle', 'block_clampmail_receipt');
+    $prependclass = get_config('moodle', 'block_clampmail_prepend_class');
+    $receipt = get_config('moodle', 'block_clampmail_receipt');
 
     // Copy to new settings.
     set_config('roleselection', $roleselection, 'block_clampmail');

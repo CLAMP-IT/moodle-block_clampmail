@@ -25,15 +25,15 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-$courseid    = required_param('courseid', PARAM_INT);
+$courseid = required_param('courseid', PARAM_INT);
 $signatureid = optional_param('id', 0, PARAM_INT);
-$updated     = optional_param('updated', 0, PARAM_INT);
-$confirm     = optional_param('confirm', 0, PARAM_INT);
-$course      = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+$updated = optional_param('updated', 0, PARAM_INT);
+$confirm = optional_param('confirm', 0, PARAM_INT);
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 require_login($course);
 
-if ($courseid and !$course = $DB->get_record('course', array('id' => $courseid))) {
+if ($courseid && !$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
@@ -112,7 +112,7 @@ if ($mform->is_cancelled()) {
         $delete = true;
     } else {
         $fromform->signature = $fromform->signature_editor['text'];
-        $fromform->userid    = $USER->id;
+        $fromform->userid = $USER->id;
         if (empty($fromform->default_flag)) {
             $fromform->default_flag = 0;
         }
