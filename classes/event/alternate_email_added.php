@@ -71,14 +71,4 @@ class alternate_email_added extends \core\event\base {
                     'courseid' => $this->courseid
                 ));
     }
-
-    /**
-     * Legacy log.
-     *
-     * @return array
-     */
-    public function get_legacy_logdata() {
-        return array($this->courseid, 'clampmail', 'add', $this->get_url(),
-            get_string('alternate', 'block_clampmail') . ' ' . $this->other['address']);
-    }
 }
