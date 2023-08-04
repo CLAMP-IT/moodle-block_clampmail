@@ -228,7 +228,7 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
 
-        // Get all courses where the user has Quickmail data.
+        // Get all courses where the user has CLAMPMail data.
         list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
         $sql = "SELECT
                     ctx.id AS contextid,
@@ -326,7 +326,7 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
 
-        // Get all courses where the user has Quickmail data.
+        // Get all courses where the user has CLAMPMail data.
         list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
         $sql = "SELECT
                     ctx.id AS contextid,

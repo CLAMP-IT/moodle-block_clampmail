@@ -378,7 +378,7 @@ function block_clampmail_pluginfile($course, $record, $context, $filearea, $args
 }
 
 /**
- * Extends core navigation to display the Quickmail link in the course administration.
+ * Extends core navigation to display the CLAMPMail link in the course administration.
  *
  * @param navigation_node $navigation The navigation node to extend
  * @param stdClass        $course The course object

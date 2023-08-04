@@ -23,7 +23,7 @@ Feature: Email signatures
   Scenario: Add and remove signatures
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Manage signatures"
     And I set the following fields to these values:
       | Signature | Doom At 11 |

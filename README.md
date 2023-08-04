@@ -1,8 +1,8 @@
-# Quickmail
+# CLAMPMail
 
 ![Moodle Plugin CI](https://github.com/CLAMP-IT/clampmail/workflows/Moodle%20Plugin%20CI/badge.svg)
 
-Quickmail is a Moodle block that provides selective, bulk emailing within courses. CLAMPMail is a fork maintained by the Collaborative Liberal Arts Moodle Project which sends attachments via email instead of providing a download link within Moodle.
+CLAMPMail is a Moodle block that provides selective, bulk emailing within courses. This is a fork of the Quickmail block maintained by the Collaborative Liberal Arts Moodle Project which sends attachments via email instead of providing a download link within Moodle.
 
 ## Requirements
 
@@ -21,11 +21,11 @@ Quickmail is a Moodle block that provides selective, bulk emailing within course
 
 ### Multiple attachments
 
-Quickmail supports multiple attachments by zipping up a Moodle filearea, and
+CLAMPMail supports multiple attachments by zipping up a Moodle filearea, and
 sending it along to `email_to_user`.
 
-1. Quickmail assumes that `$CFG->tempdir` is in `$CFG->dataroot`. This
-limitation exists because Quickmail uses `email_to_user`.
+1. CLAMPMail assumes that `$CFG->tempdir` is in `$CFG->dataroot`. This
+limitation exists because CLAMPMail uses `email_to_user`.
 2. Make sure your email service supports zip files, otherwise they will be filtered.
 
 ### Alternate emails
@@ -34,9 +34,9 @@ Teachers may define alternate emails for sending. These are available course-wid
 
 ## Installation
 
-Visit <https://github.com/CLAMP-IT/clampmail> to either download a package or clone the git repository. Then visit the admin screen to allow the install to complete.
+Visit <https://github.com/CLAMP-IT/moodle-block_clampmail> to either download a package or clone the git repository. Then visit the admin screen to allow the install to complete.
 
-Quickmail will add a link to the course administration for accessing the module. While the block is still available for historical reasons it is not necessary for teachers to add the block to their course in order to use Quickmail.
+CLAMPMail will add a link to the course administration for accessing the module. While the block is still available for historical reasons it is not necessary for teachers to add the block to their course in order to use CLAMPMail.
 
 ## Configuration
 
@@ -50,4 +50,4 @@ The site administrator may set the following defaults:
 
 ## License
 
-Quickmail adopts the same license that Moodle does.
+CLAMPMail adopts the same license that Moodle does.

@@ -1,6 +1,6 @@
 @block @block_clampmail
 Feature: Navigate with block
-  In order to use Quickmail
+  In order to use CLAMPMail
   In a course with blocks
   I need the ability to navigate from the block
 
@@ -28,7 +28,7 @@ Feature: Navigate with block
   Scenario: Add the block
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage with editing mode on
-    And I add the "Quickmail" block
+    And I add the "CLAMPMail" block
     Then I should see "Compose new email"
     And I should see "View history"
     And I should see "View drafts"

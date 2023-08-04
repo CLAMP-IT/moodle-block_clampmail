@@ -63,7 +63,7 @@ Feature: Send email to groups
   Scenario: Teacher composes to a single group
     Given I log in as "teacher1"
     And I am on "Test Course Separate" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I set the following fields to these values:
       | groups | Group B |
     And I press "Add"
@@ -80,7 +80,7 @@ Feature: Send email to groups
   Scenario: Student uses separate groups
     Given I log in as "teacher1"
     And I am on "Test Course Separate" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Configuration"
     And I set the following fields to these values:
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
@@ -89,7 +89,7 @@ Feature: Send email to groups
     And I log out
     And I log in as "student1"
     And I am on "Test Course Separate" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I should not see "Student 3" in the "#from_users" "css_element"
     And I set the following fields to these values:
       | groups | Group A |
@@ -106,7 +106,7 @@ Feature: Send email to groups
   Scenario: Student uses visible groups
     Given I log in as "teacher1"
     And I am on "Test Course Visible" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Configuration"
     And I set the following fields to these values:
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
@@ -115,7 +115,7 @@ Feature: Send email to groups
     And I log out
     Given I log in as "student1"
     And I am on "Test Course Visible" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I set the following fields to these values:
       | groups | Group C |
     And I press "Add"
@@ -135,7 +135,7 @@ Feature: Send email to groups
   Scenario: Student uses no groups
     Given I log in as "teacher1"
     And I am on "Test Course NoGroups" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Configuration"
     And I set the following fields to these values:
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
@@ -144,7 +144,7 @@ Feature: Send email to groups
     And I log out
     Given I log in as "student1"
     And I am on "Test Course NoGroups" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I set the following fields to these values:
       | groups | Not in a group |
     And I press "Add"
@@ -161,7 +161,7 @@ Feature: Send email to groups
   Scenario: Teacher allows students to email all users in separate groups
     Given I log in as "teacher1"
     And I am on "Test Course Separate" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Configuration"
     And I set the following fields to these values:
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
@@ -173,7 +173,7 @@ Feature: Send email to groups
     And I log out
     And I log in as "student1"
     And I am on "Test Course Separate" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I set the following fields to these values:
       | groups | Group A,Group B |
     And I press "Add"
@@ -190,7 +190,7 @@ Feature: Send email to groups
   Scenario: Student emails when separate groups are set but no groups are defined
     Given I log in as "teacher1"
     And I am on "Test Course Separate NoGroups" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "Configuration"
     And I set the following fields to these values:
       | Roles that can send email | manager,coursecreator,editingteacher,teacher,student |
@@ -199,7 +199,7 @@ Feature: Send email to groups
     And I log out
     And I log in as "student1"
     And I am on "Test Course Separate NoGroups" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I press "Add all"
     And I set the following fields to these values:
       | Subject | Doom At 11 |

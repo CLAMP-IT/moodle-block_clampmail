@@ -23,7 +23,7 @@ Feature: Email history
   Scenario: View history when a student is unenrolled
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "View history"
     Then I should see "You have no email history yet"
     And I press "Continue"
@@ -43,7 +43,7 @@ Feature: Email history
     When I click on "Unenrol" "icon" in the "student1" "table_row"
     And I click on "Unenrol" "button" in the "Unenrol" "dialogue"
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "View history"
     And I follow "Open email"
     And I should see "The recipient with the id"
@@ -53,7 +53,7 @@ Feature: Email history
   Scenario: View and delete history
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "View history"
     Then I should see "You have no email history yet"
     And I press "Continue"
@@ -78,7 +78,7 @@ Feature: Email history
     And I log in as "admin"
     And I navigate to "Courses > Manage courses and categories" in site administration
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "View history"
     And I set the field "userid" to "Teacher 1"
     Then I should see "Hello World Redux"

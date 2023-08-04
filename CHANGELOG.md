@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Change internal references from Quickmail to CLAMPMail
+
 ## 3.11.1 (January 31, 2023)
 
 - Drop support for Moodle 3.11

@@ -23,7 +23,7 @@ Feature: Email drafts
   Scenario: View and delete drafts
     Given I log in as "teacher1"
     And I am on "Test Course" course homepage
-    And I navigate to "Quickmail" in current page administration
+    And I navigate to "CLAMPMail" in current page administration
     And I follow "View drafts"
     Then I should see "You have no email drafts"
     When I press "Continue"
