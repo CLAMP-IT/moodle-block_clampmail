@@ -48,6 +48,10 @@ The site administrator may set the following defaults:
 * **Default group mode**: which group mode to use by default
 * **Maximum attachment size**: the maximum attachment size for a single email
 
+## Acknowledgements
+
+CLAMPMail was forked in 2013 from v1 of the [Quickmail block](https://github.com/lsuits/quickmail) developed at Louisiana State University ITS. The principal authors of that version of the plugin are Robert Russo and Philip Cali.
+
 ## License
 
 CLAMPMail adopts the same license that Moodle does.
