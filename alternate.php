@@ -23,8 +23,6 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
-require_once('alt_lib.php');
 
 $courseid = required_param('courseid', PARAM_INT);
 $action = optional_param('action', 'view', PARAM_TEXT);
@@ -57,12 +55,12 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 $PAGE->set_pagetype($blockname);
 
-if (!method_exists('clampmail_alternate', $action)) {
+if (!method_exists('block_clampmail\alternate', $action)) {
     // Always fallback on view.
     $action = 'view';
 }
 
-$body = clampmail_alternate::$action($course, $id);
+$body = block_clampmail\alternate::$action($course, $id);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($blockname);

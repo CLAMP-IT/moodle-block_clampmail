@@ -24,8 +24,6 @@
 
 namespace block_clampmail;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * User functions.
  *
@@ -106,7 +104,7 @@ class users {
      * @return array
      */
     private static function get_user_group_ids($courseid, $userid, $groupmode) {
-        // When NOGROUPS is set, we use 0 to indicate "not in a group."
+        // When NOGROUPS is set, we use 0 to indicate "not in a group".
         if ($groupmode == NOGROUPS) {
             return array(0);
         }

@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_clampmail;
+
 defined('MOODLE_INTERNAL') || die;
 
 interface clampmail_alternate_actions {
@@ -63,7 +65,7 @@ interface clampmail_alternate_actions {
  * @copyright 2012 Louisiana State University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class clampmail_alternate implements clampmail_alternate_actions {
+abstract class alternate implements clampmail_alternate_actions {
 
     /**
      * Return the base URL for alternate email handling.
@@ -74,7 +76,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
      */
     private static function base_url($courseid, $additional= array()) {
         $params = array('courseid' => $courseid) + $additional;
-        return new moodle_url('/blocks/clampmail/alternate.php', $params);
+        return new \moodle_url('/blocks/clampmail/alternate.php', $params);
     }
 
     /**
@@ -168,7 +170,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         }
 
         // Verify key.
-        if (empty($value) or !$DB->get_record('user_private_key', $params)) {
+        if (empty($value) || !$DB->get_record('user_private_key', $params)) {
             $reactivate = self::base_url($course->id, array(
                 'id' => $id, 'action' => self::INFORMATION
             ));
@@ -217,9 +219,9 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
             'activator' => $USER->id, 'key' => $value
         ));
 
-        $a = new stdClass;
+        $a = new \stdClass;
         $a->address = $entry->address;
-        $a->url = html_writer::link($approvalurl, $approvalurl->out());
+        $a->url = \html_writer::link($approvalurl, $approvalurl->out());
         $a->course = $course->fullname;
         $a->fullname = fullname($USER);
 
@@ -239,7 +241,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
         // Create the event, trigger it.
         $event = \block_clampmail\event\alternate_email_added::create(array(
             'courseid' => $course->id,
-            'context' => context_course::instance($course->id),
+            'context' => \context_course::instance($course->id),
             'other' => array(
                 'address' => $entry->address
             )
@@ -250,7 +252,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
 
         if ($result) {
             $html .= $OUTPUT->notification(get_string('alternate_saved', 'block_clampmail', $entry), 'notifysuccess');
-            $html .= html_writer::tag('p', get_string('alternate_success', 'block_clampmail', $entry));
+            $html .= \html_writer::tag('p', get_string('alternate_success', 'block_clampmail', $entry));
         } else {
             $html .= $OUTPUT->notification(get_string('alternate_failure', 'block_clampmail', $entry));
         }
@@ -269,7 +271,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
      * @return string
      */
     public static function interact($course, $id) {
-        $form = new block_clampmail\alternate_form(null, array(
+        $form = new alternate_form(null, array(
             'course' => $course, 'action' => self::INTERACT
         ));
 
@@ -336,7 +338,7 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
             return $html;
         }
 
-        $table = new html_table();
+        $table = new \html_table();
         $table->head = array(
             get_string('email'),
             get_string('alternate_activation_status', 'block_clampmail'),
@@ -356,13 +358,13 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
                 'action' => self::INTERACT, 'id' => $email->id
             ));
 
-            $edit = html_writer::link($editurl, $icons[self::INTERACT]);
+            $edit = \html_writer::link($editurl, $icons[self::INTERACT]);
 
             $deleteurl = self::base_url($course->id, array(
                 'action' => self::DELETE, 'id' => $email->id
             ));
 
-            $delete = html_writer::link($deleteurl, $icons[self::DELETE]);
+            $delete = \html_writer::link($deleteurl, $icons[self::DELETE]);
 
             $row = array(
                 $email->address,
@@ -370,14 +372,14 @@ abstract class clampmail_alternate implements clampmail_alternate_actions {
                 implode(' | ', array($edit, $delete))
             );
 
-            $table->data[] = new html_table_row($row);
+            $table->data[] = new \html_table_row($row);
         }
 
-        $newlink = html_writer::link($newurl, get_string('alternate_new', 'block_clampmail'));
+        $newlink = \html_writer::link($newurl, get_string('alternate_new', 'block_clampmail'));
 
-        $html = html_writer::tag('div', $newlink, array('class' => 'new_link'));
+        $html = \html_writer::tag('div', $newlink, array('class' => 'new_link'));
         $html .= $OUTPUT->box_start();
-        $html .= html_writer::table($table);
+        $html .= \html_writer::table($table);
         $html .= $OUTPUT->box_end();
         return $html;
     }

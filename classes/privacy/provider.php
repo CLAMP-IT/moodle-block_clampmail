@@ -35,15 +35,7 @@ use \core_privacy\local\request\transform;
 use \core_privacy\local\request\userlist;
 use \core_privacy\local\request\approved_userlist;
 
-// Workaround for 3.3.
-if (interface_exists('\core_privacy\local\request\core_userlist_provider')) {
-    interface my_userlist extends \core_privacy\local\request\core_userlist_provider {
-
-    }
-} else {
-    interface my_userlist {
-
-    };
+interface my_userlist extends \core_privacy\local\request\core_userlist_provider {
 }
 
 /**

@@ -24,8 +24,6 @@
 
 namespace block_clampmail\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Alternate 'added' logging event handler.
  *

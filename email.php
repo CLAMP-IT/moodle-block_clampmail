@@ -23,7 +23,6 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
 require_once($CFG->libdir . '/formslib.php');
 
 require_login();
@@ -82,7 +81,7 @@ $PAGE->requires->js('/blocks/clampmail/js/selection.js');
 $courseroles = get_roles_used_in_context($context);
 $filterroles = $DB->get_records_select('role',
     sprintf('id IN (%s)', $config['roleselection']));
-$roles = clampmail::filter_roles($courseroles, $filterroles);
+$roles = block_clampmail\email::filter_roles($courseroles, $filterroles);
 
 // Add role names.
 foreach ($roles as $id => $role) {
@@ -193,7 +192,7 @@ if ($form->is_cancelled()) {
         $data->time = time();
         $data->format = $data->message_editor['format'];
         $data->message = $data->message_editor['text'];
-        $data->attachment = clampmail::attachment_names($data->attachments);
+        $data->attachment = block_clampmail\email::attachment_names($data->attachments);
 
         // Store data; id is needed for file storage.
         if (isset($data->send)) {
@@ -229,10 +228,10 @@ if ($form->is_cancelled()) {
         // Send emails.
         if (isset($data->send)) {
             if ($type == 'drafts') {
-                clampmail::draft_cleanup($context->id, $typeid);
+                block_clampmail\email::draft_cleanup($context->id, $typeid);
             }
 
-            list($filename, $file, $actualfile) = clampmail::process_attachments(
+            list($filename, $file, $actualfile) = block_clampmail\email::process_attachments(
                 $context, $data, $table, $data->id
             );
 

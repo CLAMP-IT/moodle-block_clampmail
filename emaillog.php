@@ -23,7 +23,6 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
 
 $courseid = required_param('courseid', PARAM_INT);
 $type = optional_param('type', 'log', PARAM_ALPHA);
@@ -84,7 +83,7 @@ $count = $DB->count_records($dbtable, $params);
 
 switch ($action) {
     case "confirm":
-        if (clampmail::cleanup($dbtable, $coursecontext->id, $typeid)) {
+        if (block_clampmail\email::cleanup($dbtable, $coursecontext->id, $typeid)) {
             $url = new moodle_url('/blocks/clampmail/emaillog.php', array(
                 'courseid' => $courseid,
                 'type' => $type
@@ -94,10 +93,10 @@ switch ($action) {
             print_error('delete_failed', 'block_clampmail', '', $typeid);
         }
     case "delete":
-        $html = clampmail::delete_dialog($courseid, $type, $typeid);
+        $html = block_clampmail\email::delete_dialog($courseid, $type, $typeid);
         break;
     default:
-        $html = clampmail::list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete);
+        $html = block_clampmail\email::list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete);
 }
 
 if ($canimpersonate and $USER->id != $userid) {

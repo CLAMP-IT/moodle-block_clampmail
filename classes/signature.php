@@ -15,29 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade tasks.
+ * Configuration functions.
  *
  * @package   block_clampmail
- * @copyright 2012 Louisiana State University
+ * @copyright 2017 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_clampmail;
+
 /**
- * Handle plugin upgrades.
+ * Signature functions.
  *
- * @param int $oldversion the current installed version
- * @return boolean
+ * @package   block_clampmail
+ * @copyright 2023 Collaborative Liberal Arts Moodle Project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-function xmldb_block_clampmail_upgrade($oldversion) {
-    global $CFG;
-
-    require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
-
-    if ($oldversion < 2017092301) {
-        // Move configuration to plugin namespace.
-        block_clampmail_migrate_settings();
-        upgrade_plugin_savepoint(true, 2017092301, 'block', 'clampmail');
+class signature {
+    /**
+     * Get the user's signatures.
+     *
+     * @param int $userid the userid
+     * @return array
+     */
+    public static function get_signatures($userid) {
+        global $DB;
+        $signatures = $DB->get_records('block_clampmail_signatures',
+            array('userid' => $userid), 'default_flag DESC');
+        return $signatures;
     }
-
-    return true;
 }
