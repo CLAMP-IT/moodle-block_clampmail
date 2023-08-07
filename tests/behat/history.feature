@@ -68,7 +68,7 @@ Feature: Email history
     And I should see "Hello World"
     When I follow "Open email"
     Then I should see "Selected recipients"
-    And I should see "Doom at 11"
+    And the field "Message" matches value "Doom at 11"
     When I set the following fields to these values:
       | Subject | Hello World Redux |
     And I press "Send email"

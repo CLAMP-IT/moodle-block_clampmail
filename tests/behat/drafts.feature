@@ -39,8 +39,8 @@ Feature: Email drafts
     When I follow "View drafts"
     Then I should see "Hello World"
     When I follow "Open email"
-    Then I should see "Selected recipients"
-    And I should see "Salvation at noon"
+    Then the field "Subject" matches value "Hello World"
+    And the field "Message" matches value "Salvation at noon"
     When I set the following fields to these values:
       | Subject | Goodbye World |
     And I press "Save draft"

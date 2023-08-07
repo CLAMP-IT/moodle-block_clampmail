@@ -26,7 +26,7 @@ Feature: Email signatures
     And I navigate to "CLAMPMail" in current page administration
     And I follow "Manage signatures"
     And I set the following fields to these values:
-      | Signature | Doom At 11 |
+      | Signature text | Doom At 11 |
       | default_flag | 1 |
     And I press "Save changes"
     And I set the following fields to these values:
@@ -38,26 +38,26 @@ Feature: Email signatures
     Then I should see "New signature"
     When I set the following fields to these values:
       | title | Secondary signature |
-      | Signature | Doom At 12 |
+      | Signature text | Doom At 12 |
     When I press "Save changes"
     Then I should see "Changes saved"
     When I set the following fields to these values:
       | id | Primary signature (Default) |
-    Then I should see "Doom At 11"
+    Then the field "Signature text" matches value "Doom At 11"
     When I set the following fields to these values:
       | id | Secondary signature |
-    Then I should see "Doom At 12"
+    Then the field "Signature text" matches value "Doom At 12"
     When I set the following fields to these values:
       | default_flag | 1 |
     And I press "Save changes"
     Then I should see "Changes saved"
     When I set the following fields to these values:
       | id | Secondary signature (Default) |
-    Then I should see "Doom At 12"
+    Then the field "Signature text" matches value "Doom At 12"
     When I press "Delete"
     Then I should see "Are you sure you want to delete Secondary signature?"
     When I press "Cancel"
-    Then I should see "Doom At 12"
+    Then the field "Signature text" matches value "Doom At 12"
     When I press "delete"
     Then I should see "Are you sure you want to delete Secondary signature?"
     When I press "Continue"

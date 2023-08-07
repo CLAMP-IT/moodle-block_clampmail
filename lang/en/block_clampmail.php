@@ -141,5 +141,6 @@ $string['selected'] = 'Selected recipients';
 $string['send_email'] = 'Send email';
 $string['sig'] = 'Signature';
 $string['signature'] = 'Signatures';
+$string['signature_text'] = 'Signature text';
 $string['subject'] = 'Subject';
 $string['title'] = 'Title';
