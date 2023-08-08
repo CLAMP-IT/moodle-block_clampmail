@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Various code cleanup and test fixes
+- Refactor classes and namespaces
+- Full rebranding as CLAMPMail
 - Change internal references from Quickmail to CLAMPMail
 
 ## 3.11.1 (January 31, 2023)
