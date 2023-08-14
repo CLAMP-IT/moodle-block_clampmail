@@ -1,12 +1,12 @@
 # CLAMPMail
 
-![Moodle Plugin CI](https://github.com/CLAMP-IT/clampmail/workflows/Moodle%20Plugin%20CI/badge.svg)
+![Moodle Plugin CI](https://github.com/CLAMP-IT/moodle-block_clampmail/workflows/Moodle%20Plugin%20CI/badge.svg)
 
 CLAMPMail is a Moodle block that provides selective, bulk emailing within courses. This is a fork of the Quickmail block maintained by the Collaborative Liberal Arts Moodle Project which sends attachments via email instead of providing a download link within Moodle.
 
 ## Requirements
 
-- Moodle 3.11 (build 2021051700 or later)
+- Moodle 4.0 (build 2022041900 or later)
 
 ## Features
 

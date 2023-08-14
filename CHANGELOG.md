@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.0 (August 14, 2023)
 
 - Various code cleanup and test fixes
 - Refactor classes and namespaces
