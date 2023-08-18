@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Fix for sesskey validation
+- Install.xml cleanup
+
 ## 4.0.0 (August 14, 2023)
 
 - Various code cleanup and test fixes
