@@ -46,6 +46,7 @@ require_capability('block/clampmail:cansend', $coursecontext);
 
 // Delete signature if requested.
 if ($confirm) {
+    require_sesskey();
     $DB->delete_records('block_clampmail_signatures', array('id' => $signatureid, 'userid' => $USER->id));
     redirect(new moodle_url('/blocks/clampmail/signature.php', array('courseid' => $courseid, 'updated' => 1)));
 }

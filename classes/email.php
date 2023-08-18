@@ -286,7 +286,8 @@ class email {
             $params = array(
                 'courseid' => $log->courseid,
                 'type' => $type,
-                'typeid' => $log->id
+                'typeid' => $log->id,
+                'sesskey' => sesskey(),
             );
 
             $actions = array();
