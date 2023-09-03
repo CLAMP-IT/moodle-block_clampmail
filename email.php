@@ -33,11 +33,11 @@ $sigid = optional_param('sigid', 0, PARAM_INT);
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 require_login($course);
 
-if (!empty($type) and !in_array($type, array('log', 'drafts'))) {
+if (!empty($type) && !in_array($type, array('log', 'drafts'))) {
     throw new moodle_exception('no_type', 'block_clampmail', '', $type);
 }
 
-if (!empty($type) and empty($typeid)) {
+if (!empty($type) && empty($typeid)) {
     $string = new stdclass;
     $string->tpe = $type;
     $string->id = $typeid;
@@ -198,7 +198,7 @@ if ($form->is_cancelled()) {
         } else if (isset($data->draft)) {
             $table = 'drafts';
 
-            if (!empty($typeid) and $type == 'drafts') {
+            if (!empty($typeid) && $type == 'drafts') {
                 $data->id = $typeid;
                 $DB->update_record('block_clampmail_drafts', $data);
             } else {
@@ -212,7 +212,7 @@ if ($form->is_cancelled()) {
         $DB->update_record('block_clampmail_'.$table, $data);
 
         $prepender = $config['prepend_class'];
-        if (!empty($prepender) and !empty($course->$prepender)) {
+        if (!empty($prepender) && !empty($course->$prepender)) {
             $subject = "[{$course->$prepender}] $data->subject";
         } else {
             $subject = $data->subject;
@@ -232,7 +232,7 @@ if ($form->is_cancelled()) {
                 $context, $data, $table, $data->id
             );
 
-            if (!empty($sigs) and $data->sigid > -1) {
+            if (!empty($sigs) && $data->sigid > -1) {
                 $sig = $sigs[$data->sigid];
 
                 $signaturetext = file_rewrite_pluginfile_urls($sig->signature,

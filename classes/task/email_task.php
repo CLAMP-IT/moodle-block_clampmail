@@ -47,7 +47,7 @@ class email_task extends \core\task\adhoc_task {
         $data = $this->get_custom_data();
 
         // Abort if no one to email.
-        if(empty($data->mailto)) {
+        if (empty($data->mailto)) {
             mtrace("No users to email");
             return;
         }

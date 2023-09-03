@@ -55,11 +55,11 @@ $validactions = array('delete', 'confirm');
 
 $candelete = ($type == 'drafts');
 
-if (isset($action) and !in_array($action, $validactions)) {
+if (isset($action) && !in_array($action, $validactions)) {
     throw new moodle_exception('not_valid_action', 'block_clampmail', '', $action);
 }
 
-if (isset($action) and empty($typeid)) {
+if (isset($action) && empty($typeid)) {
     throw new moodle_exception('not_valid_typeid', 'block_clampmail', '', $action);
 }
 
@@ -101,7 +101,7 @@ switch ($action) {
         $html = block_clampmail\email::list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete);
 }
 
-if ($canimpersonate and $USER->id != $userid) {
+if ($canimpersonate && $USER->id != $userid) {
     $user = $DB->get_record('user', array('id' => $userid));
     $header .= ' for '. fullname($user);
 }
