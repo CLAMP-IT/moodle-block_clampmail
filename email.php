@@ -34,7 +34,7 @@ $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 require_login($course);
 
 if (!empty($type) and !in_array($type, array('log', 'drafts'))) {
-    print_error('no_type', 'block_clampmail', '', $type);
+    throw new moodle_exception('no_type', 'block_clampmail', '', $type);
 }
 
 if (!empty($type) and empty($typeid)) {
@@ -42,12 +42,12 @@ if (!empty($type) and empty($typeid)) {
     $string->tpe = $type;
     $string->id = $typeid;
 
-    print_error('no_typeid', 'block_clampmail', '', $string);
+    throw new moodle_exception('no_typeid', 'block_clampmail', '', $string);
 }
 
 $context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
-    print_error('no_permission', 'block_clampmail');
+    throw new moodle_exception('no_permission', 'block_clampmail');
 }
 
 $config = block_clampmail\config::load_configuration($course);
