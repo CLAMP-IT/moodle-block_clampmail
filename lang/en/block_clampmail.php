@@ -94,7 +94,6 @@ $string['messageprovider:emailfaileddelivery'] = 'Notification of failed email d
 $string['missing_recipient'] = 'The recipient with the id {$a} is no longer enrolled in this course.';
 $string['newsignature'] = 'New signature';
 $string['no_alternates'] = 'No alternate emails found for {$a->fullname}. Continue to make one.';
-$string['no_course'] = 'Invalid course with id of {$a}';
 $string['no_drafts'] = 'You have no email drafts.';
 $string['no_email_subject'] = 'Failed to send email';
 $string['no_email_body'] = 'Could not send "{$a->subject}" to {$a->firstname} {$a->lastname}.';

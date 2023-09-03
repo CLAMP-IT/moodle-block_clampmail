@@ -28,13 +28,9 @@ $courseid = required_param('courseid', PARAM_INT);
 $signatureid = optional_param('id', 0, PARAM_INT);
 $updated = optional_param('updated', 0, PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_INT);
+
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-
 require_login($course);
-
-if ($courseid && !$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
-}
 
 // Setup page.
 $PAGE->set_url('/blocks/clampmail/signature.php', array('courseid' => $courseid));

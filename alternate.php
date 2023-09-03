@@ -30,7 +30,6 @@ $id = optional_param('id', null, PARAM_INT);
 $flash = optional_param('flash', 0, PARAM_INT);
 
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-
 $context = context_course::instance($courseid);
 
 // Permission.

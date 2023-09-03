@@ -25,16 +25,13 @@
 require_once('../../config.php');
 require_once($CFG->libdir . '/formslib.php');
 
-require_login();
-
 $courseid = required_param('courseid', PARAM_INT);
 $type = optional_param('type', '', PARAM_ALPHA);
 $typeid = optional_param('typeid', 0, PARAM_INT);
 $sigid = optional_param('sigid', 0, PARAM_INT);
 
-if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
-}
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+require_login($course);
 
 if (!empty($type) and !in_array($type, array('log', 'drafts'))) {
     print_error('no_type', 'block_clampmail', '', $type);

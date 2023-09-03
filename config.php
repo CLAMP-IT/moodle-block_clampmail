@@ -25,14 +25,11 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-require_login();
-
 $courseid = required_param('courseid', PARAM_INT);
 $reset = optional_param('reset', 0, PARAM_INT);
 
-if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
-}
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+require_login($course);
 
 $context = context_course::instance($courseid);
 
