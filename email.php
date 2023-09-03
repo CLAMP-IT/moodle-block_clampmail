@@ -262,24 +262,29 @@ if ($form->is_cancelled()) {
             $data->messagetext = format_text_email($data->message, $data->format);
             $data->messagehtml = format_text($data->message, $data->format);
 
-            // Send emails.
-            foreach (explode(',', $data->mailto) as $userid) {
-                $success = email_to_user($everyone[$userid], $user, $subject,
-                    $data->messagetext, $data->messagehtml, $file, $filename, false, $user->email);
+            // Users to email.
+            $userstoemail = array_intersect_key($everyone, array_flip(explode(',', $data->mailto)));
 
-                if (!$success) {
-                    $warnings[] = get_string("no_email", 'block_clampmail', $everyone[$userid]);
-                }
-            }
-
-            if ($data->receipt) {
-                email_to_user($USER, $user, $subject,
-                    $data->messagetext, $data->messagehtml, $file, $filename, false, $user->email);
-            }
-
-            if (!empty($actualfile)) {
-                unlink($actualfile);
-            }
+            // Prepare the task.
+            $task = new block_clampmail\task\email_task();
+            $task->set_custom_data(
+                array(
+                    'actualfile' => $actualfile,
+                    'file' => $file,
+                    'filename' => $filename,
+                    'mailto' => $userstoemail,
+                    'messagetext' => $data->messagetext,
+                    'messagehtml' => $data->messagehtml,
+                    'replyto' => $user->email,
+                    'sender' => $user,
+                    'subject' => $subject
+                )
+            );
+            \core\task\manager::queue_adhoc_task($task);
+            redirect(
+                new moodle_url('/blocks/clampmail/emaillog.php', array('courseid' => $course->id)),
+                get_string('emailsent', 'block_clampmail', count($userstoemail))
+            );
         }
     }
     $email = $data;

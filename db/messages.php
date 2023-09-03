@@ -15,17 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * block_clampmail version information.
+ * Message provider for block_clampmail.
  *
- * @package   block_clampmail
- * @copyright 2012 Louisiana State University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_clampmail
+ * @copyright  2023 Collaborative Liberal Arts Moodle Project
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->version = 2023090200; // The current module version (Date: YYYYMMDDXX).
-$plugin->requires = 2022041900; // Requires this Moodle version.
-$plugin->component = 'block_clampmail'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE; // The current stability of this version (used for diagnostics).
-$plugin->release = 'v4.0.2'; // The release name of this version (used for diagnostics).
+$messageproviders = array (
+    // Failed email delivery.
+    'emaildeliveryfailure' => array(),
+);

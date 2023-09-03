@@ -57,7 +57,7 @@ class users {
         $users = array();
 
         $fieldsapi = \core_user\fields::for_userpic();
-        $fields = $fieldsapi->get_sql('u', false, '', '', false)->selects . ',u.mailformat, u.maildisplay, u.emailstop';
+        $fields = $fieldsapi->get_sql('u', false, '', '', false)->selects . ',u.username, u.mailformat, u.maildisplay, u.emailstop';
 
         $usersfromdb = get_enrolled_users(
             $context, '', 0, $fields, "", 0, 0, true
