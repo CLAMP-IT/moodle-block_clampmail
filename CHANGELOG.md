@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.11.2 (January 23, 2024)
+
+- Bump composer constraint
+
 ## 3.11.1 (January 31, 2023)
 
 - Drop support for Moodle 3.11
