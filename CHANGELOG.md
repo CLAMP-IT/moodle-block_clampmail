@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add support for Moodle 4.4
+- Drop support for Moodle 4.0
+
 ## 4.0.1 (August 21, 2023)
 
 - Fix for sesskey validation
