@@ -27,10 +27,15 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
     require_once($CFG->dirroot . '/blocks/clampmail/lib.php');
 
-    $select = array(0 => get_string('no'), 1 => get_string('yes'));
+    $settings->add(
+        new admin_setting_configtext('block_clampmail/branding',
+            get_string('branding', 'block_clampmail'), get_string('branding_help', 'block_clampmail'),
+            get_string('pluginname', 'block_clampmail'), PARAM_ALPHA
+        )
+    );
+
 
     $roles = $DB->get_records('role', null, 'sortorder ASC');
-
     $defaultroles = array('editingteacher', 'teacher', 'student');
     $defaults = array_filter($roles, function ($role) use ($defaultroles) {
         return in_array($role->shortname, $defaultroles);
@@ -47,6 +52,7 @@ if ($ADMIN->fulltree) {
         )
     );
 
+    $select = array(0 => get_string('no'), 1 => get_string('yes'));
     $settings->add(
         new admin_setting_configselect('block_clampmail/receipt',
         get_string('receipt', 'block_clampmail'), get_string('receipt_help', 'block_clampmail'),

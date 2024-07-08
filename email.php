@@ -62,7 +62,7 @@ $altparams = array('courseid' => $course->id, 'valid' => 1);
 $alternates = $DB->get_records_menu('block_clampmail_alternate',
     $altparams, '', 'id, address');
 
-$blockname = get_string('pluginname', 'block_clampmail');
+$blockname = get_config('block_clampmail', 'branding');
 $header = get_string('composenew', 'block_clampmail');
 
 $PAGE->set_context($context);

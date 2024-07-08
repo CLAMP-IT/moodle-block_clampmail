@@ -63,7 +63,7 @@ if (isset($action) and empty($typeid)) {
     print_error('not_valid_typeid', 'block_clampmail', '', $action);
 }
 
-$blockname = get_string('pluginname', 'block_clampmail');
+$blockname = get_config('block_clampmail', 'branding');
 $header = get_string($type, 'block_clampmail');
 
 $PAGE->set_context($coursecontext);

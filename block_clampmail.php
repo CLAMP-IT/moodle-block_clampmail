@@ -34,7 +34,7 @@ class block_clampmail extends block_list {
      * Set the block title.
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_clampmail');
+        $this->title = get_config('block_clampmail', 'branding');
     }
 
     /**

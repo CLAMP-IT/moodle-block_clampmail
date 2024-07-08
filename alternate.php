@@ -37,7 +37,7 @@ $context = context_course::instance($courseid);
 require_login($course);
 require_capability('block/clampmail:allowalternate', $context);
 
-$blockname = get_string('pluginname', 'block_clampmail');
+$blockname = get_config('block_clampmail', 'branding');
 $heading = get_string('alternate', 'block_clampmail');
 $title = "$blockname: $heading";
 

@@ -84,10 +84,10 @@ $signature = file_prepare_standard_editor(
 );
 
 // Finish setting up the page.
-$blockname = get_string('pluginname', 'block_clampmail');
+$blockname = get_config('block_clampmail', 'branding');
 $header = get_string('manage_signatures', 'block_clampmail');
 $PAGE->set_title($course->shortname . ': '.
-    get_string('pluginname', 'block_clampmail') . ': '.
+    $blockname . ': '.
     get_string('signature', 'block_clampmail'));
 $PAGE->set_heading($course->fullname);
 $PAGE->set_context($coursecontext);

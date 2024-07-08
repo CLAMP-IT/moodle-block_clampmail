@@ -64,8 +64,8 @@ function block_clampmail_pluginfile($course, $record, $context, $filearea, $args
 function block_clampmail_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('block/clampmail:cansend', $context)) {
         $url = new moodle_url('/blocks/clampmail/email.php', array('courseid' => $course->id));
-        $node = navigation_node::create(get_string('pluginname', 'block_clampmail'), $url,
-                navigation_node::TYPE_SETTING, null, null, new pix_icon('i/email', get_string('pluginname', 'block_clampmail')));
+        $node = navigation_node::create(get_config('block_clampmail', 'branding'), $url,
+                navigation_node::TYPE_SETTING, null, null, new pix_icon('i/email', get_config('block_clampmail', 'branding')));
         $navigation->add_node($node);
     }
 }

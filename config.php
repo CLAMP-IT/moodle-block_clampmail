@@ -38,7 +38,7 @@ $context = context_course::instance($courseid);
 
 require_capability('block/clampmail:canconfig', $context);
 
-$blockname = get_string('pluginname', 'block_clampmail');
+$blockname = get_config('block_clampmail', 'branding');
 $header = get_string('config', 'block_clampmail');
 
 $PAGE->set_context($context);

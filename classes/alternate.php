@@ -233,7 +233,7 @@ abstract class alternate implements clampmail_alternate_actions {
         // Send email.
         $user = clone($USER);
         $user->email = $entry->address;
-        $user->firstname = get_string('pluginname', 'block_clampmail');
+        $user->firstname = get_config('block_clampmail', 'branding');
         $user->lastname = get_string('alternate', 'block_clampmail');
 
         $result = email_to_user($user, $from, $subject, $body, $htmlbody);
