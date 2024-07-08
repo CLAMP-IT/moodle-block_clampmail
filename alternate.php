@@ -53,7 +53,7 @@ $PAGE->navbar->add($heading);
 
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
-$PAGE->set_pagetype($blockname);
+$PAGE->set_pagetype('CLAMPMail');
 
 if (!method_exists('block_clampmail\alternate', $action)) {
     // Always fallback on view.

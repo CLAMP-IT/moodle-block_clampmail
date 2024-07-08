@@ -73,7 +73,7 @@ $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': ' . $header);
 $PAGE->set_heading($blockname . ': ' . $header);
 $PAGE->set_url('/blocks/clampmail/emaillog.php', array('courseid' => $courseid, 'type' => $type));
-$PAGE->set_pagetype($blockname);
+$PAGE->set_pagetype('CLAMPMail');
 $PAGE->set_pagelayout('standard');
 
 $dbtable = 'block_clampmail_' . $type;

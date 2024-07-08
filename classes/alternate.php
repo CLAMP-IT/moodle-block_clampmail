@@ -225,7 +225,7 @@ abstract class alternate implements clampmail_alternate_actions {
         $a->course = $course->fullname;
         $a->fullname = fullname($USER);
 
-        $from = get_string('alternate_from', 'block_clampmail');
+        $from = get_string('alternate_from', 'block_clampmail', get_string('pluginname', 'block_clampmail'));
         $subject = get_string('alternate_subject', 'block_clampmail');
         $htmlbody = get_string('alternate_body', 'block_clampmail', $a);
         $body = strip_tags($htmlbody);

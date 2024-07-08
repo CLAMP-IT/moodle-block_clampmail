@@ -96,7 +96,7 @@ $PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', arr
 $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname . ': '.$header);
-$PAGE->set_pagetype($blockname);
+$PAGE->set_pagetype('CLAMPMail');
 
 // Create form.
 $mform = new block_clampmail\signature_form('signature.php', array(

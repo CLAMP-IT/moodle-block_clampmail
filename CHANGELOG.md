@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- [BUGFIX]: CSS classes shouldn't depend on the value of `pluginname`
 - Add support for Moodle 4.4
 - Drop support for Moodle 4.0
 

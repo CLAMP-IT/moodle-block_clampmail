@@ -50,7 +50,7 @@ if (!empty($type) and empty($typeid)) {
 
 $context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
-    print_error('no_permission', 'block_clampmail');
+    print_error('no_permission', 'block_clampmail', $blockname);
 }
 
 $config = block_clampmail\config::load_configuration($course);
@@ -71,7 +71,7 @@ $PAGE->navbar->add($header);
 $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname . ': '.$header);
 $PAGE->set_url('/blocks/clampmail/email.php', array('courseid' => $courseid));
-$PAGE->set_pagetype($blockname);
+$PAGE->set_pagetype('CLAMPMail');
 $PAGE->set_pagelayout('standard');
 
 $PAGE->requires->jquery();

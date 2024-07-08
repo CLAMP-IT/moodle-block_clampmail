@@ -48,7 +48,7 @@ $PAGE->set_title($blockname . ': '. $header);
 $PAGE->set_heading($blockname. ': '. $header);
 $PAGE->navbar->add($blockname, new moodle_url('/blocks/clampmail/email.php', array('courseid' => $courseid)));
 $PAGE->navbar->add($header);
-$PAGE->set_pagetype($blockname);
+$PAGE->set_pagetype('CLAMPMail');
 $PAGE->set_pagelayout('standard');
 
 $changed = false;

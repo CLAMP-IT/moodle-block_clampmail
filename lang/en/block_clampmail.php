@@ -54,7 +54,7 @@ Thank you.
 ';
 $string['alternate_delete_confirm'] = 'Are you sure you want to delete {$a->address}? This action cannot be undone.';
 $string['alternate_failure'] = 'An email could not be sent to {$a->address}. Please verify that {$a->address} exists, and try again.';
-$string['alternate_from'] = 'Moodle: CLAMPMail';
+$string['alternate_from'] = 'Moodle: {$a}';
 $string['alternate_invalid'] = 'Activation link is no longer valid for {$a->address}. Continue to resend activation link.';
 $string['alternate_new'] = 'Add alternate address';
 $string['alternate_saved'] = 'Alternate address {$a->address} has been saved.';
@@ -98,7 +98,7 @@ $string['no_email'] = 'Could not email {$a->firstname} {$a->lastname}.';
 $string['no_filter'] = 'No filter';
 $string['no_group'] = 'Not in a group';
 $string['no_log'] = 'You have no email history yet.';
-$string['no_permission'] = 'You do not have permission to send emails with CLAMPMail.';
+$string['no_permission'] = 'You do not have permission to send emails with {$a}.';
 $string['no_recipient_emails'] = 'There are no email recipients. Either you forgot to supply one, or you selected addresses you are not allowed to send to.';
 $string['no_selected'] = 'You must select some users for emailing.';
 $string['no_subject'] = 'You must have a subject';
