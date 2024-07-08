@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.2 (July 8, 2024)
 
 - [BUGFIX]: CSS classes shouldn't depend on the value of `pluginname`
 - Add support for Moodle 4.4
