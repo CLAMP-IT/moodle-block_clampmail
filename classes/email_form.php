@@ -53,7 +53,7 @@ class email_form extends \moodleform {
      * @return int
      */
     public function get_user_count() {
-        return count($this->_customdata['users']) + count($this->_customdata['selected']);
+        return count($this->_customdata['all_users']);
     }
 
     /**
@@ -127,7 +127,7 @@ class email_form extends \moodleform {
      * The email form definition.
      */
     public function definition() {
-        global $CFG, $USER, $COURSE, $OUTPUT;
+        global $CFG, $USER, $COURSE;
 
         $mform =& $this->_form;
 
@@ -142,82 +142,9 @@ class email_form extends \moodleform {
         $mform->addElement('hidden', 'typeid', 0);
         $mform->setType('typeid', PARAM_INT);
 
-        $roleoptions = array('none' => get_string('no_filter', 'block_clampmail'));
-        foreach ($this->_customdata['roles'] as $role) {
-            $roleoptions[$role->shortname] = $role->name;
-        }
-
-        $groupoptions = empty($this->_customdata['groups']) ? array() : array(
-            'all' => get_string('all_groups', 'block_clampmail')
-        );
-        foreach ($this->_customdata['groups'] as $group) {
-            $groupoptions[$group->id] = $group->name;
-        }
-        $groupoptions[0] = get_string('no_group', 'block_clampmail');
-
         $context = \context_course::instance($COURSE->id);
 
         $config = config::load_configuration($COURSE);
-
-        $reqimg = $OUTPUT->pix_icon('req', get_string('requiredelement', 'form'), 'moodle', array('class' => 'req'));
-
-        $table = new \html_table();
-        $table->attributes['class'] = 'emailtable';
-
-        $selectedrequiredlabel = new \html_table_cell();
-        $selectedrequiredspan = \html_writer::tag('span', $reqimg, array('class' => 'req'));
-        $selectedrequiredstrong = \html_writer::tag('strong',
-            get_string('selected', 'block_clampmail') . $selectedrequiredspan, array('class' => 'required'));
-        $selectedrequiredlabel->text = \html_writer::tag('label', $selectedrequiredstrong, array('for' => 'mail_users'));
-
-        $rolefilterlabel = new \html_table_cell();
-        $rolefilterlabel->text = \html_writer::tag('label',
-            get_string('role_filter', 'block_clampmail'), array('class' => 'object_labels', 'for' => 'roles'));
-
-        $selectfilter = new \html_table_cell();
-        $selectfilter->text = \html_writer::tag('select',
-            array_reduce($this->_customdata['selected'], array($this, 'reduce_users'), ''),
-            array('id' => 'mail_users', 'multiple' => 'multiple', 'size' => 30));
-
-        $embed = function ($text, $id) {
-            return \html_writer::tag('p',
-                \html_writer::empty_tag('input', array(
-                    'value' => $text, 'type' => 'button', 'id' => $id
-                ))
-            );
-        };
-
-        $embedquick = function ($text) use ($embed) {
-            return $embed(get_string($text, 'block_clampmail'), $text);
-        };
-
-        $centerbuttons = new \html_table_cell();
-        $centerbuttons->text = (
-            $embed($OUTPUT->larrow() . ' ' . get_string('add_button', 'block_clampmail'), 'add_button') .
-            $embed(get_string('remove_button', 'block_clampmail') . ' ' . $OUTPUT->rarrow(), 'remove_button') .
-            $embedquick('add_all') .
-            $embedquick('remove_all')
-        );
-
-        $filters = new \html_table_cell();
-        $filters->text = \html_writer::tag('div',
-            \html_writer::select($roleoptions, '', 'none', null, array('id' => 'roles'))
-        ) . \html_writer::tag('label',
-            get_string('potential_groups', 'block_clampmail'),
-            array('class' => 'object_labels', 'for' => 'groups')
-        ) . \html_writer::tag('div',
-            \html_writer::select($groupoptions, '', 'all', null,
-            array('id' => 'groups', 'multiple' => 'multiple', 'size' => 5))
-        ) . \html_writer::tag('label',
-            get_string('potential_users', 'block_clampmail'),
-            array('class' => 'object_labels', 'for' => 'from_users')
-        ) . \html_writer::tag('div',
-            \html_writer::tag('select', $this->display_options($this->_customdata['users']),
-            array('id' => 'from_users', 'multiple' => 'multiple', 'size' => 20))
-        );
-
-        $table->data[] = new \html_table_row(array($selectedrequiredlabel, new \html_table_cell(), $rolefilterlabel));
-        $table->data[] = new \html_table_row(array($selectfilter, $centerbuttons, $filters));
 
         if (has_capability('block/clampmail:allowalternate', $context)) {
             $alternates = $this->_customdata['alternates'];
@@ -234,9 +161,12 @@ class email_form extends \moodleform {
             $mform->setType('alternateid', PARAM_INT);
         }
 
-        $mform->addElement('static', 'selectors', '', \html_writer::table($table));
+        // See definition_after_data, which needs mailto's value to render the
+        // recipient selectors.
+        $mform->addElement('static', 'selectors', '', '');
         $mform->setType('selectors', PARAM_RAW);
 
+        // attachments
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'block_clampmail'), null,
         array(
             'areamaxbytes' => get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes, get_config('block_clampmail', 'maxbytes'))
@@ -269,5 +199,113 @@ class email_form extends \moodleform {
         $buttons[] =& $mform->createElement('cancel');
 
         $mform->addGroup($buttons, 'buttons', get_string('actions', 'block_clampmail'), array(' '), false);
+    }
+
+    /**
+     * Add the recipient selection widget. These fields are used by 
+     * js/selection.coffee, which sets the hidden input mailto. We
+     * still have to create the <select> tags with the correct
+     * contents.
+     * 
+     * definition() is called in the constructor. 
+     * definition_after_data() is called before accessing the form data 
+     * or displaying the form.
+     */
+    function definition_after_data() 
+    {
+        global $OUTPUT;
+
+        $mform = $this->_form;
+
+        $mailto = $mform->exportValue('mailto');
+        $selected = [];
+        $errors = [];
+        $potential = $this->_customdata['all_users'];
+        if (!empty($mailto)) {
+            foreach (explode(',', $mailto) as $id) {
+                if (array_key_exists($id, $potential)) {
+                    $selected[$id] = $potential[$id];
+                    unset($potential[$id]);
+                } else {
+                    $errors[] = $id;
+                }
+            }
+        }
+
+        $table = new \html_table();
+        $table->attributes['class'] = 'emailtable';
+
+        $reqimg = $OUTPUT->pix_icon('req', get_string('requiredelement', 'form'), 'moodle', array('class' => 'req'));
+
+        $selectedrequiredlabel = new \html_table_cell();
+        $selectedrequiredspan = \html_writer::tag('span', $reqimg, array('class' => 'req'));
+        $selectedrequiredstrong = \html_writer::tag('strong',
+            get_string('selected', 'block_clampmail') . $selectedrequiredspan, array('class' => 'required'));
+        $selectedrequiredlabel->text = \html_writer::tag('label', $selectedrequiredstrong, array('for' => 'mail_users'));
+
+        $rolefilterlabel = new \html_table_cell();
+        $rolefilterlabel->text = \html_writer::tag('label',
+            get_string('role_filter', 'block_clampmail'), array('class' => 'object_labels', 'for' => 'roles'));
+
+        $selectfilter = new \html_table_cell();
+        $selectfilter->text = \html_writer::tag('select',
+            array_reduce($selected, array($this, 'reduce_users'), ''),
+            array('id' => 'mail_users', 'multiple' => 'multiple', 'size' => 30));
+
+        $embed = function ($text, $id) {
+            return \html_writer::tag('p',
+                \html_writer::empty_tag('input', array(
+                    'value' => $text, 'type' => 'button', 'id' => $id
+                ))
+            );
+        };
+
+        $embedquick = function ($text) use ($embed) {
+            return $embed(get_string($text, 'block_clampmail'), $text);
+        };
+
+        $centerbuttons = new \html_table_cell();
+        $centerbuttons->text = (
+            $embed($OUTPUT->larrow() . ' ' . get_string('add_button', 'block_clampmail'), 'add_button') .
+            $embed(get_string('remove_button', 'block_clampmail') . ' ' . $OUTPUT->rarrow(), 'remove_button') .
+            $embedquick('add_all') .
+            $embedquick('remove_all')
+        );
+
+        $roleoptions = array('none' => get_string('no_filter', 'block_clampmail'));
+        foreach ($this->_customdata['roles'] as $role) {
+            $roleoptions[$role->shortname] = $role->name;
+        }
+
+        $groupoptions = empty($this->_customdata['groups']) ? array() : array(
+            'all' => get_string('all_groups', 'block_clampmail')
+        );
+        foreach ($this->_customdata['groups'] as $group) {
+            $groupoptions[$group->id] = $group->name;
+        }
+        $groupoptions[0] = get_string('no_group', 'block_clampmail');
+
+        $filters = new \html_table_cell();
+        $filters->text = \html_writer::tag('div',
+            \html_writer::select($roleoptions, '', 'none', null, array('id' => 'roles'))
+        ) . \html_writer::tag('label',
+            get_string('potential_groups', 'block_clampmail'),
+            array('class' => 'object_labels', 'for' => 'groups')
+        ) . \html_writer::tag('div',
+            \html_writer::select($groupoptions, '', 'all', null,
+            array('id' => 'groups', 'multiple' => 'multiple', 'size' => 5))
+        ) . \html_writer::tag('label',
+            get_string('potential_users', 'block_clampmail'),
+            array('class' => 'object_labels', 'for' => 'from_users')
+        ) . \html_writer::tag('div',
+            \html_writer::tag('select', $this->display_options($potential),
+            array('id' => 'from_users', 'multiple' => 'multiple', 'size' => 20))
+        );
+
+        $table->data[] = new \html_table_row(array($selectedrequiredlabel, new \html_table_cell(), $rolefilterlabel));
+        $table->data[] = new \html_table_row(array($selectfilter, $centerbuttons, $filters));
+
+        $element = $mform->getElement('selectors');
+        $element->setText(\html_writer::table($table));
     }
 }
