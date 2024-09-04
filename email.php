@@ -115,57 +115,17 @@ if ($groupmode == SEPARATEGROUPS && !has_capability('block/clampmail:cansendtoal
     }
 }
 
-if (!empty($type)) {
-    $email = $DB->get_record('block_clampmail_'.$type, array('id' => $typeid));
-    $email->messageformat = $email->format;
-} else {
-    $email = new stdClass;
-    $email->id = null;
-    $email->subject = optional_param('subject', '', PARAM_TEXT);
-    $email->message = optional_param('message_editor[text]', '', PARAM_RAW);
-    $email->mailto = optional_param('mailto', '', PARAM_TEXT);
-    $email->messageformat = editors_get_preferred_format();
-}
-$email->messagetext = $email->message;
-
-$defaultsigid = $DB->get_field('block_clampmail_signatures', 'id', array(
-    'userid' => $USER->id, 'default_flag' => 1
-));
-$email->sigid = $defaultsigid ? $defaultsigid : -1;
-
-// Some setters for the form.
-$email->type = $type;
-$email->typeid = $typeid;
-
 $editoroptions = array(
     'trusttext' => true,
     'subdirs' => true,
     'maxfiles' => EDITOR_UNLIMITED_FILES,
     'context' => $context,
-    'format' => $email->messageformat
 );
-
-$email = file_prepare_standard_editor($email, 'message', $editoroptions,
-    $context, 'block_clampmail', $type, $email->id);
-
-$warnings = array();
-$selected = array();
-if (!empty($email->mailto)) {
-    foreach (explode(',', $email->mailto) as $id) {
-        if (array_key_exists($id, $users)) {
-            $selected[$id] = $users[$id];
-            unset($users[$id]);
-        } else {
-            $warnings[] = get_string('missing_recipient', 'block_clampmail', $id);
-        }
-    }
-}
 
 $form = new block_clampmail\email_form(null,
     array(
         'editor_options' => $editoroptions,
-        'selected' => $selected,
-        'users' => $users,
+        'all_users' => $users,
         'roles' => $roles,
         'groups' => $groups,
         'groupmode' => $groupmode,
@@ -175,15 +135,71 @@ $form = new block_clampmail\email_form(null,
     )
 );
 
+if ($form->is_submitted()) {
+    // User provided form data. Verify we won't save over
+    // someone else's draft
+    if (!empty($typeid)) {
+        $DB->get_record(
+            'block_clampmail_'.$type, 
+            array('id' => $typeid, 'courseid' => $courseid),
+            '1', 
+            MUST_EXIST);
+    }
+
+} elseif (!empty($type)) {
+    // User is viewing a draft or logged email
+    $loaded_email = $DB->get_record(
+        'block_clampmail_'.$type,
+        array('id' => $typeid, 'courseid' => $courseid),
+        '*',
+        MUST_EXIST);
+    $loaded_email->messageformat = $loaded_email->format;
+    $loaded_email->type = $type;
+    $loaded_email->typeid = $typeid;
+    $loaded_email = file_prepare_standard_editor($loaded_email, 'message', $editoroptions,
+        $context, 'block_clampmail', $type, $typeid);
+
+    $attachid = file_get_submitted_draft_itemid('attachment');
+    file_prepare_draft_area(
+        $attachid, $context->id, 'block_clampmail',
+        'attachment_' . $type, $typeid
+    );
+    $loaded_email->attachments = $attachid;
+    $form->set_data($loaded_email);
+    
+} else {
+    // User is composing a new email
+    $new_email = new stdClass();
+
+    $defaultsigid = $DB->get_field('block_clampmail_signatures', 'id', array(
+        'userid' => $USER->id, 'default_flag' => 1
+    ));
+    $new_email->sigid = $defaultsigid ? $defaultsigid : -1;
+
+    $new_email = file_prepare_standard_editor($new_email, 'message', $editoroptions,
+        $context, 'block_clampmail', '', '');
+
+    $form->set_data($new_email);
+}
+
 if ($form->is_cancelled()) {
     redirect(new moodle_url('/course/view.php?id='.$courseid));
 } else if ($data = $form->get_data()) {
+    // Form was submitted and valid according basic checks.
+    $warnings = [];
+
     if (empty($data->subject)) {
         $warnings[] = get_string('no_subject', 'block_clampmail');
     }
 
     if (empty($data->mailto)) {
         $warnings[] = get_string('no_recipient_emails', 'block_clampmail');
+    } else {
+        foreach (explode(',', $data->mailto) as $id) {
+            if (!array_key_exists($id, $users)) {
+                $warnings[] = get_string('missing_recipient', 'block_clampmail', $id);
+            }
+        }
     }
 
     if (empty($warnings)) {
@@ -281,29 +297,15 @@ if ($form->is_cancelled()) {
                 unlink($actualfile);
             }
         }
-    }
-    $email = $data;
-}
-
-if (empty($email->attachments)) {
-    if (!empty($type)) {
-        $attachid = file_get_submitted_draft_itemid('attachment');
-        file_prepare_draft_area(
-            $attachid, $context->id, 'block_clampmail',
-            'attachment_' . $type, $typeid
-        );
-        $email->attachments = $attachid;
-    }
-}
-
-$form->set_data($email);
-
-if (empty($warnings)) {
-    if (isset($email->send)) {
-        redirect(new moodle_url('/blocks/clampmail/emaillog.php',
-            array('courseid' => $course->id)));
-    } else if (isset($email->draft)) {
-        $warnings['success'] = get_string("changessaved");
+    
+        if (empty($warnings)) {
+            if (isset($data->send)) {
+                redirect(new moodle_url('/blocks/clampmail/emaillog.php',
+                    array('courseid' => $course->id)));
+            } else if (isset($data->draft)) {
+                $warnings['success'] = get_string("changessaved");
+            }
+        }
     }
 }
 
@@ -316,7 +318,7 @@ echo block_clampmail\navigation::print_navigation(
 
 // Don't show the form if there's no valid email target.
 $returnurl = new moodle_url('/course/view.php', array('id' => $course->id));
-if ($form->get_user_count() == 0) {
+if (count($users) == 0) {
     notice(get_string('no_users', 'block_clampmail'), $returnurl);
 } else {
     foreach ($warnings as $type => $warning) {
