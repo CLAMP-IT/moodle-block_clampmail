@@ -25,7 +25,7 @@ defined('MOODLE_INTERNAL') || die;
 global $CFG;
 require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
 
-class block_clampmail_upgradelib_testcase extends advanced_testcase {
+class block_clampmail_upgradelib_test extends advanced_testcase {
     public function test_upgradelib() {
         global $DB;
         $this->resetAfterTest(true);

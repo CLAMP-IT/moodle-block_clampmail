@@ -24,7 +24,9 @@ defined('MOODLE_INTERNAL') || die();
 
 use \block_clampmail\privacy\provider;
 
-class block_clampmail_privacy_testcase extends \core_privacy\tests\provider_testcase {
+class block_clampmail_privacy_test extends \core_privacy\tests\provider_testcase {
+
+    protected $data;
 
     /**
      * Test setUp.
