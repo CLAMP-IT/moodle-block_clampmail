@@ -31,9 +31,9 @@ $capabilities = array(
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ),
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
     ),
     'block/clampmail:cansend' => array(
         'captype' => 'write',
@@ -42,8 +42,8 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW
-        )
+            'teacher' => CAP_ALLOW,
+        ),
     ),
     'block/clampmail:allowalternate' => array(
         'captype' => 'write',
@@ -52,23 +52,23 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW
-        )
+            'coursecreator' => CAP_ALLOW,
+        ),
     ),
     'block/clampmail:canconfig' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW
-        )
+            'editingteacher' => CAP_ALLOW,
+        ),
     ),
     'block/clampmail:canimpersonate' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
-        )
+        ),
     ),
     'block/clampmail:cansendtoall' => array(
         'captype' => 'write',
@@ -77,6 +77,6 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW
         ),
-        'clonepermissionsfrom' => 'moodle/site:accessallgroups'
-    )
+        'clonepermissionsfrom' => 'moodle/site:accessallgroups',
+    ),
 );

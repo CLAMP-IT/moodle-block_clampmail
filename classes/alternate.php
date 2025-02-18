@@ -26,6 +26,13 @@ namespace block_clampmail;
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Library functions for the alternate email functionality.
+ *
+ * @package   block_clampmail
+ * @copyright 2012 Louisiana State University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 interface clampmail_alternate_actions {
     /**
      * Modal for viewing entries.
@@ -118,7 +125,7 @@ abstract class alternate implements clampmail_alternate_actions {
         $email = self::get_one($id);
 
         $confirmurl = self::base_url($course->id, array(
-            'id' => $email->id, 'action' => self::CONFIRMED
+            'id' => $email->id, 'action' => self::CONFIRMED,
         ));
 
         $cancelurl = self::base_url($course->id);
@@ -159,7 +166,7 @@ abstract class alternate implements clampmail_alternate_actions {
             'instance' => $course->id,
             'value' => $value,
             'userid' => $userid,
-            'script' => 'blocks/clampmail'
+            'script' => 'blocks/clampmail',
         );
 
         $backurl = self::base_url($course->id);
@@ -172,7 +179,7 @@ abstract class alternate implements clampmail_alternate_actions {
         // Verify key.
         if (empty($value) || !$DB->get_record('user_private_key', $params)) {
             $reactivate = self::base_url($course->id, array(
-                'id' => $id, 'action' => self::INFORMATION
+                'id' => $id, 'action' => self::INFORMATION,
             ));
 
             $html = $OUTPUT->notification(get_string('alternate_invalid', 'block_clampmail', $entry));
@@ -216,7 +223,7 @@ abstract class alternate implements clampmail_alternate_actions {
 
         $approvalurl = self::base_url($course->id, array(
             'id' => $id, 'action' => self::VERIFY,
-            'activator' => $USER->id, 'key' => $value
+            'activator' => $USER->id, 'key' => $value,
         ));
 
         $a = new \stdClass;
@@ -243,8 +250,8 @@ abstract class alternate implements clampmail_alternate_actions {
             'courseid' => $course->id,
             'context' => \context_course::instance($course->id),
             'other' => array(
-                'address' => $entry->address
-            )
+                'address' => $entry->address,
+            ),
         ));
         $event->trigger();
 
@@ -272,7 +279,7 @@ abstract class alternate implements clampmail_alternate_actions {
      */
     public static function interact($course, $id) {
         $form = new alternate_form(null, array(
-            'course' => $course, 'action' => self::INTERACT
+            'course' => $course, 'action' => self::INTERACT,
         ));
 
         if ($form->is_cancelled()) {
@@ -282,7 +289,7 @@ abstract class alternate implements clampmail_alternate_actions {
 
             // Check if email exists in this course.
             $older = $DB->get_record('block_clampmail_alternate', array(
-                'address' => $data->address, 'courseid' => $data->courseid
+                'address' => $data->address, 'courseid' => $data->courseid,
             ));
 
             if ($older) {
@@ -307,7 +314,7 @@ abstract class alternate implements clampmail_alternate_actions {
             $action = $data->valid ? self::VERIFY : self::INFORMATION;
 
             redirect(self::base_url($course->id, array(
-                'action' => $action, 'id' => $data->id
+                'action' => $action, 'id' => $data->id,
             )));
         }
 
@@ -342,7 +349,7 @@ abstract class alternate implements clampmail_alternate_actions {
         $table->head = array(
             get_string('email'),
             get_string('alternate_activation_status', 'block_clampmail'),
-            get_string('action')
+            get_string('action'),
         );
 
         $approval = array(get_string('alternate_waiting', 'block_clampmail'),
@@ -350,18 +357,18 @@ abstract class alternate implements clampmail_alternate_actions {
 
         $icons = array(
             self::INTERACT => $OUTPUT->pix_icon('i/edit', get_string('edit')),
-            self::DELETE => $OUTPUT->pix_icon('t/delete', get_string('delete'))
+            self::DELETE => $OUTPUT->pix_icon('t/delete', get_string('delete')),
         );
 
         foreach ($alternates as $email) {
             $editurl = self::base_url($course->id, array(
-                'action' => self::INTERACT, 'id' => $email->id
+                'action' => self::INTERACT, 'id' => $email->id,
             ));
 
             $edit = \html_writer::link($editurl, $icons[self::INTERACT]);
 
             $deleteurl = self::base_url($course->id, array(
-                'action' => self::DELETE, 'id' => $email->id
+                'action' => self::DELETE, 'id' => $email->id,
             ));
 
             $delete = \html_writer::link($deleteurl, $icons[self::DELETE]);
@@ -369,7 +376,7 @@ abstract class alternate implements clampmail_alternate_actions {
             $row = array(
                 $email->address,
                 $approval[$email->valid],
-                implode(' | ', array($edit, $delete))
+                implode(' | ', array($edit, $delete)),
             );
 
             $table->data[] = new \html_table_row($row);

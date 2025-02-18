@@ -75,7 +75,7 @@ $signature = file_prepare_standard_editor(
     $signature,
     'signature',
      array(
-         'context' => $coursecontext
+         'context' => $coursecontext,
      ),
      $coursecontext,
      'block_clampmail',
@@ -100,7 +100,7 @@ $PAGE->set_pagetype('CLAMPMail');
 
 // Create form.
 $mform = new block_clampmail\signature_form('signature.php', array(
-    'courseid' => $courseid
+    'courseid' => $courseid,
 ));
 $mform->set_data($signature);
 
@@ -159,11 +159,11 @@ if (!empty($delete) && !empty($fromform->id)) {
         new moodle_url('signature.php', array(
             'id' => $signature->id,
             'courseid' => $courseid,
-            'confirm' => 1
+            'confirm' => 1,
         )),
         new moodle_url('signature.php', array(
             'id' => $signature->id,
-            'courseid' => $courseid
+            'courseid' => $courseid,
         ))
     );
 } else {

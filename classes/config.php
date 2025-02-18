@@ -24,8 +24,6 @@
 
 namespace block_clampmail;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Configuration functions.
  *
@@ -73,7 +71,7 @@ class config {
             'roleselection' => get_config('block_clampmail', 'roleselection'),
             'prepend_class' => get_config('block_clampmail', 'prepend_class'),
             'receipt' => get_config('block_clampmail', 'receipt'),
-            'groupmode' => get_config('block_clampmail', 'groupmode')
+            'groupmode' => get_config('block_clampmail', 'groupmode'),
         );
 
         return $config;

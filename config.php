@@ -60,7 +60,7 @@ if ($reset) {
 
 $form = new block_clampmail\config_form(null, array(
     'courseid' => $courseid,
-    'groupmodeforce' => $course->groupmodeforce
+    'groupmodeforce' => $course->groupmodeforce,
 ));
 
 if ($data = $form->get_data()) {

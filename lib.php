@@ -41,7 +41,7 @@ function block_clampmail_pluginfile($course, $record, $context, $filearea, $args
         'component' => 'block_clampmail',
         'filearea' => $filearea,
         'itemid' => $itemid,
-        'filename' => $filename
+        'filename' => $filename,
     );
 
     $instanceid = $DB->get_field('files', 'id', $params);

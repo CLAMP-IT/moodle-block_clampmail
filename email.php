@@ -36,11 +36,11 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('no_course', 'block_clampmail', '', $courseid);
 }
 
-if (!empty($type) and !in_array($type, array('log', 'drafts'))) {
+if (!empty($type) && !in_array($type, array('log', 'drafts'))) {
     print_error('no_type', 'block_clampmail', '', $type);
 }
 
-if (!empty($type) and empty($typeid)) {
+if (!empty($type) && empty($typeid)) {
     $string = new stdclass;
     $string->tpe = $type;
     $string->id = $typeid;
@@ -129,7 +129,7 @@ if (!empty($type)) {
 $email->messagetext = $email->message;
 
 $defaultsigid = $DB->get_field('block_clampmail_signatures', 'id', array(
-    'userid' => $USER->id, 'default_flag' => 1
+    'userid' => $USER->id, 'default_flag' => 1,
 ));
 $email->sigid = $defaultsigid ? $defaultsigid : -1;
 
@@ -142,7 +142,7 @@ $editoroptions = array(
     'subdirs' => true,
     'maxfiles' => EDITOR_UNLIMITED_FILES,
     'context' => $context,
-    'format' => $email->messageformat
+    'format' => $email->messageformat,
 );
 
 $email = file_prepare_standard_editor($email, 'message', $editoroptions,
@@ -171,7 +171,7 @@ $form = new block_clampmail\email_form(null,
         'groupmode' => $groupmode,
         'sigs' => array_map(function($sig) { return $sig->title;
         }, $sigs),
-        'alternates' => $alternates
+        'alternates' => $alternates,
     )
 );
 
@@ -201,7 +201,7 @@ if ($form->is_cancelled()) {
         } else if (isset($data->draft)) {
             $table = 'drafts';
 
-            if (!empty($typeid) and $type == 'drafts') {
+            if (!empty($typeid) && $type == 'drafts') {
                 $data->id = $typeid;
                 $DB->update_record('block_clampmail_drafts', $data);
             } else {
@@ -215,7 +215,7 @@ if ($form->is_cancelled()) {
         $DB->update_record('block_clampmail_'.$table, $data);
 
         $prepender = $config['prepend_class'];
-        if (!empty($prepender) and !empty($course->$prepender)) {
+        if (!empty($prepender) && !empty($course->$prepender)) {
             $subject = "[{$course->$prepender}] $data->subject";
         } else {
             $subject = $data->subject;
@@ -235,7 +235,7 @@ if ($form->is_cancelled()) {
                 $context, $data, $table, $data->id
             );
 
-            if (!empty($sigs) and $data->sigid > -1) {
+            if (!empty($sigs) && $data->sigid > -1) {
                 $sig = $sigs[$data->sigid];
 
                 $signaturetext = file_rewrite_pluginfile_urls($sig->signature,

@@ -45,7 +45,7 @@ class config_form extends \moodleform {
         $resetlink = \html_writer::link(
             new \moodle_url('/blocks/clampmail/config.php', array(
                 'courseid' => $this->_customdata['courseid'],
-                'reset' => 1
+                'reset' => 1,
             )), get_string('reset', 'block_clampmail')
         );
         $mform->addElement('static', 'reset', '', $resetlink);
@@ -64,7 +64,7 @@ class config_form extends \moodleform {
         $options = array(
             0 => get_string('none'),
             'idnumber' => get_string('idnumber'),
-            'shortname' => get_string('shortname')
+            'shortname' => get_string('shortname'),
         );
 
         $mform->addElement('select', 'prepend_class',

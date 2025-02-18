@@ -239,7 +239,7 @@ class email {
             new \html_table_row(array(
                 new \html_table_cell(self::format_time($email->time)),
                 new \html_table_cell($email->subject))
-            )
+            ),
         );
 
         $msg = get_string('delete_confirm', 'block_clampmail', \html_writer::table($table));

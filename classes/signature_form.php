@@ -59,7 +59,7 @@ class signature_form extends \moodleform {
         $buttons = array(
             $mform->createElement('submit', 'save', get_string('savechanges')),
             $mform->createElement('submit', 'delete', get_string('delete')),
-            $mform->createElement('cancel')
+            $mform->createElement('cancel'),
         );
 
         $mform->addGroup($buttons, 'buttons', '', array(' '), false);

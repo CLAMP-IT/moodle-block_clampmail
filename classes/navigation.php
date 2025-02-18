@@ -101,7 +101,7 @@ class navigation {
             \html_writer::link(
                 new \moodle_url('/blocks/clampmail/emaillog.php', array('courseid' => $course)),
                 get_string('log', 'block_clampmail')
-            )
+            ),
         ];
 
         // Alternate email configuration link.

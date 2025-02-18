@@ -45,7 +45,7 @@ if (!in_array($type, array('log', 'drafts'))) {
 }
 
 $canimpersonate = has_capability('block/clampmail:canimpersonate', $coursecontext);
-if (!$canimpersonate and $userid != $USER->id) {
+if (!$canimpersonate && $userid != $USER->id) {
     print_error('not_valid_user', 'block_clampmail');
 }
 
@@ -55,11 +55,11 @@ $validactions = array('delete', 'confirm');
 
 $candelete = ($type == 'drafts');
 
-if (isset($action) and !in_array($action, $validactions)) {
+if (isset($action) && !in_array($action, $validactions)) {
     print_error('not_valid_action', 'block_clampmail', '', $action);
 }
 
-if (isset($action) and empty($typeid)) {
+if (isset($action) && empty($typeid)) {
     print_error('not_valid_typeid', 'block_clampmail', '', $action);
 }
 
@@ -87,7 +87,7 @@ switch ($action) {
         if (block_clampmail\email::cleanup($dbtable, $coursecontext->id, $typeid)) {
             $url = new moodle_url('/blocks/clampmail/emaillog.php', array(
                 'courseid' => $courseid,
-                'type' => $type
+                'type' => $type,
             ));
             redirect($url);
         } else {
@@ -101,7 +101,7 @@ switch ($action) {
         $html = block_clampmail\email::list_entries($courseid, $type, $page, $perpage, $userid, $count, $candelete);
 }
 
-if ($canimpersonate and $USER->id != $userid) {
+if ($canimpersonate && $USER->id != $userid) {
     $user = $DB->get_record('user', array('id' => $userid));
     $header .= ' for '. fullname($user);
 }
@@ -125,7 +125,7 @@ if ($canimpersonate) {
 
     $url = new moodle_url('emaillog.php', array(
         'courseid' => $courseid,
-        'type' => $type
+        'type' => $type,
     ));
 
     $defaultoption = array('' => get_string('select_users', 'block_clampmail'));

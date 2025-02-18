@@ -100,7 +100,7 @@ class email_form extends \moodleform {
             array(
                 'value' => $user->id,
                 'data-groups' => '["' . implode('", "', $user->groups) . '"]',
-                'data-roles' => '["' . implode('", "', $user->roles) . '"]'
+                'data-roles' => '["' . implode('", "', $user->roles) . '"]',
             )
         );
         return $option;
@@ -148,7 +148,7 @@ class email_form extends \moodleform {
         }
 
         $groupoptions = empty($this->_customdata['groups']) ? array() : array(
-            'all' => get_string('all_groups', 'block_clampmail')
+            'all' => get_string('all_groups', 'block_clampmail'),
         );
         foreach ($this->_customdata['groups'] as $group) {
             $groupoptions[$group->id] = $group->name;
@@ -182,7 +182,7 @@ class email_form extends \moodleform {
         $embed = function ($text, $id) {
             return \html_writer::tag('p',
                 \html_writer::empty_tag('input', array(
-                    'value' => $text, 'type' => 'button', 'id' => $id
+                    'value' => $text, 'type' => 'button', 'id' => $id,
                 ))
             );
         };
@@ -239,7 +239,7 @@ class email_form extends \moodleform {
 
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'block_clampmail'), null,
         array(
-            'areamaxbytes' => get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes, get_config('block_clampmail', 'maxbytes'))
+            'areamaxbytes' => get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes, get_config('block_clampmail', 'maxbytes')),
         ));
         $mform->setType('attachments', PARAM_FILE);
 
@@ -256,7 +256,7 @@ class email_form extends \moodleform {
 
         $radio = array(
             $mform->createElement('radio', 'receipt', '', get_string('yes'), 1),
-            $mform->createElement('radio', 'receipt', '', get_string('no'), 0)
+            $mform->createElement('radio', 'receipt', '', get_string('no'), 0),
         );
 
         $mform->addGroup($radio, 'receipt_action', get_string('receipt', 'block_clampmail'), array(' '), false);

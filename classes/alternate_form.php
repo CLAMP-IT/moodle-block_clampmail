@@ -61,7 +61,7 @@ class alternate_form extends \moodleform {
 
         $buttons = array(
             $m->createElement('submit', 'submit', get_string('savechanges')),
-            $m->createElement('cancel')
+            $m->createElement('cancel'),
         );
 
         $m->addGroup($buttons, 'buttons', '', array(' '), false);

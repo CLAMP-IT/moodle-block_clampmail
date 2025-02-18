@@ -27,14 +27,22 @@ namespace block_clampmail\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 use context_user;
-use \core_privacy\local\metadata\collection;
-use \core_privacy\local\request\approved_contextlist;
-use \core_privacy\local\request\writer;
-use \core_privacy\local\request\helper;
-use \core_privacy\local\request\transform;
-use \core_privacy\local\request\userlist;
-use \core_privacy\local\request\approved_userlist;
+use core_privacy\local\metadata\collection;
+use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\writer;
+use core_privacy\local\request\helper;
+use core_privacy\local\request\transform;
+use core_privacy\local\request\userlist;
+use core_privacy\local\request\approved_userlist;
 
+/**
+ * The interface is used to describe a provider which is capable of identifying the users who have data within it.
+ *
+ * It describes data how these requests are serviced in a specific format.
+ *
+ * @package     core_privacy
+ * @copyright   2018 Lafayette College ITS
+ */
 interface my_userlist extends \core_privacy\local\request\core_userlist_provider {
 }
 
@@ -119,7 +127,7 @@ class provider implements
                    )";
         $params = [
             'loguserid' => $userid,
-            'draftuserid' => $userid
+            'draftuserid' => $userid,
         ];
         $contextlist->add_from_sql($sql, $params);
         // And we also store signatures by user context -- check if there are any.
