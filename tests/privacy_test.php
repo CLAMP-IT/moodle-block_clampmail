@@ -154,7 +154,7 @@ class privacy_test extends \core_privacy\tests\provider_testcase {
 
     public function delete_data_for_context($context) {
         $classname = $this->get_provider_classname('block_clampmail');
-        $classname::_delete_data_for_all_users_in_context($context);
+        $classname::delete_data_for_all_users_in_context($context);
     }
 
     public function delete_data_for_user($userid) {
@@ -167,7 +167,7 @@ class privacy_test extends \core_privacy\tests\provider_testcase {
         );
 
         $classname = $this->get_provider_classname('block_clampmail');
-        $classname::_delete_data_for_user($approvedcontextlist);
+        $classname::delete_data_for_user($approvedcontextlist);
     }
 
     /**
