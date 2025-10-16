@@ -27,6 +27,7 @@ namespace block_clampmail\privacy;
 use context_user;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\contextlist;
 use core_privacy\local\request\writer;
 use core_privacy\local\request\helper;
 use core_privacy\local\request\transform;
@@ -97,7 +98,7 @@ class provider implements
     public static function get_contexts_for_userid($userid): contextlist {
         global $DB;
 
-        $contextlist = new \core_privacy\local\request\contextlist();
+        $contextlist = new contextlist();
 
         $sql = "SELECT c.id
                   FROM {context} c
