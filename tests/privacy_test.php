@@ -42,6 +42,7 @@ class privacy_test extends \core_privacy\tests\provider_testcase {
         global $DB;
 
         $this->resetAfterTest(true);
+        $this->setAdminUser();
         $this->data = [];
 
         $this->data['provider'] = new provider();
@@ -88,13 +89,15 @@ class privacy_test extends \core_privacy\tests\provider_testcase {
         $this->data['manualenrol2'] = $DB->get_record('enrol', ['enrol' => 'manual', 'courseid' => $this->data['course2']->id]);
         $this->data['coursecontext2'] = \context_course::instance($this->data['course2']->id);
 
-        // Add the block to the page.
+        // Create course page.
         $page = new \moodle_page();
         $page->set_context($this->data['coursecontext']);
         $page->set_pagelayout('standard');
         $page->set_pagetype('course-view');
         $page->set_course($this->data['course']);
         $page->blocks->load_blocks();
+
+        // Add block to course page.
         $page->blocks->add_block_at_end_of_default_region('clampmail');
 
         $page2 = new \moodle_page();
