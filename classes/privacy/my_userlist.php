@@ -15,36 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Configuration functions.
+ * Privacy functions.
  *
  * @package   block_clampmail
- * @copyright 2017 Collaborative Liberal Arts Moodle Project
+ * @copyright 2025 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_clampmail;
+namespace block_clampmail\privacy;
 
 /**
- * Signature functions.
+ * The interface is used to describe a provider which is capable of identifying the users who have data within it.
  *
- * @package   block_clampmail
- * @copyright 2023 Collaborative Liberal Arts Moodle Project
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * It describes data how these requests are serviced in a specific format.
+ *
+ * @package     core_privacy
+ * @copyright   2018 Lafayette College ITS
  */
-class signature {
-    /**
-     * Get the user's signatures.
-     *
-     * @param int $userid the userid
-     * @return array
-     */
-    public static function get_signatures($userid) {
-        global $DB;
-        $signatures = $DB->get_records(
-            'block_clampmail_signatures',
-            ['userid' => $userid],
-            'default_flag DESC'
-        );
-        return $signatures;
-    }
+interface my_userlist extends \core_privacy\local\request\core_userlist_provider {
 }

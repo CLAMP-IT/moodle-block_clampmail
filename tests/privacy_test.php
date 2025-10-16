@@ -15,17 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Privacy tests.
+ *
  * @package   block_clampmail
  * @copyright 2018 Collaborative Liberal Arts Moodle Project
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+use block_clampmail\privacy\provider;
 
-use \block_clampmail\privacy\provider;
-
-class block_clampmail_privacy_test extends \core_privacy\tests\provider_testcase {
-
+/**
+ * PHPUnit tests
+ *
+ * @package    block_clampmail
+ * @copyright  2018 Collaborative Liberal Arts Moodle Project
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class privacy_test extends \core_privacy\tests\provider_testcase {
+    /** @var array Various data we need to access throughout the tests. */
     protected $data;
 
     /**
@@ -35,50 +42,50 @@ class block_clampmail_privacy_test extends \core_privacy\tests\provider_testcase
         global $DB;
 
         $this->resetAfterTest(true);
-        $this->data = array();
+        $this->data = [];
 
         $this->data['provider'] = new provider();
 
         // Test teacher user.
-        $this->data['teacher'] = $this->getDataGenerator()->create_user(array(
+        $this->data['teacher'] = $this->getDataGenerator()->create_user([
             'username'  => 'hfogg',
             'email'     => 'hfogg@brakebills.edu',
             'firstname' => 'Henry',
             'lastname'  => 'Fogg',
-        ));
+        ]);
 
         // Test student user.
-        $this->data['student1'] = $this->getDataGenerator()->create_user(array(
+        $this->data['student1'] = $this->getDataGenerator()->create_user([
             'username'  => 'jwicker',
             'email'     => 'jwicker@brakebills.edu',
             'firstname' => 'Julia',
             'lastname'  => 'Wicker',
-        ));
+        ]);
 
         // Test student user.
-        $this->data['student2'] = $this->getDataGenerator()->create_user(array(
+        $this->data['student2'] = $this->getDataGenerator()->create_user([
             'username'  => 'qcoldwater',
             'email'     => 'qcoldwater@brakebills.edu',
             'firstname' => 'Quentin',
             'lastname'  => 'Coldwater',
-        ));
+        ]);
 
         // Test course.
-        $this->data['course'] = $this->getDataGenerator()->create_course(array(
-            'shortname' => 'testcourse'
-        ));
+        $this->data['course'] = $this->getDataGenerator()->create_course([
+            'shortname' => 'testcourse',
+        ]);
 
         // Second test course.
-        $this->data['course2'] = $this->getDataGenerator()->create_course(array(
-            'shortname' => 'testcourse2'
-        ));
+        $this->data['course2'] = $this->getDataGenerator()->create_course([
+            'shortname' => 'testcourse2',
+        ]);
 
         // Manual enrolment entry and course context.
-        $this->data['manualenrol'] = $DB->get_record('enrol', array('enrol' => 'manual', 'courseid' => $this->data['course']->id));
+        $this->data['manualenrol'] = $DB->get_record('enrol', ['enrol' => 'manual', 'courseid' => $this->data['course']->id]);
         $this->data['coursecontext'] = \context_course::instance($this->data['course']->id);
 
         // Manual enrolment entry and course context for test course 2.
-        $this->data['manualenrol2'] = $DB->get_record('enrol', array('enrol' => 'manual', 'courseid' => $this->data['course2']->id));
+        $this->data['manualenrol2'] = $DB->get_record('enrol', ['enrol' => 'manual', 'courseid' => $this->data['course2']->id]);
         $this->data['coursecontext2'] = \context_course::instance($this->data['course2']->id);
 
         // Add the block to the page.
@@ -105,8 +112,8 @@ class block_clampmail_privacy_test extends \core_privacy\tests\provider_testcase
 
         $this->data['me_plugin'] = new enrol_manual_plugin();
 
-        $this->data['studentrole'] = $DB->get_record('role', array('shortname' => 'student'))->id;
-        $this->data['teacherrole'] = $DB->get_record('role', array('shortname' => 'editingteacher'))->id;
+        $this->data['studentrole'] = $DB->get_record('role', ['shortname' => 'student'])->id;
+        $this->data['teacherrole'] = $DB->get_record('role', ['shortname' => 'editingteacher'])->id;
 
         $this->setUser($this->data['teacher']);
     }
