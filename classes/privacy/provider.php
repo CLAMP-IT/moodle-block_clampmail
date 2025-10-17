@@ -24,27 +24,15 @@
 
 namespace block_clampmail\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 use context_user;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\contextlist;
 use core_privacy\local\request\writer;
 use core_privacy\local\request\helper;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\approved_userlist;
-
-/**
- * The interface is used to describe a provider which is capable of identifying the users who have data within it.
- *
- * It describes data how these requests are serviced in a specific format.
- *
- * @package     core_privacy
- * @copyright   2018 Lafayette College ITS
- */
-interface my_userlist extends \core_privacy\local\request\core_userlist_provider {
-}
 
 /**
  * Privacy functions.
@@ -55,12 +43,9 @@ interface my_userlist extends \core_privacy\local\request\core_userlist_provider
  */
 class provider implements
         // This plugin does store personal user data.
-        \core_privacy\local\request\plugin\provider,
-        \core_privacy\local\metadata\provider,
-        my_userlist {
-
-    use \core_privacy\local\legacy_polyfill;
-
+    \block_clampmail\privacy\my_userlist,
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\plugin\provider {
     /**
      * Return the fields which contain personal data.
      *
@@ -68,7 +53,7 @@ class provider implements
      *
      * @return collection The updated collection of metadata items.
      */
-    public static function _get_metadata(collection $collection) {
+    public static function get_metadata(collection $collection): collection {
         $messagefields = [
             'userid' => 'privacy:metadata:clampmail_message:userid',
             'mailto' => 'privacy:metadata:clampmail_message:mailto',
@@ -110,10 +95,10 @@ class provider implements
      *
      * @return void
      */
-    public static function _get_contexts_for_userid($userid) {
+    public static function get_contexts_for_userid($userid): contextlist {
         global $DB;
 
-        $contextlist = new \core_privacy\local\request\contextlist();
+        $contextlist = new contextlist();
 
         $sql = "SELECT c.id
                   FROM {context} c
@@ -131,7 +116,7 @@ class provider implements
         ];
         $contextlist->add_from_sql($sql, $params);
         // And we also store signatures by user context -- check if there are any.
-        $signatures = $DB->get_records('block_clampmail_signatures', array('userid' => $userid));
+        $signatures = $DB->get_records('block_clampmail_signatures', ['userid' => $userid]);
         if (count($signatures) > 0) {
             $contextlist->add_user_context($userid);
         }
@@ -180,7 +165,7 @@ class provider implements
            WHERE u.id = ?
              AND bcs.userid IS NOT NULL";
 
-            $check = $DB->count_records_sql($sql, array($userid));
+            $check = $DB->count_records_sql($sql, [$userid]);
 
             if ($check > 0) {
                 $userlist->add_user($userid);
@@ -200,9 +185,9 @@ class provider implements
                 bcl.userid IS NOT NULL
                 OR bcd.userid IS NOT NULL)";
 
-            $results = $DB->get_records_sql($sql, array($courseid, $courseid));
-            $userids = array();
-            array_map(function($e) use (&$userids) {
+            $results = $DB->get_records_sql($sql, [$courseid, $courseid]);
+            $userids = [];
+            array_map(function ($e) use (&$userids) {
                 array_push($userids, $e->id);
             }, $results);
 
@@ -218,7 +203,7 @@ class provider implements
      *
      * @return void
      */
-    public static function _export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist) {
         global $DB;
 
         // If no contexts, bail out.
@@ -229,7 +214,7 @@ class provider implements
         $userid = $contextlist->get_user()->id;
 
         // Get all courses where the user has CLAMPMail data.
-        list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$contextsql, $contextparams] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
         $sql = "SELECT
                     ctx.id AS contextid,
                     c.*,
@@ -244,7 +229,7 @@ class provider implements
                     ctx.id {$contextsql}
                    )
         ";
-        $params = array();
+        $params = [];
         $params += $contextparams;
 
         // Export sent messages and drafts (course context).
@@ -255,10 +240,10 @@ class provider implements
             $sent = static::get_messages('log', $userid, $course->id);
             $drafts = static::get_messages('drafts', $userid, $course->id);
 
-            $data = (object) array(
+            $data = (object) [
                 'sent_messages' => $sent,
                 'drafts' => $drafts,
-            );
+            ];
 
             $writer = writer::with_context($context);
             $writer->export_data([get_string('pluginname', 'block_clampmail')], $data);
@@ -266,12 +251,14 @@ class provider implements
                 [get_string('pluginname', 'block_clampmail')],
                 "sent_messages",
                 "Description:",
-                get_string('privacy:metadata:clampmail_log', 'block_clampmail'));
+                get_string('privacy:metadata:clampmail_log', 'block_clampmail')
+            );
             $writer->export_metadata(
                 [get_string('pluginname', 'block_clampmail')],
                 "drafts",
                 "Description:",
-                get_string('privacy:metadata:clampmail_drafts', 'block_clampmail'));
+                get_string('privacy:metadata:clampmail_drafts', 'block_clampmail')
+            );
         }
         $courses->close();
 
@@ -288,7 +275,8 @@ class provider implements
                 [get_string('pluginname', 'block_clampmail')],
                 "signatures",
                 "Description:",
-                get_string('privacy:metadata:clampmail_signatures', 'block_clampmail'));
+                get_string('privacy:metadata:clampmail_signatures', 'block_clampmail')
+            );
         }
     }
 
@@ -299,7 +287,7 @@ class provider implements
      *
      * @return void
      */
-    public static function _delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context) {
         if ($context->contextlevel === CONTEXT_USER) {
             // Instanceid is userid.
             static::delete_user_context_data($context->instanceid);
@@ -316,7 +304,7 @@ class provider implements
      *
      * @return void
      */
-    public static function _delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
         global $DB;
 
         // If no contexts, bail out.
@@ -327,7 +315,7 @@ class provider implements
         $userid = $contextlist->get_user()->id;
 
         // Get all courses where the user has CLAMPMail data.
-        list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$contextsql, $contextparams] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
         $sql = "SELECT
                     ctx.id AS contextid,
                     c.*,
@@ -342,7 +330,7 @@ class provider implements
                     ctx.id {$contextsql}
                    )
         ";
-        $params = array();
+        $params = [];
         $params += $contextparams;
 
         // Delete sent messages and drafts (course context).
@@ -369,12 +357,11 @@ class provider implements
     protected static function get_signatures($userid) {
         global $DB;
 
-        $sigs = $DB->get_records('block_clampmail_signatures', array(
+        $sigs = $DB->get_records('block_clampmail_signatures', [
                 'userid' => $userid,
-            )
-        );
+            ]);
 
-        $signatures = array();
+        $signatures = [];
         foreach ($sigs as $sig) {
             $signature = (object) [
                 'title' => format_string($sig->title, true),
@@ -397,16 +384,15 @@ class provider implements
     protected static function get_messages($type, $userid, $courseid) {
         global $DB;
 
-        $records = $DB->get_records('block_clampmail_' . $type, array(
+        $records = $DB->get_records('block_clampmail_' . $type, [
                 'courseid' => $courseid,
                 'userid' => $userid,
-            )
-        );
+            ]);
 
-        $messages = array();
+        $messages = [];
         foreach ($records as $record) {
             $mailtoids = explode(',', $record->mailto);
-            $mailto = array();
+            $mailto = [];
             foreach ($mailtoids as $mid) {
                 array_push($mailto, transform::user($mid));
             }
