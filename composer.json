@@ -1,9 +1,11 @@
 {
-    "name": "moodle/block_clampmail",
+    "name": "lafayettecollege/moodle-block_clampmail",
+    "description": "CLAMPMail is a Moodle block that provides selective, bulk emailing within courses.",
     "type": "moodle-block",
     "require": {
-        "composer/installers": "~1.0"
+        "composer/installers": "*"
     },
+    "license": "GPL-3.0-or-later",
     "extra": {
         "installer-name": "clampmail"
     }

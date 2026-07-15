@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.5.1 (July 15, 2026)
+
+- Standardize composer support
+
 ## 4.5.0 (July 10, 2026)
 
 - [BUGFIX] Proper namespacing for unit test classes
