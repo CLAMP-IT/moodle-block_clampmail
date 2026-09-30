@@ -33,10 +33,11 @@ require_once($CFG->dirroot . '/blocks/clampmail/db/upgradelib.php');
  * PHPUnit tests
  *
  * @package    block_clampmail
+ * @covers     block_clampmail_migrate_settings
  * @copyright  2017 Collaborative Liberal Arts Moodle Project
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class upgradelib_test extends \advanced_testcase {
+final class upgradelib_test extends \advanced_testcase {
     public function test_upgradelib() {
         global $DB;
         $this->resetAfterTest(true);
