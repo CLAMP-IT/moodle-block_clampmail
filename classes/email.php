@@ -229,7 +229,7 @@ class email {
         $email = $DB->get_record('block_clampmail_' . $type, ['id' => $typeid]);
 
         if (empty($email)) {
-            print_error('not_valid_typeid', 'block_clampmail', '', $typeid);
+            throw new \moodle_exception('not_valid_typeid', 'block_clampmail', '', $typeid);
         }
 
         $params = ['courseid' => $courseid, 'type' => $type];

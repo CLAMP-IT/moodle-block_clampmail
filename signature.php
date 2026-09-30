@@ -33,7 +33,7 @@ $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 require_login($course);
 
 if ($courseid && !$course = $DB->get_record('course', ['id' => $courseid])) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
+    throw new \moodle_exception('no_course', 'block_clampmail', '', $courseid);
 }
 
 // Setup page.

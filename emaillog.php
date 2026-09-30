@@ -41,12 +41,12 @@ require_capability('block/clampmail:cansend', $coursecontext);
 
 // Has to be in on of these.
 if (!in_array($type, ['log', 'drafts'])) {
-    print_error('not_valid', 'block_clampmail', '', $type);
+    throw new \moodle_exception('not_valid', 'block_clampmail', '', $type);
 }
 
 $canimpersonate = has_capability('block/clampmail:canimpersonate', $coursecontext);
 if (!$canimpersonate && $userid != $USER->id) {
-    print_error('not_valid_user', 'block_clampmail');
+    throw new \moodle_exception('not_valid_user', 'block_clampmail');
 }
 
 $config = block_clampmail\config::load_configuration($course);
@@ -56,11 +56,11 @@ $validactions = ['delete', 'confirm'];
 $candelete = ($type == 'drafts');
 
 if (isset($action) && !in_array($action, $validactions)) {
-    print_error('not_valid_action', 'block_clampmail', '', $action);
+    throw new \moodle_exception('not_valid_action', 'block_clampmail', '', $action);
 }
 
 if (isset($action) && empty($typeid)) {
-    print_error('not_valid_typeid', 'block_clampmail', '', $action);
+    throw new \moodle_exception('not_valid_typeid', 'block_clampmail', '', $action);
 }
 
 $blockname = get_string('pluginname', 'block_clampmail');
@@ -91,7 +91,7 @@ switch ($action) {
             ]);
             redirect($url);
         } else {
-            print_error('delete_failed', 'block_clampmail', '', $typeid);
+            throw new \moodle_exception('delete_failed', 'block_clampmail', '', $typeid);
         }
         break;
     case "delete":
@@ -115,10 +115,16 @@ echo block_clampmail\navigation::print_navigation(
 );
 
 if ($canimpersonate) {
-    $sql = "SELECT DISTINCT(l.userid), u.firstname, u.lastname, u.firstnamephonetic, u.lastnamephonetic, u.middlename, u.alternatename
-                FROM {block_clampmail_$type} l,
-                     {user} u
-                WHERE u.id = l.userid AND courseid = ? ORDER BY u.lastname";
+    $sql = "SELECT DISTINCT(l.userid),
+                   u.firstname,
+                   u.lastname,
+                   u.firstnamephonetic,
+                   u.lastnamephonetic,
+                   u.middlename,
+                   u.alternatename
+              FROM {block_clampmail_$type} l,
+                   {user} u
+             WHERE u.id = l.userid AND courseid = ? ORDER BY u.lastname";
     $users = $DB->get_records_sql($sql, [$courseid]);
 
     $useroptions = array_map(function ($user) {

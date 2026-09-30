@@ -24,8 +24,6 @@
 
 namespace block_clampmail;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Library functions for the alternate email functionality.
  *

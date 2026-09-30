@@ -33,11 +33,11 @@ $typeid = optional_param('typeid', 0, PARAM_INT);
 $sigid = optional_param('sigid', 0, PARAM_INT);
 
 if (!$course = $DB->get_record('course', ['id' => $courseid])) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
+    throw new \moodle_exception('no_course', 'block_clampmail', '', $courseid);
 }
 
 if (!empty($type) && !in_array($type, ['log', 'drafts'])) {
-    print_error('no_type', 'block_clampmail', '', $type);
+    throw new \moodle_exception('no_type', 'block_clampmail', '', $type);
 }
 
 if (!empty($type) && empty($typeid)) {
@@ -45,12 +45,12 @@ if (!empty($type) && empty($typeid)) {
     $string->tpe = $type;
     $string->id = $typeid;
 
-    print_error('no_typeid', 'block_clampmail', '', $string);
+    throw new \moodle_exception('no_typeid', 'block_clampmail', '', $string);
 }
 
 $context = context_course::instance($courseid);
 if (!has_capability('block/clampmail:cansend', $context)) {
-    print_error('no_permission', 'block_clampmail', $blockname);
+    throw new \moodle_exception('no_permission', 'block_clampmail', $blockname);
 }
 
 $config = block_clampmail\config::load_configuration($course);

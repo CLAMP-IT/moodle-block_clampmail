@@ -31,7 +31,7 @@ $courseid = required_param('courseid', PARAM_INT);
 $reset = optional_param('reset', 0, PARAM_INT);
 
 if (!$course = $DB->get_record('course', ['id' => $courseid])) {
-    print_error('no_course', 'block_clampmail', '', $courseid);
+    throw new \moodle_exception('no_course', 'block_clampmail', '', $courseid);
 }
 
 $context = context_course::instance($courseid);
