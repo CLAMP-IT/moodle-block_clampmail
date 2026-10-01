@@ -51,7 +51,9 @@ Feature: Email signatures
       | default_flag | 1 |
     And I press "Save changes"
     Then I should see "Changes saved"
-    When I set the following fields to these values:
+    And I navigate to "CLAMPMail" in current page administration
+    And I follow "Manage signatures"
+    And I set the following fields to these values:
       | id | Secondary signature (Default) |
     Then the field "Signature text" matches value "Doom At 12"
     When I press "Delete"
