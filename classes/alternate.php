@@ -220,7 +220,7 @@ class alternate {
         $a->course = $course->fullname;
         $a->fullname = fullname($USER);
 
-        $from = get_string('alternate_from', 'block_clampmail', get_string('pluginname', 'block_clampmail'));
+        $from = self::get_alternate_user();
         $subject = get_string('alternate_subject', 'block_clampmail');
         $htmlbody = get_string('alternate_body', 'block_clampmail', $a);
         $body = strip_tags($htmlbody);
@@ -257,6 +257,35 @@ class alternate {
 
         return $html;
     }
+
+    /**
+     * Helper function to return dummy noreply user record.
+     *
+     * @return stdClass
+     */
+    protected static function get_alternate_user() {
+        global $CFG;
+
+        $alternateuser = new \stdClass();
+        $alternateuser->id = -10;
+        $alternateuser->email = $CFG->noreplyaddress;
+        $alternateuser->firstname = get_string('alternate_from', 'block_clampmail', get_string('pluginname', 'block_clampmail'));
+        $alternateuser->username = 'noreply';
+        $alternateuser->lastname = '';
+        $alternateuser->confirmed = 1;
+        $alternateuser->suspended = 0;
+        $alternateuser->deleted = 0;
+        $alternateuser->picture = 0;
+        $alternateuser->auth = 'manual';
+        $alternateuser->firstnamephonetic = '';
+        $alternateuser->lastnamephonetic = '';
+        $alternateuser->middlename = '';
+        $alternateuser->alternatename = '';
+        $alternateuser->imagealt = '';
+        $alternateuser->emailstop = 1;
+        return $alternateuser;
+    }
+
 
     /**
      * Render form for modifying alternate email.
