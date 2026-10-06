@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.5.2 (October 6, 2026)
+
+- [BUGFIX] Workaround for [MDL-89103](https://moodle.atlassian.net/browse/MDL-89103)
+
 ## 4.5.1 (July 15, 2026)
 
 - Standardize composer support

@@ -6,7 +6,7 @@ CLAMPMail is a Moodle block that provides selective, bulk emailing within course
 
 ## Requirements
 
-- Moodle 4.1 (build 2022112800 or later)
+- Moodle 4.5 (build 2024100700 or later)
 
 ## Features
 
