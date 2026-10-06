@@ -56,11 +56,12 @@ Feature: Email signatures
     And I set the following fields to these values:
       | id | Secondary signature (Default) |
     Then the field "Signature text" matches value "Doom At 12"
-    When I press "Delete"
+    And I wait until the page is ready
+    And I press "Delete"
     Then I should see "Are you sure you want to delete Secondary signature?"
     When I press "Cancel"
     Then the field "Signature text" matches value "Doom At 12"
-    When I press "delete"
+    When I press "Delete"
     Then I should see "Are you sure you want to delete Secondary signature?"
     When I press "Continue"
     Then I should see "Changes saved"
